@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Api", "Towerland.GameServer.Api\Towerland.GameServer.Api.csproj", "{E3467774-83E6-442A-B621-C58B6AFAF38A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Common.Models", "Towerland.GameServer.Common.Models\Towerland.GameServer.Common.Models.csproj", "{5150D21C-932F-4CCC-84E6-10C3398FAF8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Common.Logic", "Towerland.GameServer.Common.Logic\Towerland.GameServer.Common.Logic.csproj", "{593962FA-635E-4834-B239-24F77C33A46A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.Logic.Test", "Towerland.Logic.Test\Towerland.Logic.Test.csproj", "{5C899389-16F5-43DC-8B8B-FF5B36A041BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Signalr", "Towerland.GameServer.Signalr\Towerland.GameServer.Signalr.csproj", "{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{593962FA-635E-4834-B239-24F77C33A46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593962FA-635E-4834-B239-24F77C33A46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{593962FA-635E-4834-B239-24F77C33A46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{593962FA-635E-4834-B239-24F77C33A46A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

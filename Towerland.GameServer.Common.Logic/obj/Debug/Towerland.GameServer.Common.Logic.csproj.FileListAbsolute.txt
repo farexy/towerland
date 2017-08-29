@@ -1,0 +1,9 @@
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\bin\Debug\Towerland.GameServer.Common.Logic.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\bin\Debug\Towerland.GameServer.Common.Logic.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\bin\Debug\GameServer.Common.Models.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\bin\Debug\Newtonsoft.Json.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\bin\Debug\GameServer.Common.Models.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\bin\Debug\Newtonsoft.Json.xml
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.csprojResolveAssemblyReference.cache
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.pdb

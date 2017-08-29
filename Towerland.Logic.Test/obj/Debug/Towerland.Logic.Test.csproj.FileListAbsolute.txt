@@ -1,0 +1,12 @@
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.Logic.Test.exe.config
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.Logic.Test.exe
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.Logic.Test.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\GameServer.Common.Models.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.GameServer.Common.Logic.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Newtonsoft.Json.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.GameServer.Common.Logic.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\GameServer.Common.Models.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Newtonsoft.Json.xml
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.csprojResolveAssemblyReference.cache
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.exe
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.pdb
