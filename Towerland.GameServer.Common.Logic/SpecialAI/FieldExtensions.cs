@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Logic.Interfaces;
 
-namespace Towerland.GameServer.Common.Logic
+namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
   static class FieldExtensions
   {

@@ -6,6 +6,7 @@ using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.ActionResolver;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
 
 namespace Towerland.Logic.Test
@@ -43,7 +44,14 @@ namespace Towerland.Logic.Test
 
     static void Main(string[] args)
     {
-      var f = FieldFactory.ClassicField;
+      var f = new FieldFactoryStub().ClassicField;
+
+      var pf = new PathFinder();
+      foreach (var p in pf.ResolvePath(f.Cells, f.Start, f.Finish))
+      {
+        Console.WriteLine(p);
+      }
+
       var statsStub = new StatsStub();
       var calc = new StateCalculator(statsStub);
       var uFactory = new UnitFactory(statsStub);
@@ -57,14 +65,14 @@ namespace Towerland.Logic.Test
       var resolver = new FieldStateActionResolver(f);
       foreach (var actions in ticks)
       {
-        foreach (var action in actions)
+        foreach (var action in actions.Actions)
         {
           resolver.Resolve(action);
           Show(f);
           Thread.Sleep(700);
 
         }
-        if (actions.Any() && actions.First().Position == new Point(2, 7))
+        if (actions.Actions.Any() && actions.Actions.First().Position == new Point(2, 7))
         {
           break;
         }
@@ -74,7 +82,7 @@ namespace Towerland.Logic.Test
       ticks = calc.CalculateActionsByTicks(f);
       foreach (var actions in ticks)
       {
-        foreach (var action in actions)
+        foreach (var action in actions.Actions)
         {
           resolver.Resolve(action);
           Show(f);

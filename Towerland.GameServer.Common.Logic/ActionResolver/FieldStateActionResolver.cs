@@ -1,6 +1,7 @@
 ﻿using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Logic.SpecialAI;
 
 namespace Towerland.GameServer.Common.Logic.ActionResolver
 {

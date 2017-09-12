@@ -66,6 +66,9 @@ namespace GameServer.Common.Models.GameField
       return GetEnumerator();
     }
 
-
+    public override string ToString()
+    {
+      return string.Join(",", _way.Select(p => p.ToString()).ToArray());
+    }
   }
 }

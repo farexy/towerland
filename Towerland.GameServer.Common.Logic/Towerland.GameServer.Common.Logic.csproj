@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Towerland.GameServer.Common.Logic</RootNamespace>
     <AssemblyName>Towerland.GameServer.Common.Logic</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,10 +42,12 @@
   <ItemGroup>
     <Compile Include="ActionResolver\BaseLogicActionResolver.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Interfaces\IFieldFactory.cs" />
     <Compile Include="Interfaces\IGameObjectFactory.cs" />
     <Compile Include="Interfaces\IPathOptimiser.cs" />
+    <Compile Include="Interfaces\IStateChangeRecalculator.cs" />
     <Compile Include="SpecialAI\FieldExtensions.cs" />
-    <Compile Include="FieldFactory.cs" />
+    <Compile Include="FieldFactoryStub.cs" />
     <Compile Include="ActionResolver\FieldStateActionResolver.cs" />
     <Compile Include="Interfaces\IActionResolver.cs" />
     <Compile Include="GameMath.cs" />

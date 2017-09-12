@@ -6,7 +6,7 @@ using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
-  public class StateChangeRecalculator
+  public class StateChangeRecalculator : IStateChangeRecalculator
   {
     private readonly IPathOptimiser _pathOptimiser;
     private readonly IStatsLibrary _statsLib;

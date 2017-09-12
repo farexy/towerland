@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.Logic.Test", "Tow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Signalr", "Towerland.GameServer.Signalr\Towerland.GameServer.Signalr.csproj", "{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Domain", "Towerland.GameServer.Domain\Towerland.GameServer.Domain.csproj", "{688431BA-2E21-47A0-865A-3B4AA01FC714}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Core", "Towerland.GameServer.Core\Towerland.GameServer.Core.csproj", "{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F2B7C7A-8AA7-4F23-B69C-38A856BDA3F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

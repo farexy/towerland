@@ -1,6 +1,6 @@
 ﻿using GameServer.Common.Models.GameActions;
 
-namespace Towerland.GameServer.Common.Logic.ActionResolver
+namespace Towerland.GameServer.Common.Logic.Interfaces
 {
   public interface IActionResolver
   {

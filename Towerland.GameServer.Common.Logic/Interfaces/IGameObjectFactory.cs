@@ -1,5 +1,4 @@
-﻿using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.GameObjects;
+﻿using GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Logic.Interfaces
 {

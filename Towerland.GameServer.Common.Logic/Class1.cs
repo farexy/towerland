@@ -5,6 +5,8 @@ using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
+using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Logic.SpecialAI;
 
 namespace Towerland.GameServer.Common.Logic
 {
@@ -21,12 +23,12 @@ namespace Towerland.GameServer.Common.Logic
         _statsLib = statsLibrary;
       }
 
-      public List<GameAction>[] CalculateActionsByTicks(Field fieldState)
+      public GameTick[] CalculateActionsByTicks(Field fieldState)
       {
         var field = (Field)fieldState.Clone();
         var ticks = new List<List<GameAction>>(100);
         while (field.Castle.Health > 0
-          && (field.Units.Any()))
+          && field.Units.Any())
         {
           var actions = new List<GameAction>();
 
@@ -36,7 +38,16 @@ namespace Towerland.GameServer.Common.Logic
           ticks.Add(actions);
         }
 
-        return ticks.ToArray();
+        var result = new GameTick[ticks.Count];
+        for (int i = 0; i < ticks.Count; i++)
+        {
+          result[i] = new GameTick
+          {
+            RelativeTime = i,
+            Actions = ticks[i]
+          };
+        }
+        return result;
       }
 
       private List<GameAction> GetUnitActions(Field field)
