@@ -22,8 +22,10 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       finishQueue.Enqueue(finish);
       while (startQueue.Any() || finishQueue.Any())
       {
-        FindNextFork(startQueue, map, width, height, false);
-        FindNextFork(finishQueue, map, width, height, true);
+        if(startQueue.Any())
+          FindNextFork(startQueue, map, width, height, false);
+        if(finishQueue.Any())
+          FindNextFork(finishQueue, map, width, height, true);
       }
       return ResolvePaths(map, start, finish, width, height);
     }
@@ -58,9 +60,9 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
           Console.WriteLine();
         }
         point = FindNextPoint(fork, map, width, height, reverseDirections, ref forkDirsCount);
-        Show(map, width, height);
-        Console.ReadKey();
-        Console.Clear();
+        //Show(map, width, height);
+        //Console.ReadKey();
+        //Console.Clear();
       }
       
     }
@@ -70,6 +72,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       Point nextPoint = NullPoint;
       int x = point.X;
       int y = point.Y;
+
       if (x != 0 && map[x - 1, y].IsRoad && map[x - 1, y].NotVisited)
       {
         nextPoint = new Point(x - 1, y);
@@ -79,6 +82,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         }
         countDirections++;
       }
+
       if (y != 0 && map[x, y - 1].IsRoad && map[x, y - 1].NotVisited)
       {
         nextPoint = new Point(x, y - 1);
@@ -89,6 +93,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         countDirections++;
       }
       //we need to add the comparison on equality, otherwise enemy will always go to left or down when the way values are equal
+
       if (x != width - 1 && map[x + 1, y].IsRoad && map[x + 1, y].NotVisited)
       {
         nextPoint = new Point(x + 1, y);
@@ -98,6 +103,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         }
         countDirections++;
       }
+
       if (y != height - 1 && map[x, y + 1].IsRoad && map[x, y + 1].NotVisited)
       {
         nextPoint = new Point(x, y + 1);
@@ -107,6 +113,45 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         }
         countDirections++;
       }
+
+      if (nextPoint != NullPoint)
+      {
+        return nextPoint;
+      }
+
+      if (x != 0 && map[x, y].NotVisited && map[x - 1, y].Direction == Direction.Fork)
+      {
+        if (map[x, y].Direction != Direction.Fork)
+        {
+          map[x, y].Direction = reverseDirections ? Direction.Right : Direction.Left;
+        }
+        countDirections++;
+      }
+      if (y != 0 && map[x, y].NotVisited && map[x, y - 1].Direction == Direction.Fork)
+      {
+        if (map[x, y].Direction != Direction.Fork)
+        {
+          map[x, y].Direction = reverseDirections ? Direction.Down : Direction.Up;
+        }
+        countDirections++;
+      }
+      if (x != width - 1 && map[x, y].NotVisited && map[x + 1, y].Direction == Direction.Fork)
+      {
+        if (map[x, y].Direction != Direction.Fork)
+        {
+          map[x, y].Direction = reverseDirections ? Direction.Left : Direction.Right;
+        }
+        countDirections++;
+      }
+      if (y != height - 1 && map[x, y].NotVisited && map[x, y + 1].Direction == Direction.Fork)
+      {
+        if (map[x, y].Direction != Direction.Fork)
+        {
+          map[x, y].Direction = reverseDirections ? Direction.Up : Direction.Down;
+        }
+        countDirections++;
+      }
+
       return nextPoint;
     }
 
@@ -127,43 +172,49 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
 
     private static IEnumerable<Path> ResolvePaths(FieldCellWrapper[,] cells, Point start, Point end, int width, int height)
-    {
+    {Show(cells, width, height);
       List<Path> pathList = new List<Path>();
       Stack<int> forkStack = new Stack<int>();
       do
       {
-        int currFork = forkStack.Any() ? forkStack.Pop() : -1;
-        FieldCellWrapper curCell;
         List<Point> pathPoints = new List<Point>();
         for (Point curPoint = start; curPoint != end;)
         {
-          curCell = cells[curPoint.X, curPoint.Y];
+          int currFork = forkStack.Any() ? forkStack.Pop() : -1;
+          var curCell = cells[curPoint.X, curPoint.Y];
           pathPoints.Add(curPoint);
           curCell.IncludedInPath = true;
-
+          if (curPoint == new Point(8,7))
+          {
+            Console.WriteLine();
+          }
           if (curCell.ForkId.HasValue)
           {
+            if (!forkStack.Contains(curCell.ForkId.Value))
+            {
+              forkStack.Push(curCell.ForkId.Value);
+            }
             if (curCell.ForkId == currFork)
             {
-              curPoint = curPoint.X != 0 && cells[curPoint.X - 1, curPoint.Y].IsRoad && !cells[curPoint.X - 1, curPoint.Y].IncludedInPath
+              curPoint = curPoint.X != 0 && cells[curPoint.X - 1, curPoint.Y].IsRoad && !cells[curPoint.X - 1, curPoint.Y].IncludedInPath 
                 ? cells[curPoint.X - 1, curPoint.Y].Position
-                : curPoint.X != width - 1 && cells[curPoint.X + 1, curPoint.Y].IsRoad && !cells[curPoint.X + 1, curPoint.Y].IncludedInPath
+                : curPoint.X != width - 1 && cells[curPoint.X + 1, curPoint.Y].IsRoad && !cells[curPoint.X + 1, curPoint.Y].IncludedInPath 
                   ? cells[curPoint.X + 1, curPoint.Y].Position
-                  : curPoint.Y != 0 && cells[curPoint.X, curPoint.Y - 1].IsRoad && !cells[curPoint.X, curPoint.Y - 1].IncludedInPath
-                    ? cells[curPoint.X, curPoint.Y - 1].Position
+                  : curPoint.Y != 0 && cells[curPoint.X, curPoint.Y - 1].IsRoad && !cells[curPoint.X, curPoint.Y - 1].IncludedInPath 
+                    ? cells[curPoint.X, curPoint.Y - 1].Position 
                     : curPoint.Y != height - 1 && cells[curPoint.X, curPoint.Y + 1].IsRoad && !cells[curPoint.X, curPoint.Y + 1].IncludedInPath
                       ? cells[curPoint.X, curPoint.Y + 1].Position
                       : NullPoint;
             }
             else
             {
-              curPoint = curPoint.X != 0 && cells[curPoint.X - 1, curPoint.Y].IsRoad
+              curPoint = curPoint.X != 0 && cells[curPoint.X - 1, curPoint.Y].IsRoad && cells[curPoint.X - 1, curPoint.Y].Direction != Direction.Left
                 ? cells[curPoint.X - 1, curPoint.Y].Position
-                : curPoint.X != width - 1 && cells[curPoint.X + 1, curPoint.Y].IsRoad
+                : curPoint.X != width - 1 && cells[curPoint.X + 1, curPoint.Y].IsRoad && cells[curPoint.X - 1, curPoint.Y].Direction != Direction.Right
                   ? cells[curPoint.X + 1, curPoint.Y].Position
-                  : curPoint.Y != 0 && cells[curPoint.X, curPoint.Y - 1].IsRoad
+                  : curPoint.Y != 0 && cells[curPoint.X, curPoint.Y - 1].IsRoad && cells[curPoint.X - 1, curPoint.Y].Direction != Direction.Up
                     ? cells[curPoint.X, curPoint.Y - 1].Position
-                    : curPoint.Y != height - 1 && cells[curPoint.X, curPoint.Y + 1].IsRoad
+                    : curPoint.Y != height - 1 && cells[curPoint.X, curPoint.Y + 1].IsRoad && cells[curPoint.X - 1, curPoint.Y].Direction != Direction.Down
                       ? cells[curPoint.X, curPoint.Y + 1].Position
                       : NullPoint;
             }
@@ -349,6 +400,8 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       return path;
     }
 
+    //private static void Swap(Queue<>)
+
     private static void Show(FieldCellWrapper[,] map, int width, int height)
     {
       for (int i = 0; i < width; i++)
@@ -360,16 +413,55 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
             switch (map[i, j].Direction)
             {
               case Direction.Up:
-                Console.Write("u");
-                break;
-              case Direction.Down:
-                Console.Write("d");
-                break;
-              case Direction.Left:
                 Console.Write("l");
                 break;
-              case Direction.Right:
+              case Direction.Down:
                 Console.Write("r");
+                break;
+              case Direction.Left:
+                Console.Write("u");
+                break;
+              case Direction.Right:
+                Console.Write("d");
+                break;
+              case Direction.None:
+                Console.Write("n");
+                break;
+              case Direction.Fork:
+                Console.Write("f");
+                break;
+            }
+          }
+          else
+          {
+            Console.Write("0");
+          }
+        }
+        Console.WriteLine();
+      }
+    }
+
+    private static void Show2(FieldCellWrapper[,] map, int width, int height)
+    {
+      for (int i = 0; i < width; i++)
+      {
+        for (int j = 0; j < height; j++)
+        {
+          if (map[i, j].IsRoad)
+          {
+            switch (map[i, j].Direction)
+            {
+              case Direction.Up:
+                Console.Write("l");
+                break;
+              case Direction.Down:
+                Console.Write("r");
+                break;
+              case Direction.Left:
+                Console.Write("u");
+                break;
+              case Direction.Right:
+                Console.Write("d");
                 break;
               case Direction.None:
                 Console.Write("n");
