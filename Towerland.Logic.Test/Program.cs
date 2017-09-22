@@ -25,14 +25,14 @@ namespace Towerland.Logic.Test
     private static void Show(Field f)
     {
       Console.Clear();
-      for (int i = 0; i < f.Width; i++)
+      for (int i = 0; i < f.StaticData.Width; i++)
       {
-        for (int j = 0; j < f.Height; j++)
+        for (int j = 0; j < f.StaticData.Height; j++)
         {
           var unit = f.Units.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
           var tower = f.Towers.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
           if(unit == null)
-            Console.Write((int)f.Cells[i,j].Object);
+            Console.Write((int)f.StaticData.Cells[i,j].Object);
           else if (tower != null)
             Console.Write("T");
           else

@@ -44,6 +44,8 @@
     <Compile Include="GameActions\Action.cs" />
     <Compile Include="GameActions\ActionId.cs" />
     <Compile Include="GameActions\GameTick.cs" />
+    <Compile Include="GameField\FieldState.cs" />
+    <Compile Include="GameField\FieldStaticData.cs" />
     <Compile Include="GameObjects\Castle.cs" />
     <Compile Include="GameField\Field.cs" />
     <Compile Include="GameField\Fieldcell.cs" />

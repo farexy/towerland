@@ -1,10 +1,11 @@
 ﻿using System;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic
 {
-  public class FieldFactoryStub
+  public class FieldFactoryStub : IFieldFactory
   {
     private const int FieldRoadCoeff = 30;
     
@@ -69,12 +70,12 @@ namespace Towerland.GameServer.Common.Logic
 
         _classicField = new Field(cells)
         {
-          Castle = new Castle
+          StaticData.Castle = new Castle
           {
             Health = 100,
             Position = new Point(7, 9)
           },
-          Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3) }
+          StaticData.Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3) }
         };
 
         return _classicField;

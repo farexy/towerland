@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameServer.Common.Models.GameObjects;
+using Newtonsoft.Json;
 
 namespace GameServer.Common.Models.GameField
 {
   public class Field : ICloneable
   {
-    private Dictionary<int, GameObject> _objects;
+    [JsonProperty("sd")] public FieldStaticData StaticData { set; get; }
+    [JsonProperty("s")] public FieldState State;
+    
+    [JsonProperty("o")] private Dictionary<int, GameObject> _objects;
 
     protected Field()
     {
@@ -94,24 +98,11 @@ namespace GameServer.Common.Models.GameField
       get { return _objects[gameId]; }
     }
 
-    public FieldCell[,] Cells { private set; get; }
-    public Castle Castle { set; get; }
+   
 
     public List<Tower> Towers { private set; get; }
     public List<Unit> Units { private set; get; }
-
-    public Path[] Path { set; get; }
-
-    public int Width
-    {
-      get { return Cells.GetLength(1); }
-    }
-
-    public int Height
-    {
-      get { return Cells.GetLength(0); }
-    }
-
+    
     public Point Start { get; private set; }
     public Point Finish { get; private set; }
 
@@ -124,12 +115,8 @@ namespace GameServer.Common.Models.GameField
     {
       return new Field
       {
-        Cells = Cells,
-        Castle = new Castle
-        {
-          Health = Castle.Health,
-          Position = Castle.Position
-        },
+        StaticData = new FieldStaticData(StaticData.Cells,
+          new Castle {Health = StaticData.Castle.Health, Position = StaticData.Castle.Position}),
         _objects = _objects.ToDictionary(item => item.Key, item => item.Value),
         Towers = Towers.ToList(),
         Units = Units.ToList(),

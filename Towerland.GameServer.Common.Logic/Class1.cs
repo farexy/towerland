@@ -63,13 +63,13 @@ namespace Towerland.GameServer.Common.Logic
             continue;
           }
 
-          var path = field.Path[unit.PathId.Value];
+          var path = field.StaticData.Path[unit.PathId.Value];
           var stats = _statsLib.GetUnitStats(unit.Type);
 
           if (path.End == unit.Position)
           {
             actions.Add(new GameAction { ActionId = ActionId.UnitAttacksCastle, UnitId = unit.GameId, Damage = stats.Damage });
-            field.Castle.Health -= stats.Damage;
+            field.StaticData.Castle.Health -= stats.Damage;
             unitsToRemove.Add(unit.GameId);
           }
           else

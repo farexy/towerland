@@ -5,7 +5,7 @@ using GameServer.Common.Models.State;
 
 namespace Towerland.GameServer.Domain.Interfaces
 {
-  interface ILiveBattleService
+  public interface ILiveBattleService
   {
     bool CheckChanged(Guid battleId, int version);
     Field GetFieldState(Guid battleId);
