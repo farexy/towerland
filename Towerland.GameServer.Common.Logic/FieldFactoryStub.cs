@@ -70,6 +70,11 @@ namespace Towerland.GameServer.Common.Logic
 
         _classicField = new Field(cells)
         {
+          State =
+          {
+            MonsterMoney = 100,
+            TowerMoney = 100,
+          },
           StaticData =
           {
             Castle = new Castle

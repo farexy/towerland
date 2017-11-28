@@ -1,4 +1,5 @@
-﻿using GameServer.Common.Models.Effects;
+﻿using System.Collections.Generic;
+using GameServer.Common.Models.Effects;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
 
@@ -16,8 +17,20 @@ namespace Towerland.GameServer.Common.Logic
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
-        Cost = 50
-      }
+        Cost = 50,
+        Defence = UnitStats.DefenceType.LightArmor
+      },
+      new UnitStats
+      {
+        Type = GameObjectType.Unit_Orc,
+        Damage = 30,
+        Health = 100,
+        IsAir = false,
+        MovementPriority = UnitStats.MovementPriorityType.Random,
+        Speed = 3,
+        Cost = 120,
+        Defence = UnitStats.DefenceType.HeavyArmor
+      },
     };
 
     public TowerStats[] Towers =
@@ -28,7 +41,7 @@ namespace Towerland.GameServer.Common.Logic
         Attack = TowerStats.AttackType.Usual,
         AttackSpeed = 8,
         Damage = 10,
-        Range = 3,
+        Range = 2,
         Cost = 50
       },
       new TowerStats
@@ -37,9 +50,9 @@ namespace Towerland.GameServer.Common.Logic
         Attack = TowerStats.AttackType.Magic,
         AttackSpeed = 3,
         Damage = 4,
-        Range = 4,
+        Range = 3,
         Cost = 120,
-        SpecialEffects = new []{new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = 10}}
+        SpecialEffects = new []{new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = 16}}
       },
       new TowerStats
       {
@@ -47,7 +60,7 @@ namespace Towerland.GameServer.Common.Logic
         Attack = TowerStats.AttackType.Burst,
         AttackSpeed = 15,
         Damage = 20,
-        Range = 5,
+        Range = 4,
         Cost = 200
       },
       new TowerStats
@@ -63,9 +76,67 @@ namespace Towerland.GameServer.Common.Logic
         AttackSpeed = 6,
         Damage = 20,
         Range = 6,
-        Cost = 300,
+        Cost = 400,
         SpecialEffects = new []{new SpecialEffect{Effect = EffectId.Unit10xDamage_10PercentProbability}}
       }
+    };
+
+    public DefenceCoeff[] DefenceCoeffs =
+    {
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.Undefended,
+        Attack = TowerStats.AttackType.Usual,
+        Coeff = 0.9
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.Undefended,
+        Attack = TowerStats.AttackType.Burst,
+        Coeff = 1
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.Undefended,
+        Attack = TowerStats.AttackType.Magic,
+        Coeff = 0.8
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.LightArmor,
+        Attack = TowerStats.AttackType.Usual,
+        Coeff = 0.7
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.LightArmor,
+        Attack = TowerStats.AttackType.Burst,
+        Coeff = 0.9
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.LightArmor,
+        Attack = TowerStats.AttackType.Magic,
+        Coeff = 0.5
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.HeavyArmor,
+        Attack = TowerStats.AttackType.Usual,
+        Coeff = 0.7
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.HeavyArmor,
+        Attack = TowerStats.AttackType.Burst,
+        Coeff = 0.5
+      },
+      new DefenceCoeff
+      {
+        Defence = UnitStats.DefenceType.HeavyArmor,
+        Attack = TowerStats.AttackType.Magic,
+        Coeff = 0.2
+      },
     };
   }
 }

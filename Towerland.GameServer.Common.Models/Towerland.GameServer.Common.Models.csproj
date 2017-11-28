@@ -64,6 +64,7 @@
     <Compile Include="State\StateChangeCommand.cs" />
     <Compile Include="State\TowerCreationOption.cs" />
     <Compile Include="State\UnitCreationOption.cs" />
+    <Compile Include="Stats\DefenceCoeff.cs" />
     <Compile Include="Stats\IStats.cs" />
     <Compile Include="Stats\TowerStats.cs" />
     <Compile Include="Stats\UnitStats.cs" />

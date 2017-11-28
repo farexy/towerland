@@ -22,6 +22,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
       switch (action.ActionId)
       {
         case ActionId.UnitMoves:
+        case ActionId.UnitMovesFreezed:
           _field.MoveUnit(action.UnitId, action.Position, action.WaitTicks);
           break;
 

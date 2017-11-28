@@ -36,7 +36,6 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       throw new NotImplementedException();
     }
 
-
     private static IEnumerable<Path> GetPossiblePath(IEnumerable<Path> path, Point position)
     {
       return path.Where(p => p.PointOnThePathPosition(position) != -1);

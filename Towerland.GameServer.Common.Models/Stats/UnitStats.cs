@@ -14,12 +14,20 @@ namespace GameServer.Common.Models.Stats
     [JsonProperty("a")] public bool IsAir { set; get; }
     [JsonProperty("e")] public SpecialEffect[] SpecialEffects { set; get; }
     [JsonProperty("c")] public int Cost { set; get; }
+    [JsonProperty("f")] public DefenceType Defence { set; get; }
 
     public enum MovementPriorityType
     {
       Fastest,
       Optimal,
       Random,
+    }
+
+    public enum DefenceType
+    {
+      Undefended,
+      LightArmor,
+      HeavyArmor
     }
   }
 }

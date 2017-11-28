@@ -15,7 +15,6 @@ namespace Towerland.GameServer.Common.Logic
     {
       private readonly IStatsLibrary _statsLib;
       private readonly Field _field;
-      private static readonly Random Random = new Random();
 
       private readonly MoneyProvider _moneyProvider;
       
@@ -99,11 +98,18 @@ namespace Towerland.GameServer.Common.Logic
           }
           else
           {
+            var effectSpeedCoeff = unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
             var nextPoint = path.GetNext(unit.Position);
             unit.Position = nextPoint;
-            unit.WaitTicks = stats.Speed;
-            actions.Add(new GameAction { ActionId = ActionId.UnitMoves, Position = nextPoint, UnitId = unit.GameId, WaitTicks = stats.Speed });
-          }
+            unit.WaitTicks = stats.Speed * effectSpeedCoeff;
+            actions.Add(new GameAction
+            {
+              ActionId = ActionId.UnitMoves,
+              Position = nextPoint,
+              UnitId = unit.GameId,
+              WaitTicks = stats.Speed * effectSpeedCoeff
+            });
+          }        
         }
 
         _field.RemoveMany(unitsToRemove);
@@ -132,6 +138,9 @@ namespace Towerland.GameServer.Common.Logic
               var targetId = FindTarget(_field, tower, stats);
               if (targetId != NotFound)
               {
+                var unit = (Unit) _field[targetId];
+                var damage = CalculateDamage(_statsLib.GetUnitStats(unit.Type), stats);
+                
                 actions.Add(new GameAction
                 {
                   ActionId = ActionId.TowerAttacks,
@@ -143,12 +152,11 @@ namespace Towerland.GameServer.Common.Logic
                 {
                   ActionId = ActionId.UnitRecievesDamage,
                   UnitId = targetId,
-                  Damage = stats.Damage
+                  Damage = damage
                 });
 
-                var unit = (Unit) _field[targetId];
                 ApplyTowerEffects(stats, unit, actions);
-                unit.Health -= stats.Damage;
+                unit.Health -= damage;
                 if (unit.Health <= 0)
                 {
                   var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId};
@@ -181,7 +189,7 @@ namespace Towerland.GameServer.Common.Logic
               {
                 actions.Add(new GameAction
                 {
-                  ActionId = ActionId.TowerAttacks,
+                  ActionId = ActionId.TowerAttacksPosition,
                   TowerId = tower.GameId,
                   Position = targetPoint,
                   Damage = stats.Damage,
@@ -190,13 +198,18 @@ namespace Towerland.GameServer.Common.Logic
                 foreach (var unit in _field.FindUnitsAt(targetPoint))
                 {
                   ApplyTowerEffects(stats, unit, actions);
+                  var damage = CalculateDamage(_statsLib.GetUnitStats(unit.Type), stats);
+                  
+                  if(damage == 0)
+                    continue;
+                  
                   actions.Add(new GameAction
                   {
                     ActionId = ActionId.UnitRecievesDamage,
                     UnitId = unit.GameId,
-                    Damage = stats.Damage
+                    Damage = damage
                   });
-                  unit.Health -= stats.Damage;
+                  unit.Health -= damage;
                   if (unit.Health <= 0)
                   {
                     var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = unit.GameId, TowerId = tower.GameId};
@@ -230,7 +243,15 @@ namespace Towerland.GameServer.Common.Logic
       }
 
       #region Logic
+      
+      private int CalculateDamage(UnitStats unit, TowerStats tower)
+      {
+        if(tower.Attack == TowerStats.AttackType.Burst && unit.IsAir)
+          return 0;
 
+        return GameMath.Round(tower.Damage * _statsLib.GetDefenceCoeff(unit.Defence, tower.Attack));
+      }
+      
       private static void ApplyTowerEffects(TowerStats tower, Unit unit, List<GameAction> actions)
       {
         if (tower.SpecialEffects == null)
@@ -242,6 +263,7 @@ namespace Towerland.GameServer.Common.Logic
           switch (effect.Effect)
           {
               case EffectId.UnitFreezed:
+                unit.WaitTicks *= SpecialEffect.FreezedSlowCoeff;
                 unit.Effect = new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = effect.Duration};
                 actions.Add(new GameAction{ActionId = ActionId.UnitFreezes, UnitId = unit.GameId, WaitTicks = effect.Duration});
                 break;
@@ -286,7 +308,7 @@ namespace Towerland.GameServer.Common.Logic
             
           if (units.Any())
           {
-            return units[Random.Next(units.Count)].GameId;
+            return units[GameMath.Rand.Next(units.Count)].GameId;
           }
         }
 
@@ -339,7 +361,7 @@ namespace Towerland.GameServer.Common.Logic
           }
         }
       }
-      
+
       #endregion  
     }
 }

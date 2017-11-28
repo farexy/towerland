@@ -7,5 +7,6 @@ namespace Towerland.GameServer.Common.Logic.Interfaces
   {
     UnitStats GetUnitStats(GameObjectType type);
     TowerStats GetTowerStats(GameObjectType type);
+    double GetDefenceCoeff(UnitStats.DefenceType defType, TowerStats.AttackType attackType);
   }
 }

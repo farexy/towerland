@@ -17,6 +17,7 @@ namespace Towerland.GameServer.Common.Logic
     {
       return new Tower
       {
+        Type = type,
         Position = options.HasValue ? options.Value.Position : default(Point),
       };
     }

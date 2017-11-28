@@ -18,6 +18,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = type,
         PathId = options.HasValue ? options.Value.PathId : default(int?),
+        Health = _statsLib.GetUnitStats(type).Health
       };
     }
   }

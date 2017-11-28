@@ -18,6 +18,9 @@
 
     Unit = 1000,
     Unit_Skeleton = 1001,
+    Unit_Orc = 1002,
+    
+    Unit_Dragon = 1005,
 
 
     // ReSharper restore InconsistentNaming

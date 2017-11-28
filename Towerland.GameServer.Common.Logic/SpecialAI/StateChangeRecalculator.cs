@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GameServer.Common.Models.Exceptions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
@@ -11,7 +12,6 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
   {
     private readonly IPathOptimiser _pathOptimiser;
     private readonly IStatsLibrary _statsLib;
-    private readonly Random _random;
     private readonly IGameObjectFactory<Unit> _unitsFactory;
     private readonly IGameObjectFactory<Tower> _towersFactory;
 
@@ -19,7 +19,6 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     {
       _pathOptimiser = pathOptimiser;
       _statsLib = stats;
-      _random = new Random();
       _unitsFactory = unitFactory;
       _towersFactory = towerFactory;
     }
@@ -48,6 +47,10 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       {
         throw new LogicException("Not enough money");
       }
+      if (opt != null && field.StaticData.Cells[opt.Value.Position.X, opt.Value.Position.Y].Object != FieldObject.Ground)
+      {
+        throw new LogicException("Tower can't be placed on the path");
+      }
       
       var tower = _towersFactory.Create(type, opt);
       field.AddGameObject(tower);
@@ -66,7 +69,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       {
         unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.StaticData.Path, unit)
           : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.StaticData.Path, unit)
-            : _random.Next(field.StaticData.Path.Length);
+            : GameMath.Rand.Next(field.StaticData.Path.Length);
       }
     }
 

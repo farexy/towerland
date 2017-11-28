@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic.Interfaces;
@@ -27,6 +28,11 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
           && stats.GetTowerStats(obj.ResolveType()).Range >= GameMath.Distance(obj.Position, position))
         .Select(obj => obj.GameId)
         .ToArray();
+    }
+    
+    public static IEnumerable<Path> GetPossiblePath(this Field field, Point position)
+    {
+      return field.StaticData.Path.Where(p => p.PointOnThePathPosition(position) != -1);
     }
   }
 }
