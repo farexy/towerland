@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace GameServer.Common.Models.Stats
 {
-  public struct TowerStats
+  public struct TowerStats : IStats
   {
     [JsonProperty("t")] public GameObjectType Type { set; get; }
     [JsonProperty("d")] public int Damage { set; get; }
@@ -12,12 +12,12 @@ namespace GameServer.Common.Models.Stats
     [JsonProperty("s")] public int AttackSpeed { set; get; }
     [JsonProperty("a")] public AttackType Attack { set; get; }
     [JsonProperty("e")] public SpecialEffect[] SpecialEffects { set; get; }
+    [JsonProperty("c")] public int Cost { set; get; }
 
     public enum AttackType
     {
       Usual,
       Magic,
-      Freezing,
       Burst
     }
   }

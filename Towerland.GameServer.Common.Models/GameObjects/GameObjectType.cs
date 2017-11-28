@@ -11,7 +11,10 @@
 
     Tower = 100,
     Tower_Usual = 101,
-
+    Tower_Frost = 102,
+    Tower_Cannon = 103,
+    Tower_FortressWatchtower = 104,
+    Tower_Magic = 105,
 
     Unit = 1000,
     Unit_Skeleton = 1001,

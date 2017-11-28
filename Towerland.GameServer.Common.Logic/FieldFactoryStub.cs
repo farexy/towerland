@@ -70,14 +70,17 @@ namespace Towerland.GameServer.Common.Logic
 
         _classicField = new Field(cells)
         {
-          StaticData.Castle = new Castle
+          StaticData =
           {
-            Health = 100,
-            Position = new Point(7, 9)
-          },
-          StaticData.Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3) }
+            Castle = new Castle
+            {
+              Health = 100,
+              Position = new Point(7, 9)
+            },
+            Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3) }
+          }
         };
-
+        
         return _classicField;
       }
     }

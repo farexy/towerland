@@ -1,35 +1,34 @@
-﻿using GameServer.Common.Models.GameObjects;
+﻿using System.Collections.Generic;
+using System.Linq;
+using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.Logic.Test
 {
-  class StatsStub : IStatsLibrary
+  class StatsLibrary : IStatsLibrary
   {
+    private readonly Dictionary<GameObjectType, IStats> _objects;
+    
+    public StatsLibrary()
+    {
+      var factory = new StatsFactory();
+      _objects = factory.Towers
+        .Cast<IStats>()
+        .Union(factory.Units.Cast<IStats>())
+        .ToDictionary(el => el.Type, el => el);
+
+    }
+    
     public UnitStats GetUnitStats(GameObjectType type)
     {
-      return new UnitStats
-      {
-        UnitType = type,
-        Damage = 20,
-        Health = 100,
-        IsAir = false,
-        MovementPriority = UnitStats.MovementPriorityType.Random,
-        Speed = 4
-      };
+      return (UnitStats) _objects[type];
     }
 
     public TowerStats GetTowerStats(GameObjectType type)
     {
-      return new TowerStats
-      {
-        Type = type,
-        Attack = TowerStats.AttackType.Usual,
-        AttackSpeed = 8,
-        Damage = 10,
-        Range = 5,
-      };
+      return (TowerStats) _objects[type];
     }
   }
 }

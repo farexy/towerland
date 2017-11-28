@@ -8,9 +8,19 @@ namespace GameServer.Common.Models.GameField
 {
   public class Field : ICloneable
   {
-    [JsonProperty("sd")] public FieldStaticData StaticData { set; get; }
-    [JsonProperty("s")] public FieldState State;
-    
+    [JsonProperty("sd")] public FieldStaticData StaticData { private set; get; }
+
+    private FieldState _state;
+    [JsonProperty("s")]
+    public FieldState State
+    {
+      get
+      {
+        _state.Objects = _objects;
+        return _state;
+      }
+    }
+
     [JsonProperty("o")] private Dictionary<int, GameObject> _objects;
 
     protected Field()
@@ -20,11 +30,11 @@ namespace GameServer.Common.Models.GameField
     public Field(FieldCell[,] cells)
     {
       _objects = new Dictionary<int, GameObject>();
-      Cells = cells;
-      Start = cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Entrance).Position;
-      Finish = cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Castle).Position;
-      Units = new List<Unit>();
-      Towers = new List<Tower>();
+      StaticData = new FieldStaticData(cells, 
+        cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Entrance).Position,
+        cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Castle).Position
+        );
+      _state = new FieldState();
     }
 
     public int AddGameObject(GameObject gameObj)
@@ -33,19 +43,19 @@ namespace GameServer.Common.Models.GameField
       var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
       gameObj.GameId = id;
 
-      if (GameObjectType.Castle == type)
+      switch (type)
       {
-        if(Castle != null)
-          throw new ArgumentException("There can be only one castle");
-        Castle = (Castle) gameObj;
-      }
-      if (type == GameObjectType.Unit)
-      {
-        Units.Add((Unit)gameObj);
-      }
-      if (type == GameObjectType.Tower)
-      {
-        Towers.Add((Tower)gameObj);
+        case GameObjectType.Castle:
+          if(StaticData.Castle != null)
+            throw new ArgumentException("There can be only one castle");
+          StaticData.Castle = (Castle) gameObj;
+          break;
+        case GameObjectType.Unit:
+          State.Units.Add((Unit)gameObj);
+          break;
+        case GameObjectType.Tower:
+          State.Towers.Add((Tower)gameObj);
+          break;
       }
 
       _objects.Add(id, gameObj);
@@ -75,11 +85,11 @@ namespace GameServer.Common.Models.GameField
       }
       if (type == GameObjectType.Unit)
       {
-        Units.Remove((Unit)gameObj);
+        State.Units.Remove((Unit)gameObj);
       }
       if (type == GameObjectType.Tower)
       {
-        Towers.Remove((Tower)gameObj);
+        State.Towers.Remove((Tower)gameObj);
       }
 
       _objects.Remove(gameId);
@@ -98,29 +108,36 @@ namespace GameServer.Common.Models.GameField
       get { return _objects[gameId]; }
     }
 
-   
-
-    public List<Tower> Towers { private set; get; }
-    public List<Unit> Units { private set; get; }
-    
-    public Point Start { get; private set; }
-    public Point Finish { get; private set; }
-
     public IEnumerable<GameObject> FindGameObjects(Predicate<GameObject> predicate)
     {
       return _objects.Values.Where(obj => predicate(obj));
     }
 
+    public void SetState(FieldState state)
+    {
+      this._objects = state.Objects.ToDictionary(item => item.Key, item => item.Value);
+      this._state = new FieldState(State.Towers, State.Units)
+      {
+        MonsterMoney = State.MonsterMoney,
+        TowerMoney = State.TowerMoney
+      };
+    }
+    
     public object Clone()
     {
       return new Field
       {
-        StaticData = new FieldStaticData(StaticData.Cells,
-          new Castle {Health = StaticData.Castle.Health, Position = StaticData.Castle.Position}),
+        StaticData = new FieldStaticData(StaticData.Cells, StaticData.Start, StaticData.Finish)
+        {
+          Castle = new Castle {Health = StaticData.Castle.Health, Position = StaticData.Castle.Position},
+          Path = StaticData.Path
+        },
         _objects = _objects.ToDictionary(item => item.Key, item => item.Value),
-        Towers = Towers.ToList(),
-        Units = Units.ToList(),
-        Path = Path
+        _state = new FieldState(State.Towers, State.Units)
+        {
+          MonsterMoney = State.MonsterMoney,
+          TowerMoney = State.TowerMoney
+        },
       };
     }
   }

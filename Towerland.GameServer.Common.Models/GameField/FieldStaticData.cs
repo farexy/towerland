@@ -4,16 +4,20 @@ using Newtonsoft.Json;
 namespace GameServer.Common.Models.GameField
 {
   public class FieldStaticData
-  {
-    public FieldStaticData(FieldCell[,] cells, Castle castle)
+  {    
+    public FieldStaticData(FieldCell[,] cells, Point start, Point finish)
     {
+      Start = start;
+      Finish = finish;
       Cells = cells;
-      Castle = castle;
     }
     
-    [JsonProperty("p")] public Path[] Path { private set; get; }
+    [JsonProperty("p")] public Path[] Path { set; get; }
     [JsonProperty("m")] public FieldCell[,] Cells { private set; get; }
-    [JsonProperty("c")] public Castle Castle { private set; get; }
+    [JsonProperty("c")] public Castle Castle { set; get; }
+    
+    public Point Start { get; private set; }
+    public Point Finish { get; private set; }
     
     public int Width
     {
@@ -26,4 +30,4 @@ namespace GameServer.Common.Models.GameField
     }
 
   }
-}
+} 

@@ -52,10 +52,12 @@
     <Compile Include="Interfaces\IActionResolver.cs" />
     <Compile Include="GameMath.cs" />
     <Compile Include="Interfaces\IStatsLibrary.cs" />
+    <Compile Include="SpecialAI\MoneyProvider.cs" />
     <Compile Include="SpecialAI\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecialAI\PathOptimisation.cs" />
     <Compile Include="SpecialAI\StateChangeRecalculator.cs" />
+    <Compile Include="StatsFactory.cs" />
     <Compile Include="TowerFactory.cs" />
     <Compile Include="UnitFactory.cs" />
   </ItemGroup>

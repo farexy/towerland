@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Effects\EffectId.cs" />
     <Compile Include="Effects\SpecialEffect.cs" />
+    <Compile Include="Exceptions\LogicException.cs" />
     <Compile Include="GameActions\Action.cs" />
     <Compile Include="GameActions\ActionId.cs" />
     <Compile Include="GameActions\GameTick.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="State\StateChangeCommand.cs" />
     <Compile Include="State\TowerCreationOption.cs" />
     <Compile Include="State\UnitCreationOption.cs" />
+    <Compile Include="Stats\IStats.cs" />
     <Compile Include="Stats\TowerStats.cs" />
     <Compile Include="Stats\UnitStats.cs" />
   </ItemGroup>

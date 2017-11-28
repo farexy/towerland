@@ -4,7 +4,7 @@ namespace GameServer.Common.Models.GameObjects
 {
   public class Castle : GameObject
   {
-    public Castle()
+    public Castle() : base()
     {
       Type = GameObjectType.Castle;
     }

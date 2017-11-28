@@ -1,4 +1,5 @@
 ﻿using System;
+using GameServer.Common.Models.Exceptions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
@@ -25,30 +26,47 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
     public void AddNewUnit(Field field, GameObjectType type, CreationOptions? opt = null)
     {
+      var cost = _statsLib.GetUnitStats(type).Cost;
+      if (field.State.MonsterMoney < cost)
+      {
+        throw new LogicException("Not enough money");
+      }
+      
       var unit = _unitsFactory.Create(type, opt);
+      unit.Position = field.StaticData.Start;
+
       field.AddGameObject(unit);
       RecalcUnitPath(field, unit);
-      unit.Position = field.Start;
+
+      field.State.MonsterMoney -= cost;
     }
 
     public void AddNewTower(Field field, GameObjectType type, CreationOptions? opt = null)
     {
+      var cost = _statsLib.GetTowerStats(type).Cost;
+      if (field.State.TowerMoney < cost)
+      {
+        throw new LogicException("Not enough money");
+      }
+      
       var tower = _towersFactory.Create(type, opt);
       field.AddGameObject(tower);
-      foreach (Unit u in field.Units)
+      foreach (Unit u in field.State.Units)
       {
         RecalcUnitPath(field, u);
       }
+
+      field.State.TowerMoney -= cost;
     }
 
-    private  void RecalcUnitPath(Field field, Unit unit)
-    {
+    private void RecalcUnitPath(Field field, Unit unit)
+    {      
       var stats = _statsLib.GetUnitStats(unit.Type);
       if (!unit.PathId.HasValue || stats.MovementPriority != UnitStats.MovementPriorityType.Random)
       {
-        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.Path, unit)
-          : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.Path, unit)
-            : _random.Next(field.Path.Length);
+        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.StaticData.Path, unit)
+          : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.StaticData.Path, unit)
+            : _random.Next(field.StaticData.Path.Length);
       }
     }
 

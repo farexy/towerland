@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-
-namespace GameServer.Common.Models.GameObjects
+﻿namespace GameServer.Common.Models.GameObjects
 {
   public class Tower : GameObject
   {
-    public Tower()
+    public Tower() : base()
     {
       Type = GameObjectType.Tower;
     }

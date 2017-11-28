@@ -11,5 +11,6 @@ namespace GameServer.Common.Models.GameActions
     [JsonProperty("p")] public Point Position;
     [JsonProperty("d")] public int Damage;
     [JsonProperty("w")] public int WaitTicks;
+    [JsonProperty("m")] public int Money;
   }
 }

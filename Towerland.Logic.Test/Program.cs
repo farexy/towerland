@@ -29,8 +29,10 @@ namespace Towerland.Logic.Test
       {
         for (int j = 0; j < f.StaticData.Height; j++)
         {
-          var unit = f.Units.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
-          var tower = f.Towers.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
+          var pos = f.State.Units.FirstOrDefault()?.Position;
+          var pos21 = f.State.Towers.FirstOrDefault()?.Position;
+          var unit = f.State.Units.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
+          var tower = f.State.Towers.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
           if(unit == null)
             Console.Write((int)f.StaticData.Cells[i,j].Object);
           else if (tower != null)
@@ -40,20 +42,22 @@ namespace Towerland.Logic.Test
         }
         Console.WriteLine();
       }
+
+      Console.WriteLine("monst : " + f.State.MonsterMoney);
+      Console.WriteLine("tower : " + f.State.TowerMoney);
     }
 
     static void Main(string[] args)
     {
       var f = new FieldFactoryStub().ClassicField;
 
-      var pf = new PathFinder();
-      foreach (var p in pf.ResolvePath(f.Cells, f.Start, f.Finish))
-      {
-        Console.WriteLine(p);
-      }
+//      var pf = new PathFinder();
+//      foreach (var p in pf.ResolvePath(f.StaticData.Cells, f.StaticData.Start, f.StaticData.Finish))
+//      {
+//        Console.WriteLine(p);
+//      }
 
-      var statsStub = new StatsStub();
-      var calc = new StateCalculator(statsStub);
+      var statsStub = new StatsLibrary();
       var uFactory = new UnitFactory(statsStub);
       var tFactory = new TowerFactory(statsStub);
       var pathOpt = new PathOptimisation(statsStub);
@@ -61,14 +65,17 @@ namespace Towerland.Logic.Test
 
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(5, 5)});
-      var ticks = calc.CalculateActionsByTicks(f);
+      
+      var calc = new StateCalculator(statsStub, f);
+
+      var ticks = calc.CalculateActionsByTicks();
       var resolver = new FieldStateActionResolver(f);
       foreach (var actions in ticks)
       {
         foreach (var action in actions.Actions)
         {
           resolver.Resolve(action);
-          Show(f);
+          Show(calc.Field);
           Thread.Sleep(700);
 
         }
@@ -78,14 +85,17 @@ namespace Towerland.Logic.Test
         }
       }
 
+      f.SetState(calc.Field.State);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      ticks = calc.CalculateActionsByTicks(f);
+      
+      calc.SetState(f.State);
+      ticks = calc.CalculateActionsByTicks();
       foreach (var actions in ticks)
       {
         foreach (var action in actions.Actions)
         {
           resolver.Resolve(action);
-          Show(f);
+          Show(calc.Field);
           Thread.Sleep(700);
         }
       }

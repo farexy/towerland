@@ -4,7 +4,7 @@ namespace GameServer.Common.Models.GameObjects
 {
   public class Unit : GameObject
   {
-    public Unit()
+    public Unit() : base()
     {
       Type = GameObjectType.Unit;
     }

@@ -26,8 +26,8 @@ namespace GameServer.Api.Controllers
       return _liveBattleService.CheckChanged(battle, v);
     }
     
-    [HttpGet]
-    [Route("state")]
+    //[HttpGet]
+    //[Route("state")]
     //public Fie
   }
 }

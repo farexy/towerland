@@ -54,12 +54,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return id;
     }
 
-    public async Task RecalculateAsync(StateChangeCommand command)
+    public async Task RecalculateAsync(StateChangeCommand command, FieldState fieldState)
     {
       await Task.Run(() =>
       {
-        var fieldState = _repository.Get(command.BattleId);
-        var field = fieldState.SerializedState.FromJsonString<Field>();
+        var fieldSerialized = _repository.Get(command.BattleId);
+        var field = fieldSerialized.SerializedState.FromJsonString<Field>();
+        
+        field.SetState(fieldState);
+        
         if (command.Id.HasFlag(CommandId.AddUnit))
         {
           foreach (var opt in command.UnitCreationOptions)
@@ -75,8 +78,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
           }
         }
         IncrementBattleVersion(command.BattleId);
-        fieldState.SerializedState = field.ToJsonString();
-        _repository.Update(fieldState);
+        
+        fieldSerialized.SerializedState = field.ToJsonString();
+        _repository.Update(fieldSerialized);
         _repository.SaveStateAsync();
       });
     }

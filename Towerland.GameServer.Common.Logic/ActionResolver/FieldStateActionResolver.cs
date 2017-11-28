@@ -1,4 +1,5 @@
-﻿using GameServer.Common.Models.GameActions;
+﻿using GameServer.Common.Models.Effects;
+using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic.SpecialAI;
@@ -33,8 +34,16 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           ((Unit)_field[action.UnitId]).Health -= action.Damage;
           break;
 
+        case ActionId.UnitFreezes:
+          _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Effect = EffectId.UnitFreezed};
+          break;
+          
         case ActionId.UnitDies:
           _field.RemoveGameObject(action.UnitId);
+          break;
+          
+        case ActionId.UnitEffectCanseled:
+          _field[action.UnitId].Effect = SpecialEffect.Empty;
           break;
       }
     }
@@ -47,13 +56,20 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
         case ActionId.TowerAttacksPosition:
           _field[action.TowerId].WaitTicks = action.WaitTicks;
           break;
-
       }
     }
 
     protected override void ResolveOtherAction(GameAction action)
     {
-      throw new System.NotImplementedException();
+      switch (action.ActionId)
+      {
+        case ActionId.MonsterPlayerRecievesMoney:
+          _field.State.MonsterMoney += action.Money;
+          break;
+        case ActionId.TowerPlayerRecievesMoney:
+          _field.State.TowerMoney += action.Money;
+          break;
+      }
     }
   }
 }

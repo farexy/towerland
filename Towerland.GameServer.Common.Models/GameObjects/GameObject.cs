@@ -9,8 +9,13 @@ namespace GameServer.Common.Models.GameObjects
     [JsonProperty("i")] public int GameId { set; get; }
     [JsonProperty("p")] public Point Position { get; set; }
     [JsonProperty("w")] public int WaitTicks { set; get; }
-    [JsonProperty("e")] public SpecialEffect[] Effects { set; get; }
+    [JsonProperty("e")] public SpecialEffect Effect { set; get; }
     [JsonProperty("t")] public GameObjectType Type { set; get; }
+
+    protected GameObject()
+    {
+      Effect = SpecialEffect.Empty;
+    }
 
     public GameObjectType ResolveType()
     {

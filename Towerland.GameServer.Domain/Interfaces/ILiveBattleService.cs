@@ -9,6 +9,6 @@ namespace Towerland.GameServer.Domain.Interfaces
   {
     bool CheckChanged(Guid battleId, int version);
     Field GetFieldState(Guid battleId);
-    Task RecalculateAsync(StateChangeCommand command);
+    Task RecalculateAsync(StateChangeCommand command, FieldState fieldState);
   }
 }
