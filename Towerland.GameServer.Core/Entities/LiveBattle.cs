@@ -7,5 +7,6 @@ namespace Towerland.GameServer.Core.Entities
   {
     public Guid Id { set; get; }
     public string SerializedState { set; get; }
+    public string SerializedActions { set; get; }
   }
 }

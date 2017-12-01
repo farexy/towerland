@@ -1,31 +1,35 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.State;
-using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
-using Towerland.GameServer.Domain.Helpers;
 using Towerland.GameServer.Domain.Interfaces;
+using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Infrastructure
 {
-  public class LiveBattleService : ILiveBattleService, IBattleProvider
+  public class LiveBattleService : ILiveBattleService, IBattleService
   {
     private readonly ConcurrentDictionary<Guid, int> _battles;
 
-    private readonly ICrudRepository<LiveBattle> _repository;
+    private readonly ICrudRepository<Battle> _battleRepository;
+    private readonly IProvider<LiveBattleModel> _provider;
     private readonly IStateChangeRecalculator _recalculator;
     private readonly IFieldFactory _fieldFactory;
     private readonly IMapper _mapper;
 
-    public LiveBattleService(ICrudRepository<LiveBattle> repo, IStateChangeRecalculator recalc, IFieldFactory fieldFactory, IMapper mapper)
+    public LiveBattleService(ICrudRepository<Battle> repo, IProvider<LiveBattleModel> provider, IStateChangeRecalculator recalc, IFieldFactory fieldFactory, IMapper mapper)
     {
-      _repository = repo;
+      _battleRepository = repo;
+      _provider = provider;
       _recalculator = recalc;
       _battles = new ConcurrentDictionary<Guid, int>();
       _fieldFactory = fieldFactory;
@@ -43,7 +47,12 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public Field GetFieldState(Guid battleId)
     {
-      return _repository.Get(battleId).SerializedState.FromJsonString<Field>();
+      return _provider.Get(battleId).State;
+    }
+
+    public IEnumerable<IEnumerable<GameAction>> GetCalculatedActionsByTicks(Guid battleId)
+    {
+      return _provider.Get(battleId).Actions;
     }
 
     public Guid InitNewBattle()
@@ -58,8 +67,8 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       await Task.Run(() =>
       {
-        var fieldSerialized = _repository.Get(command.BattleId);
-        var field = fieldSerialized.SerializedState.FromJsonString<Field>();
+        var fieldSerialized = _provider.Get(command.BattleId);
+        var field = fieldSerialized.State;
         
         field.SetState(fieldState);
         
@@ -77,37 +86,38 @@ namespace Towerland.GameServer.Domain.Infrastructure
             _recalculator.AddNewTower(field, opt.Type, _mapper.Map<CreationOptions>(opt));
           }
         }
-        IncrementBattleVersion(command.BattleId);
+        IncrementBattleVersionAsync(command.BattleId);
         
-        fieldSerialized.SerializedState = field.ToJsonString();
-        _repository.Update(fieldSerialized);
-        _repository.SaveStateAsync();
+        fieldSerialized.State = field;
+        _provider.Update(fieldSerialized.Id, fieldSerialized);
       });
     }
 
 
-    private bool IncrementBattleVersion(Guid battleId)
+    private async Task<bool> IncrementBattleVersionAsync(Guid battleId)
     {
-      int curValue;
-      while(_battles.TryGetValue(battleId, out curValue))
+      return await Task.Run(() =>
       {
-        if(_battles.TryUpdate(battleId, curValue + 1, curValue))
-          return true;
-      }
-      return false;
+        while (_battles.TryGetValue(battleId, out var curValue))
+        {
+          if (_battles.TryUpdate(battleId, curValue + 1, curValue))
+            return true;
+        }
+        return false;
+      });
     }
 
     private async void CreateBattleAsync(Guid battleId)
     {
       await Task.Run(() =>
       {
-        var newBattle = new LiveBattle
+        var newBattle = new LiveBattleModel
         {
           Id = battleId,
-          SerializedState = _fieldFactory.ClassicField.ToJsonString()
+          State = _fieldFactory.ClassicField,
+          Actions = new []{Enumerable.Empty<GameAction>()}
         };
-        _repository.Create(newBattle);
-        _repository.SaveStateAsync();
+        _provider.Add(newBattle);
       });
     }
   }

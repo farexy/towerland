@@ -24,6 +24,21 @@ namespace Towerland.GameServer.Core.DataAccess
       return _db.Set<T>().Find(id);
     }
 
+    public Guid Add(T obj)
+    {
+      return Create((IGuidEntity) obj);
+    }
+
+    public void Update(Guid id, T obj)
+    {
+      Update(id, (IGuidEntity) obj);
+    }
+
+    void IProvider<T>.Delete(Guid id)
+    {
+      Delete(id);
+    }
+
     public T Get(object[] ids)
     {
       return _db.Set<T>().Find(ids);

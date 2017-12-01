@@ -10,9 +10,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
   {
     private readonly ConcurrentQueue<string> _sessionQueue;
     private readonly ConcurrentDictionary<string, Guid> _sessionBattles;
-    private readonly IBattleProvider _battleProvider;
+    private readonly IBattleService _battleProvider;
 
-    public BattleSearchService(IBattleProvider battleProvider)
+    public BattleSearchService(IBattleService battleProvider)
     {
       _sessionQueue = new ConcurrentQueue<string>();
       _sessionBattles = new ConcurrentDictionary<string, Guid>();
@@ -25,8 +25,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
         {
           if (_sessionQueue.Any())
           {
-            string enemySession;
-            if (_sessionQueue.TryDequeue(out enemySession))
+            if (_sessionQueue.TryDequeue(out var enemySession))
             {
               var battleId = _battleProvider.InitNewBattle();
               _sessionBattles.TryAdd(sessionId, battleId);

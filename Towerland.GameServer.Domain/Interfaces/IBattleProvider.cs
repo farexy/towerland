@@ -2,7 +2,7 @@
 
 namespace Towerland.GameServer.Domain.Interfaces
 {
-  public interface IBattleProvider
+  public interface IBattleService
   {
     Guid InitNewBattle();
   }

@@ -111,6 +111,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActionsResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +124,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Towerland.GameServer.Common.Models\Towerland.GameServer.Common.Models.csproj">
+      <Project>{5150D21C-932F-4CCC-84E6-10C3398FAF8B}</Project>
+      <Name>Towerland.GameServer.Common.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Towerland.GameServer.Domain\Towerland.GameServer.Domain.csproj">
       <Project>{688431BA-2E21-47A0-865A-3B4AA01FC714}</Project>
       <Name>Towerland.GameServer.Domain</Name>

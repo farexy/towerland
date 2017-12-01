@@ -24,3 +24,15 @@ D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\System
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\obj\Debug\Towerland.GameServer.Api.csprojResolveAssemblyReference.cache
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\obj\Debug\GameServer.Api.dll
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\obj\Debug\GameServer.Api.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Domain.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\GameServer.Common.Models.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Core.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Common.Logic.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\EntityFramework.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Domain.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\GameServer.Common.Models.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Core.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Core.dll.config
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Common.Logic.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\EntityFramework.xml
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\obj\Debug\Towerland.GameServer.Api.csproj.CoreCompileInputs.cache

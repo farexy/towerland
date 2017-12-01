@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.State;
 
@@ -9,6 +11,7 @@ namespace Towerland.GameServer.Domain.Interfaces
   {
     bool CheckChanged(Guid battleId, int version);
     Field GetFieldState(Guid battleId);
+    IEnumerable<IEnumerable<GameAction>> GetCalculatedActionsByTicks(Guid battleId);
     Task RecalculateAsync(StateChangeCommand command, FieldState fieldState);
   }
 }

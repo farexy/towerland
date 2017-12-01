@@ -51,6 +51,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="DataAccess\BaseCrudRepository.cs" />
     <Compile Include="DataAccess\ICrudRepository.cs" />
+    <Compile Include="DataAccess\IProvider.cs" />
+    <Compile Include="Entities\Battle.cs" />
     <Compile Include="Interfaces\IIdentityEntity.cs" />
     <Compile Include="Entities\DataEntity.cs" />
     <Compile Include="Entities\LiveBattle.cs" />
