@@ -72,16 +72,16 @@ namespace Towerland.GameServer.Common.Logic
         {
           State =
           {
-            MonsterMoney = 100,
-            TowerMoney = 100,
-          },
-          StaticData =
-          {
             Castle = new Castle
             {
               Health = 100,
               Position = new Point(7, 9)
             },
+            MonsterMoney = 100,
+            TowerMoney = 100,
+          },
+          StaticData =
+          {
             Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3) }
           }
         };

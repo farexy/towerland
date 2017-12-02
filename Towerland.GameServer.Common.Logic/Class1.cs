@@ -42,7 +42,7 @@ namespace Towerland.GameServer.Common.Logic
       public GameTick[] CalculateActionsByTicks()
       {
         var ticks = new List<List<GameAction>>(100);
-        while (_field.StaticData.Castle.Health > 0
+        while (_field.State.Castle.Health > 0
           && _field.State.Units.Any())
         {
           var actions = new List<GameAction>();
@@ -93,7 +93,7 @@ namespace Towerland.GameServer.Common.Logic
           if (path.End == unit.Position)
           {
             actions.Add(new GameAction { ActionId = ActionId.UnitAttacksCastle, UnitId = unit.GameId, Damage = stats.Damage });
-            _field.StaticData.Castle.Health -= stats.Damage;
+            _field.State.Castle.Health -= stats.Damage;
             unitsToRemove.Add(unit.GameId);
           }
           else

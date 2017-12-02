@@ -1,4 +1,4 @@
-﻿using GameServer.Common.Models.GameObjects;
+﻿using System;
 using Newtonsoft.Json;
 
 namespace GameServer.Common.Models.GameField
@@ -14,7 +14,6 @@ namespace GameServer.Common.Models.GameField
     
     [JsonProperty("p")] public Path[] Path { set; get; }
     [JsonProperty("m")] public FieldCell[,] Cells { private set; get; }
-    [JsonProperty("c")] public Castle Castle { set; get; }
     
     public Point Start { get; private set; }
     public Point Finish { get; private set; }
@@ -29,5 +28,6 @@ namespace GameServer.Common.Models.GameField
       get { return Cells.GetLength(0); }
     }
 
+    public DateTime EndTimeUtc { get; set; }
   }
 } 
