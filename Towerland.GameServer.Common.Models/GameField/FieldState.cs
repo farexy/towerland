@@ -21,8 +21,9 @@ namespace GameServer.Common.Models.GameField
     public Dictionary<int, GameObject> Objects { set; get; }
     public List<Tower> Towers { private set; get; }
     public List<Unit> Units { private set; get; }
-    
-    public int MonsterMoney { set; get; }
+    public Castle Castle { set; get; }
+
+        public int MonsterMoney { set; get; }
     public int TowerMoney { set; get; }
   }
 }

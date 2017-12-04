@@ -28,7 +28,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
 
         case ActionId.UnitAttacksCastle:
           _field.RemoveGameObject(action.UnitId);
-          _field.StaticData.Castle.Health -= action.Damage;
+          _field.State.Castle.Health -= action.Damage;
           break;
 
         case ActionId.UnitRecievesDamage:
