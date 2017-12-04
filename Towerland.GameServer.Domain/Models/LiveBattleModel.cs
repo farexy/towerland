@@ -9,6 +9,6 @@ namespace Towerland.GameServer.Domain.Models
   {
     public Guid Id { set; get; }
     public Field State { set; get; }
-    public IEnumerable<IEnumerable<GameAction>> Actions { set; get; }
+    public IEnumerable<GameTick> Ticks { set; get; }
   }
 }

@@ -5,7 +5,7 @@ namespace Towerland.GameServer.Domain.Interfaces
 {
   public interface IBattleSearchService
   {
-    Task AddToQueueAsync(string sessionId);
-    bool TryGetBattle(string sessionId, out Guid battleId);
+    Task AddToQueueAsync(Guid sessionId);
+    bool TryGetBattle(Guid sessionId, out Guid battleId);
   }
 }

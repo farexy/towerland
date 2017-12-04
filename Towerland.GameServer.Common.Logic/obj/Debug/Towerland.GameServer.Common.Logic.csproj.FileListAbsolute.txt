@@ -7,3 +7,4 @@ D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\b
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.csprojResolveAssemblyReference.cache
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.dll
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Logic\obj\Debug\Towerland.GameServer.Common.Logic.csproj.CoreCompileInputs.cache

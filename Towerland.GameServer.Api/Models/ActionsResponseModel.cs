@@ -5,6 +5,6 @@ namespace GameServer.Api.Models
 {
   public class ActionsResponseModel
   {
-    public IEnumerable<IEnumerable<GameAction>> ActionsByTicks { get; set; }
+    public IEnumerable<GameTick> ActionsByTicks { get; set; }
   }
 }

@@ -10,3 +10,4 @@ D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Newt
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.csprojResolveAssemblyReference.cache
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.exe
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.pdb
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.csproj.CoreCompileInputs.cache

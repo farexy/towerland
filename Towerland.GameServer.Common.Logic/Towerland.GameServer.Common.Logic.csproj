@@ -58,6 +58,7 @@
     <Compile Include="SpecialAI\PathOptimisation.cs" />
     <Compile Include="SpecialAI\StateChangeRecalculator.cs" />
     <Compile Include="StatsFactory.cs" />
+    <Compile Include="StatsLibrary.cs" />
     <Compile Include="TowerFactory.cs" />
     <Compile Include="UnitFactory.cs" />
   </ItemGroup>

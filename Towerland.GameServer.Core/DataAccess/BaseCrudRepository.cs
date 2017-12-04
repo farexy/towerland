@@ -5,7 +5,7 @@ using Towerland.GameServer.Core.Interfaces;
 
 namespace Towerland.GameServer.Core.DataAccess
 {
-  class CrudRepository<T> : ICrudRepository<T> where T : DataEntity
+  public class CrudRepository<T> : ICrudRepository<T> where T : DataEntity
   {
     protected readonly DbContext _db;
 

@@ -2,12 +2,11 @@
 using System.Linq;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
-using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.Interfaces;
 
-namespace Towerland.Logic.Test
+namespace Towerland.GameServer.Common.Logic
 {
-  class StatsLibrary : IStatsLibrary
+  public class StatsLibrary : IStatsLibrary
   {
     private readonly Dictionary<GameObjectType, IStats> _objects;
     private readonly IEnumerable<DefenceCoeff> _deffCoeffs;

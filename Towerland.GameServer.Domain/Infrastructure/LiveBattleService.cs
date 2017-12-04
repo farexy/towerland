@@ -2,12 +2,14 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Logic.ActionResolver;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
@@ -26,7 +28,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
     private readonly IFieldFactory _fieldFactory;
     private readonly IMapper _mapper;
 
-    public LiveBattleService(ICrudRepository<Battle> repo, IProvider<LiveBattleModel> provider, IStateChangeRecalculator recalc, IFieldFactory fieldFactory, IMapper mapper)
+    public LiveBattleService(ICrudRepository<Battle> repo,
+      IProvider<LiveBattleModel> provider, 
+      IStateChangeRecalculator recalc, 
+      IFieldFactory fieldFactory, 
+      IMapper mapper)
     {
       _battleRepository = repo;
       _provider = provider;
@@ -50,9 +56,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _provider.Get(battleId).State;
     }
 
-    public IEnumerable<IEnumerable<GameAction>> GetCalculatedActionsByTicks(Guid battleId)
+    public IEnumerable<GameTick> GetCalculatedActionsByTicks(Guid battleId)
     {
-      return _provider.Get(battleId).Actions;
+      return _provider.Get(battleId).Ticks;
     }
 
     public Guid InitNewBattle()
@@ -63,32 +69,33 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return id;
     }
 
-    public async Task RecalculateAsync(StateChangeCommand command, FieldState fieldState)
+    public async Task RecalculateAsync(StateChangeCommand command, int curTick)
     {
       await Task.Run(() =>
       {
         var fieldSerialized = _provider.Get(command.BattleId);
-        var field = fieldSerialized.State;
+        var fieldState = fieldSerialized.State;
+        var ticks = fieldSerialized.Ticks.Take(curTick);
         
-        field.SetState(fieldState);
-        
+        ResolveActions(fieldState, ticks);
+    
         if (command.Id.HasFlag(CommandId.AddUnit))
         {
           foreach (var opt in command.UnitCreationOptions)
           {
-            _recalculator.AddNewUnit(field, opt.Type, _mapper.Map<CreationOptions>(opt));
+            _recalculator.AddNewUnit(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
           }
         }
         if (command.Id.HasFlag(CommandId.AddTower))
         {
           foreach (var opt in command.TowerCreationOptions)
           {
-            _recalculator.AddNewTower(field, opt.Type, _mapper.Map<CreationOptions>(opt));
+            _recalculator.AddNewTower(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
           }
         }
         IncrementBattleVersionAsync(command.BattleId);
         
-        fieldSerialized.State = field;
+        fieldSerialized.State = fieldState;
         _provider.Update(fieldSerialized.Id, fieldSerialized);
       });
     }
@@ -115,10 +122,30 @@ namespace Towerland.GameServer.Domain.Infrastructure
         {
           Id = battleId,
           State = _fieldFactory.ClassicField,
-          Actions = new []{Enumerable.Empty<GameAction>()}
+          Ticks = Enumerable.Empty<GameTick>()
         };
         _provider.Add(newBattle);
       });
+    }
+
+    private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
+    {
+      if (ticks == null)
+      {
+        return;
+      }
+      var resolver = new FieldStateActionResolver(f);
+      foreach (var tick in ticks)
+      {
+        if (tick.HasNoActions)
+        {
+          continue;
+        }
+        foreach (var action in tick.Actions)
+        {
+          resolver.Resolve(action);
+        }
+      }
     }
   }
 }

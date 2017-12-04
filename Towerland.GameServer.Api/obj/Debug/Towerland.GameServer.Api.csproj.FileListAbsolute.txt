@@ -36,3 +36,5 @@ D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerl
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\Towerland.GameServer.Common.Logic.pdb
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\EntityFramework.xml
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\obj\Debug\Towerland.GameServer.Api.csproj.CoreCompileInputs.cache
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\log4net.dll
+D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Api\bin\log4net.xml

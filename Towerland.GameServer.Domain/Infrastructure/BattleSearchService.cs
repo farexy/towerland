@@ -6,21 +6,27 @@ using Towerland.GameServer.Domain.Interfaces;
 
 namespace Towerland.GameServer.Domain.Infrastructure
 {
-  class BattleSearchService : IBattleSearchService
+  public class BattleSearchService : IBattleSearchService
   {
-    private readonly ConcurrentQueue<string> _sessionQueue;
-    private readonly ConcurrentDictionary<string, Guid> _sessionBattles;
+    private static ConcurrentQueue<Guid> _sessionQueue;
+    private static ConcurrentDictionary<Guid, Guid> _sessionBattles;
     private readonly IBattleService _battleProvider;
 
     public BattleSearchService(IBattleService battleProvider)
     {
-      _sessionQueue = new ConcurrentQueue<string>();
-      _sessionBattles = new ConcurrentDictionary<string, Guid>();
       _battleProvider = battleProvider;
     }
 
-    public async Task AddToQueueAsync(string sessionId)
+    public async Task AddToQueueAsync(Guid sessionId)
     {
+      if (_sessionQueue == null)
+      {
+        _sessionQueue = new ConcurrentQueue<Guid>();
+      }
+      if (_sessionBattles == null)
+      {
+        _sessionBattles = new ConcurrentDictionary<Guid, Guid>();
+      }
       await Task.Run(() =>
         {
           if (_sessionQueue.Any())
@@ -38,7 +44,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       );
     }
 
-    public bool TryGetBattle(string sessionId, out Guid battleId)
+    public bool TryGetBattle(Guid sessionId, out Guid battleId)
     {
       if (_sessionBattles.ContainsKey(sessionId))
       {
