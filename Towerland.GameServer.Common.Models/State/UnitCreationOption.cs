@@ -5,7 +5,7 @@ namespace GameServer.Common.Models.State
 {
   public class UnitCreationOption
   {
-    [JsonProperty("t")] public GameObjectType Type { set; get; }
+    [JsonProperty("Type")] public GameObjectType Type { set; get; }
   }
 }
 

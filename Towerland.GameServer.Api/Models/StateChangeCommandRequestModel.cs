@@ -7,11 +7,11 @@ namespace GameServer.Api.Models
 {
   public class StateChangeCommandRequestModel
   {
-    [JsonProperty("i")] public CommandId Id { set; get; }
-    [JsonProperty("b")] public Guid BattleId { set; get; }
-    [JsonProperty("u")] public IEnumerable<UnitCreationOption> UnitCreationOptions { set; get; }
-    [JsonProperty("t")] public IEnumerable<TowerCreationOption> TowerCreationOptions { set; get; }
+    [JsonProperty("id")] public CommandId Id { set; get; }
+    [JsonProperty("battleId")] public Guid BattleId { set; get; }
+    [JsonProperty("unitCreationOptions")] public IEnumerable<UnitCreationOption> UnitCreationOptions { set; get; }
+    [JsonProperty("towerCreationOptions")] public IEnumerable<TowerCreationOption> TowerCreationOptions { set; get; }
     
-    public int CurrentTick { set; get; }
+    [JsonProperty("currentTick")] public int CurrentTick { set; get; }
   }
 }

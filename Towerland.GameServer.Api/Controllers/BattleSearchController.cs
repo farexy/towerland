@@ -29,8 +29,9 @@ namespace GameServer.Api.Controllers
     {
       return new BattleSearchCheckResponseModel
       {
-        Found = _battleSearchService.TryGetBattle(sessionId, out var battleId),
-        BattleId = battleId
+        Found = _battleSearchService.TryGetBattle(sessionId, out var battleId, out var side),
+        BattleId = battleId,
+        Side = side
       };
     }
   }

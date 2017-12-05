@@ -117,6 +117,7 @@ namespace GameServer.Common.Models.GameField
             this._objects = state.Objects.ToDictionary(item => item.Key, item => item.Value);
             this._state = new FieldState(State.Towers, State.Units)
             {
+                Castle = (Castle)State.Castle.Clone(),
                 MonsterMoney = State.MonsterMoney,
                 TowerMoney = State.TowerMoney
             };

@@ -1,11 +1,13 @@
 ﻿using Microsoft.Practices.Unity;
 using AutoMapper;
+using GameServer.Api.Models;
+using GameServer.Common.Models.State;
 
 namespace GameServer.Api
 {
   public class AutoMapperConfiguration
   {
-    public static void Configure(IUnityContainer container)
+    public static IMapper Configure()
     {
       var config = new MapperConfiguration(cfg =>
       {
@@ -15,14 +17,12 @@ namespace GameServer.Api
         CreateMapping(cfg);
       });
 
-      var mapper = config.CreateMapper();
-
-      container.RegisterInstance(mapper);
+      return config.CreateMapper();
     }
 
     private static void CreateMapping(IMapperConfiguration cfg)
     {
-
+      cfg.CreateMap<StateChangeCommandRequestModel, StateChangeCommand>();
     }
   }
 }

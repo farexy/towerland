@@ -9,6 +9,7 @@ using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.ActionResolver;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Core.DataAccess;
@@ -20,25 +21,32 @@ namespace Towerland.GameServer.Domain.Infrastructure
 {
   public class LiveBattleService : ILiveBattleService, IBattleService
   {
-    private readonly ConcurrentDictionary<Guid, int> _battles;
+    private static readonly ConcurrentDictionary<Guid, int> _battles;
 
     private readonly ICrudRepository<Battle> _battleRepository;
     private readonly IProvider<LiveBattleModel> _provider;
     private readonly IStateChangeRecalculator _recalculator;
     private readonly IFieldFactory _fieldFactory;
+    private readonly IStatsLibrary _statsLibrary;
     private readonly IMapper _mapper;
 
+    static LiveBattleService()
+    {
+      _battles = new ConcurrentDictionary<Guid, int>();
+    }
+    
     public LiveBattleService(ICrudRepository<Battle> repo,
       IProvider<LiveBattleModel> provider, 
       IStateChangeRecalculator recalc, 
       IFieldFactory fieldFactory, 
+      IStatsLibrary statsLibrary,
       IMapper mapper)
     {
       _battleRepository = repo;
       _provider = provider;
       _recalculator = recalc;
-      _battles = new ConcurrentDictionary<Guid, int>();
       _fieldFactory = fieldFactory;
+      _statsLibrary = statsLibrary;
       _mapper = mapper;
     }
 
@@ -93,6 +101,12 @@ namespace Towerland.GameServer.Domain.Infrastructure
             _recalculator.AddNewTower(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
           }
         }
+        
+        var calc = new StateCalculator(_statsLibrary, fieldState);
+        var newTicks = calc.CalculateActionsByTicks();
+        fieldSerialized.Ticks = newTicks;
+        _provider.Update(command.BattleId, fieldSerialized);
+        
         IncrementBattleVersionAsync(command.BattleId);
         
         fieldSerialized.State = fieldState;

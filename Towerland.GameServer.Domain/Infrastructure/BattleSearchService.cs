@@ -2,14 +2,19 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+using GameServer.Common.Models.GameField;
+using GameServer.Common.Models.State;
 using Towerland.GameServer.Domain.Interfaces;
 
 namespace Towerland.GameServer.Domain.Infrastructure
 {
   public class BattleSearchService : IBattleSearchService
   {
+    private static Random _rnd = new Random();
     private static ConcurrentQueue<Guid> _sessionQueue;
     private static ConcurrentDictionary<Guid, Guid> _sessionBattles;
+    private static ConcurrentDictionary<Guid, PlayerSide> _battlePlayerSides;
+      
     private readonly IBattleService _battleProvider;
 
     public BattleSearchService(IBattleService battleProvider)
@@ -26,6 +31,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       if (_sessionBattles == null)
       {
         _sessionBattles = new ConcurrentDictionary<Guid, Guid>();
+        _battlePlayerSides = new ConcurrentDictionary<Guid, PlayerSide>();
       }
       await Task.Run(() =>
         {
@@ -36,6 +42,17 @@ namespace Towerland.GameServer.Domain.Infrastructure
               var battleId = _battleProvider.InitNewBattle();
               _sessionBattles.TryAdd(sessionId, battleId);
               _sessionBattles.TryAdd(enemySession, battleId);
+              
+              if (_rnd.Next() % 2 == 0)
+              {
+                _battlePlayerSides.TryAdd(sessionId, PlayerSide.Monsters);
+                _battlePlayerSides.TryAdd(enemySession, PlayerSide.Towers);
+              }
+              else
+              {
+                _battlePlayerSides.TryAdd(sessionId, PlayerSide.Towers);
+                _battlePlayerSides.TryAdd(enemySession, PlayerSide.Monsters);
+              }
               return;
             }
           }
@@ -44,13 +61,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
       );
     }
 
-    public bool TryGetBattle(Guid sessionId, out Guid battleId)
+    public bool TryGetBattle(Guid sessionId, out Guid battleId, out PlayerSide side)
     {
       if (_sessionBattles.ContainsKey(sessionId))
       {
         _sessionBattles.TryRemove(sessionId, out battleId);
+        _battlePlayerSides.TryRemove(sessionId, out side);
         return true;
       }
+      side = PlayerSide.Undefined;
       battleId = Guid.Empty;
       return false;
     }

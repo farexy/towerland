@@ -9,9 +9,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
 {
   public class BattleInMemoryProvider : IProvider<LiveBattleModel>
   {
-    private readonly Dictionary<Guid, LiveBattleModel> _battles;
+    private static readonly Dictionary<Guid, LiveBattleModel> _battles;
 
-    public BattleInMemoryProvider()
+    static BattleInMemoryProvider()
     {
       _battles = new Dictionary<Guid, LiveBattleModel>();
     }

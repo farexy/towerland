@@ -19,11 +19,10 @@ namespace GameServer.Api
     public override void Handle(ExceptionHandlerContext context)
     {
       Exception ex = context.Exception;
-      string message = "An unknown error has occurred";
+      string message = ex.Message;
       HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
       if (ex is LogicException)
       {
-        message = ex.Message;
         statusCode = HttpStatusCode.BadRequest;
         Log.WarnFormat(CultureInfo.InvariantCulture, "BusinessLogicException occured: {0}", ex.Message);
       }

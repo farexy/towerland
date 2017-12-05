@@ -1,4 +1,6 @@
 ﻿using System;
+using GameServer.Common.Models.GameField;
+using GameServer.Common.Models.State;
 
 namespace GameServer.Api.Models
 {
@@ -6,5 +8,6 @@ namespace GameServer.Api.Models
   {
     public bool Found { get; set; }
     public Guid BattleId { get; set; }
+    public PlayerSide Side { get; set; }
   }
 }

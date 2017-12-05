@@ -14,15 +14,14 @@ namespace GameServer.Api
     public static void Register(HttpConfiguration config, IUnityContainer container)
     {
       config.MapHttpAttributeRoutes();
-      config.DependencyResolver = new UnityDependencyResolver(container);
 
       config.Formatters.Remove(config.Formatters.XmlFormatter);
-      config.Formatters.JsonFormatter.UseDataContractJsonSerializer = true;
+      config.DependencyResolver = new UnityDependencyResolver(container);
 
       config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings
       {
         NullValueHandling = NullValueHandling.Ignore,
-        ContractResolver = new JsonContractResolver(new JsonMediaTypeFormatter())
+        ContractResolver = new CamelCasePropertyNamesContractResolver()
       };
       
       config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());

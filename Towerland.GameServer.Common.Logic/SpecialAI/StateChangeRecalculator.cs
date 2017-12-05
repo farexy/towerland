@@ -37,7 +37,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       field.AddGameObject(unit);
       RecalcUnitPath(field, unit);
 
-      field.State.MonsterMoney -= cost;
+      field.State.MonsterMoney -= cost;      
     }
 
     public void AddNewTower(Field field, GameObjectType type, CreationOptions? opt = null)

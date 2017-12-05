@@ -1,4 +1,5 @@
-﻿using GameServer.Common.Models.GameObjects;
+﻿using AutoMapper;
+using GameServer.Common.Models.GameObjects;
 using Microsoft.Practices.Unity;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.Interfaces;
@@ -30,6 +31,9 @@ namespace GameServer.Api
       container.RegisterType<IStateChangeRecalculator, StateChangeRecalculator>();
       container.RegisterType<IGameObjectFactory<Unit>, UnitFactory>();
       container.RegisterType<IGameObjectFactory<Tower>, TowerFactory>();
+      
+      container.RegisterType<IMapper>(new ContainerControlledLifetimeManager(),
+        new InjectionFactory(c => AutoMapperConfiguration.Configure()));
       
       return container;
     }
