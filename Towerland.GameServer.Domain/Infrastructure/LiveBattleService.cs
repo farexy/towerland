@@ -69,11 +69,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _provider.Get(battleId).Ticks;
     }
 
-    public Guid InitNewBattle()
+    public Guid InitNewBattle(Guid monstersPlayer, Guid towersPlayer)
     {
       var id = Guid.NewGuid();
       while (!_battles.TryAdd(id, 0)) ;
-      CreateBattleAsync(id);
+      CreateBattleAsync(id, monstersPlayer, towersPlayer);
       return id;
     }
 
@@ -114,6 +114,27 @@ namespace Towerland.GameServer.Domain.Infrastructure
       });
     }
 
+    public bool TryEndBattle(Guid battleId, Guid userId)
+    {
+      var battle = _provider.Get(battleId);
+      var entity = _battleRepository.Get(battleId);
+      
+      if (battle.State.StaticData.EndTimeUtc < DateTime.UtcNow)
+      {
+        var winSide = entity.MonstersUserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
+        entity.Winner = (int) winSide;
+        entity.EndTime = DateTime.UtcNow;
+        _battleRepository.Update(entity);
+
+        battle.Ticks = CreateBattleEndTick(winSide);
+        
+        IncrementBattleVersionAsync(battleId);
+        _provider.Update(battleId, battle);
+        return false;
+      }
+      return true;
+    }
+
 
     private async Task<bool> IncrementBattleVersionAsync(Guid battleId)
     {
@@ -128,7 +149,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       });
     }
 
-    private async void CreateBattleAsync(Guid battleId)
+    private async void CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)
     {
       await Task.Run(() =>
       {
@@ -139,9 +160,33 @@ namespace Towerland.GameServer.Domain.Infrastructure
           Ticks = Enumerable.Empty<GameTick>()
         };
         _provider.Add(newBattle);
+        _battleRepository.Create(new Battle
+        {
+          Id = battleId,
+          StarTime = DateTime.UtcNow,
+          MonstersUserId = monstersPlayer,
+          TowersUserId = towersPlayer
+        });
       });
     }
 
+    private static IEnumerable<GameTick> CreateBattleEndTick(PlayerSide winner)
+    {
+      return new[]
+      {
+        new GameTick
+        {
+          Actions = new []
+          {
+            new GameAction
+            {
+              ActionId = winner == PlayerSide.Monsters ? ActionId.MonsterPlayerWins : ActionId.TowerPlayerWins
+            }
+          }
+        }
+      };
+    }
+      
     private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
     {
       if (ticks == null)

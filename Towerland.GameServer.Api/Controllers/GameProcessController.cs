@@ -42,6 +42,13 @@ namespace GameServer.Api.Controllers
       };
     }
 
+    [HttpGet]
+    [Route("{battle:guid}/tryend/{user:guid}")]
+    public void TryEndBattle(Guid battle, Guid user)
+    {
+      //_liveBattleService.
+    }
+    
     [HttpPost]
     [Route("command")]
     public async Task PostCommand(StateChangeCommandRequestModel requestModel)

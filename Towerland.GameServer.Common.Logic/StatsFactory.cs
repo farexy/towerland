@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GameServer.Common.Models.Effects;
+﻿using GameServer.Common.Models.Effects;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
 
@@ -7,7 +6,7 @@ namespace Towerland.GameServer.Common.Logic
 {
   public class StatsFactory
   {
-    public UnitStats[] Units =
+    public readonly UnitStats[] Units =
     {
       new UnitStats
       {
@@ -33,7 +32,7 @@ namespace Towerland.GameServer.Common.Logic
       },
     };
 
-    public TowerStats[] Towers =
+    public readonly TowerStats[] Towers =
     {
       new TowerStats
       {
@@ -81,7 +80,7 @@ namespace Towerland.GameServer.Common.Logic
       }
     };
 
-    public DefenceCoeff[] DefenceCoeffs =
+    public readonly DefenceCoeff[] DefenceCoeffs =
     {
       new DefenceCoeff
       {

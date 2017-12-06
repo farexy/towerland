@@ -32,7 +32,10 @@
     
     Other = 1000,
     MonsterPlayerRecievesMoney = 1001,
-    TowerPlayerRecievesMoney = 1002
+    TowerPlayerRecievesMoney = 1002,
+    
+    MonsterPlayerWins = 1010,
+    TowerPlayerWins = 1020,
     
   }
 }

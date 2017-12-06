@@ -31,14 +31,36 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       return Array.IndexOf(coefs, coefs.Min());
     }
 
-    public int GetOptimalPath(Path[] paths, Unit unit)
+    public int GetOptimalPath(Path[] paths, Field field, Unit unit)
     {
-      throw new NotImplementedException();
+      var optimalPathIndex = 0;
+      var minTowerCount = int.MaxValue;
+      for (int i = 0; i < paths.Length; i++)
+      {
+        var towersOnPath = FindTowersThatCanAttackPath(field, i);
+        if (towersOnPath.Count < minTowerCount)
+        {
+          minTowerCount = towersOnPath.Count;
+          optimalPathIndex = i;
+        }
+      }
+      return optimalPathIndex;
     }
 
     private static IEnumerable<Path> GetPossiblePath(IEnumerable<Path> path, Point position)
     {
       return path.Where(p => p.PointOnThePathPosition(position) != -1);
+    }
+
+    private HashSet<int> FindTowersThatCanAttackPath(Field field, int pathId)
+    {
+      var path = field.StaticData.Path[pathId];
+      var towers = new HashSet<int>();
+      foreach (var point in path)
+      {
+        towers.UnionWith(field.FindTowersThatCanAttack(point, _statsLib));
+      }
+      return towers;
     }
   }
 }

@@ -7,7 +7,7 @@ namespace Towerland.GameServer.Common.Logic
 {
   public class FieldFactoryStub : IFieldFactory
   {
-    private const int FieldRoadCoeff = 30;
+    private const int BattleDurationMin = 30;
     
     private static Field _classicField;
 
@@ -118,6 +118,7 @@ namespace Towerland.GameServer.Common.Logic
           },
           StaticData =
           {
+            EndTimeUtc = DateTime.UtcNow + TimeSpan.FromMinutes(BattleDurationMin),
             Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3), new Path(Path4), new Path(Path5),  }
           }
         };
@@ -128,7 +129,7 @@ namespace Towerland.GameServer.Common.Logic
 
     public Field GenerateNewField(int width, int height, Point startPoint, Point endPoint)
     {
-      int roadCount = width * height / FieldRoadCoeff;
+      int roadCount = width * height / BattleDurationMin;
       var map = CalcWave(width, height, startPoint);
 
       return new Field(new FieldCell[2,2]);

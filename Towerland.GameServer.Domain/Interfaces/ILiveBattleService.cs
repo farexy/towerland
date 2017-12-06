@@ -13,5 +13,6 @@ namespace Towerland.GameServer.Domain.Interfaces
     Field GetFieldState(Guid battleId);
     IEnumerable<GameTick> GetCalculatedActionsByTicks(Guid battleId);
     Task RecalculateAsync(StateChangeCommand command, int curTick);
+    bool TryEndBattle(Guid battleId, Guid userId);
   }
 }

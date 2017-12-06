@@ -4,7 +4,6 @@ using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using GameServer.Common.Models.Stats;
-using Towerland.GameServer.Common.Logic.ActionResolver;
 using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI

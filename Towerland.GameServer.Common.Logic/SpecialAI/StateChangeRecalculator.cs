@@ -67,12 +67,10 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       var stats = _statsLib.GetUnitStats(unit.Type);
       if (!unit.PathId.HasValue || stats.MovementPriority != UnitStats.MovementPriorityType.Random)
       {
-        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.StaticData.Path, unit)
+        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.StaticData.Path, field, unit)
           : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.StaticData.Path, unit)
             : GameMath.Rand.Next(field.StaticData.Path.Length);
       }
     }
-
-
   }
 }
