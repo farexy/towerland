@@ -77,7 +77,7 @@ namespace Towerland.GameServer.Common.Logic
             unit.WaitTicks -= 1;
             continue;
           }
-          if (unit.Effect.Effect != EffectId.None)
+          if (unit.Effect != null && unit.Effect.Effect != EffectId.None)
           {
             unit.Effect.Duration -= 1;
             if (unit.Effect.Duration == 0)
@@ -89,7 +89,6 @@ namespace Towerland.GameServer.Common.Logic
 
           var path = _field.StaticData.Path[unit.PathId.Value];
           var stats = _statsLib.GetUnitStats(unit.Type);
-
           if (path.End == unit.Position)
           {
             actions.Add(new GameAction { ActionId = ActionId.UnitAttacksCastle, UnitId = unit.GameId, Damage = stats.Damage });
@@ -140,6 +139,7 @@ namespace Towerland.GameServer.Common.Logic
               {
                 var unit = (Unit) _field[targetId];
                 var damage = CalculateDamage(_statsLib.GetUnitStats(unit.Type), stats);
+                tower.WaitTicks = stats.AttackSpeed;
                 
                 actions.Add(new GameAction
                 {
@@ -187,6 +187,8 @@ namespace Towerland.GameServer.Common.Logic
               var targetPoint = FindBurstTarget(_field, tower, stats);
               if (targetPoint != NotFoundPoint)
               {
+                tower.WaitTicks = stats.AttackSpeed;
+                
                 actions.Add(new GameAction
                 {
                   ActionId = ActionId.TowerAttacksPosition,
