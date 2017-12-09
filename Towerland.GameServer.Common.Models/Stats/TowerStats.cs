@@ -6,13 +6,13 @@ namespace GameServer.Common.Models.Stats
 {
   public struct TowerStats : IStats
   {
-    [JsonProperty("t")] public GameObjectType Type { set; get; }
-    [JsonProperty("d")] public int Damage { set; get; }
-    [JsonProperty("r")] public int Range { set; get; }
-    [JsonProperty("s")] public int AttackSpeed { set; get; }
-    [JsonProperty("a")] public AttackType Attack { set; get; }
-    [JsonProperty("e")] public SpecialEffect[] SpecialEffects { set; get; }
-    [JsonProperty("c")] public int Cost { set; get; }
+    [JsonProperty("Type")] public GameObjectType Type { set; get; }
+    [JsonProperty("Damage")] public int Damage { set; get; }
+    [JsonProperty("Range")] public int Range { set; get; }
+    [JsonProperty("AttackSpeed")] public int AttackSpeed { set; get; }
+    [JsonProperty("Attack")] public AttackType Attack { set; get; }
+    [JsonProperty("SpecialEffects")] public SpecialEffect[] SpecialEffects { set; get; }
+    [JsonProperty("Cost")] public int Cost { set; get; }
 
     public enum AttackType
     {

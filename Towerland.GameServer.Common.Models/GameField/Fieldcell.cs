@@ -4,7 +4,7 @@ namespace GameServer.Common.Models.GameField
 {
   public struct FieldCell
   {
-    [JsonProperty("o")] public FieldObject Object;
-    [JsonProperty("p")] public Point Position;
+    [JsonProperty("Object")] public FieldObject Object;
+    [JsonProperty("Position")] public Point Position;
   }
 }

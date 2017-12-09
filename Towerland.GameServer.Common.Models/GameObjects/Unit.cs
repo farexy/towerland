@@ -9,7 +9,7 @@ namespace GameServer.Common.Models.GameObjects
       Type = GameObjectType.Unit;
     }
 
-    [JsonProperty("h")] public int Health { set; get; }
-    [JsonProperty("z")] public int? PathId { set; get; }
+    [JsonProperty("Health")] public int Health { set; get; }
+    [JsonProperty("PathId")] public int? PathId { set; get; }
   }
 }

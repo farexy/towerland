@@ -6,9 +6,9 @@ namespace GameServer.Common.Models.State
 {
   public class StateChangeCommand
   {
-    [JsonProperty("i")] public CommandId Id { set; get; }
-    [JsonProperty("b")] public Guid BattleId { set; get; }
-    [JsonProperty("u")] public IEnumerable<UnitCreationOption> UnitCreationOptions { set; get; }
-    [JsonProperty("t")] public IEnumerable<TowerCreationOption> TowerCreationOptions { set; get; }
+    [JsonProperty("Id")] public CommandId Id { set; get; }
+    [JsonProperty("BattleId")] public Guid BattleId { set; get; }
+    [JsonProperty("UnitCreationOptions")] public IEnumerable<UnitCreationOption> UnitCreationOptions { set; get; }
+    [JsonProperty("TowerCreationOptions")] public IEnumerable<TowerCreationOption> TowerCreationOptions { set; get; }
   }
 }
