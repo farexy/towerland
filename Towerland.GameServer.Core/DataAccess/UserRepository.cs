@@ -1,22 +1,39 @@
 ﻿using System;
+using System.Linq;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Core.Interfaces;
 
 namespace Towerland.GameServer.Core.DataAccess
 {
-  public class MySqlCrudRepository<T> : ICrudRepository<T> where T : DataEntity
+  public class UserRepository : ICrudRepository<User>
   {
-    public T Get(Guid id)
+    private readonly IDbConnectionFactory _db;
+
+    public UserRepository(IDbConnectionFactory db)
     {
-      throw new NotImplementedException();
+      _db = db;
+    }
+    
+    public User Get(Guid id)
+    {
+      using (var cx = _db.OpenDbConnection())
+      {
+        return cx.Select<User>(u => u.Id == id).SingleOrDefault();
+      }
     }
 
-    public Guid Add(T obj)
+    public Guid Add(User obj)
     {
-      throw new NotImplementedException();
+      using (var cx = _db.OpenDbConnection())
+      {
+        cx.Insert(obj);
+        return obj.Id;
+      }
     }
 
-    public void Update(Guid id, T obj)
+    public void Update(Guid id, User obj)
     {
       throw new NotImplementedException();
     }
@@ -26,19 +43,22 @@ namespace Towerland.GameServer.Core.DataAccess
       throw new NotImplementedException();
     }
 
-    public T Get(int id)
+    public User Get(int id)
     {
       throw new NotImplementedException();
     }
 
-    public T[] Get(object[] ids)
+    public User[] Get(object[] ids)
     {
       throw new NotImplementedException();
     }
 
-    public T[] Get()
+    public User[] Get()
     {
-      throw new NotImplementedException();
+      using (var cx = _db.OpenDbConnection())
+      {
+        return cx.Select<User>().ToArray();
+      }    
     }
 
     public int Create(IIdentityEntity entity)

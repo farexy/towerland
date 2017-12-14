@@ -1,0 +1,28 @@
+CREATE DATABASE towerland;
+
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '123456';
+GRANT SELECT ON towerland.* TO 'root'@'%' IDENTIFIED BY '123456';
+GRANT EXECUTE ON towerland.* TO 'root'@'%' IDENTIFIED BY '123456';
+GRANT CREATE ON towerland.* TO 'root'@'%' IDENTIFIED BY '123456';
+GRANT INSERT ON towerland.* TO 'root'@'%' IDENTIFIED BY '123456';
+GRANT UPDATE ON towerland.* TO 'root'@'%' IDENTIFIED BY '123456';
+GRANT DELETE ON towerland.* TO 'root'@'%' IDENTIFIED BY '123456';
+
+USE towerland;
+
+CREATE TABLE User(
+  Id CHAR(36) PRIMARY KEY,
+  FullName VARCHAR(128) NOT NULL,
+  Email VARCHAR(128) NOT NULL,
+  Nickname VARCHAR(128) NOT NULL,
+  Password VARCHAR(128) NOT NULL
+) Engine InnoDB CHARSET=utf8;
+
+CREATE TABLE Battle(
+  Id CHAR(36) PRIMARY KEY,
+  Monsters_UserId CHAR(36) NOT NULL,
+  Towers_UserId CHAR(36) NOT NULL,
+  Winner INT,
+  StartTime DATETIME,
+  EndTime DATETIME
+) Engine InnoDB CHARSET=utf8;

@@ -114,25 +114,32 @@ namespace Towerland.GameServer.Domain.Infrastructure
       });
     }
 
-    public bool TryEndBattle(Guid battleId, Guid userId)
+    public async Task TryEndBattleAsync(Guid battleId, Guid userId)
     {
-      var battle = _provider.Get(battleId);
-      var entity = _battleRepository.Get(battleId);
-      
-      if (battle.State.StaticData.EndTimeUtc < DateTime.UtcNow)
+      await Task.Run(() =>
       {
-        var winSide = entity.MonstersUserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
+        var battle = _provider.Get(battleId);
+        var entity = _battleRepository.Get(battleId);
+
+        PlayerSide winSide;
+        if (battle.State.StaticData.EndTimeUtc < DateTime.UtcNow)
+        {
+          winSide = entity.Monsters_UserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
+        }
+        else
+        {
+          ResolveActions(battle.State, battle.Ticks);
+          winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
+        }
         entity.Winner = (int) winSide;
         entity.EndTime = DateTime.UtcNow;
         _battleRepository.Update(entity);
 
         battle.Ticks = CreateBattleEndTick(winSide);
-        
+
         IncrementBattleVersionAsync(battleId);
-        _provider.Update(battleId, battle);
-        return false;
-      }
-      return true;
+        _provider.Update(battleId, battle);      
+      });
     }
 
 
@@ -163,9 +170,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
         _battleRepository.Create(new Battle
         {
           Id = battleId,
-          StarTime = DateTime.UtcNow,
-          MonstersUserId = monstersPlayer,
-          TowersUserId = towersPlayer
+          StartTime = DateTime.UtcNow,
+          Monsters_UserId = monstersPlayer,
+          Towers_UserId = towersPlayer
         });
       });
     }

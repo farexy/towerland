@@ -39,14 +39,14 @@ namespace Towerland.GameServer.Core.DataAccess
       Delete(id);
     }
 
-    public T Get(object[] ids)
+    public T[] Get(object[] ids)
     {
-      return _db.Set<T>().Find(ids);
+      return new[] {_db.Set<T>().Find(ids)};
     }
 
-    public T Get()
+    public T[] Get()
     {
-      return _db.Set<T>().Find(); ;
+      return new[] {_db.Set<T>().Find()}; ;
     }
 
     //ReSharper disable All

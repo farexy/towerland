@@ -1,6 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Configuration;
+using AutoMapper;
 using GameServer.Common.Models.GameObjects;
 using Microsoft.Practices.Unity;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
@@ -18,8 +21,12 @@ namespace GameServer.Api
     {
       var container = new UnityContainer();
 
+      container.RegisterInstance<IDbConnectionFactory>(
+        new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["Towerland"].ConnectionString, MySqlDialect.Provider));
+      
       container.RegisterType<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
-      container.RegisterType<ICrudRepository<Battle>, MySqlCrudRepository<Battle>>();
+      container.RegisterType<ICrudRepository<Battle>, BattleRepository>();
+      container.RegisterType<ICrudRepository<User>, UserRepository>();
       
       container.RegisterType<IBattleService, LiveBattleService>();
       container.RegisterType<IBattleSearchService, BattleSearchService>();

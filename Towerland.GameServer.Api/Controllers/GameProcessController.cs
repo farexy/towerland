@@ -44,9 +44,9 @@ namespace GameServer.Api.Controllers
 
     [HttpGet]
     [Route("{battle:guid}/tryend/{user:guid}")]
-    public void TryEndBattle(Guid battle, Guid user)
+    public async Task TryEndBattle(Guid battle, Guid user)
     {
-      //_liveBattleService.
+      await _liveBattleService.TryEndBattleAsync(battle, user);
     }
     
     [HttpPost]
@@ -55,9 +55,5 @@ namespace GameServer.Api.Controllers
     {
       await _liveBattleService.RecalculateAsync(_mapper.Map<StateChangeCommand>(requestModel), requestModel.CurrentTick);
     }
-    
-    //[HttpGet]
-    //[Route("state")]
-    //public Fie
   }
 }

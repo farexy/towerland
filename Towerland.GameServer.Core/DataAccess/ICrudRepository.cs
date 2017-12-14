@@ -7,8 +7,8 @@ namespace Towerland.GameServer.Core.DataAccess
   public interface ICrudRepository<T> : IProvider<T> where T : DataEntity
   {
     T Get(int id);
-    T Get(object[] ids);
-    T Get();
+    T[] Get(object[] ids);
+    T[] Get();
 
     int Create(IIdentityEntity entity);
     Guid Create(IGuidEntity entity);
