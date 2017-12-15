@@ -52,11 +52,15 @@
     <Compile Include="Infrastructure\BattleInMemoryProvider.cs" />
     <Compile Include="Infrastructure\BattleSearchService.cs" />
     <Compile Include="Infrastructure\LiveBattleService.cs" />
+    <Compile Include="Infrastructure\UserService.cs" />
     <Compile Include="Interfaces\IBattleProvider.cs" />
     <Compile Include="Interfaces\IBattleSearchService.cs" />
     <Compile Include="Interfaces\ILiveBattleService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Models\LiveBattleModel.cs" />
     <Compile Include="Models\StateChangeCommand.cs" />
+    <Compile Include="Models\UserExperience.cs" />
+    <Compile Include="Models\UserRating.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,7 @@ namespace GameServer.Api
       container.RegisterType<IBattleService, LiveBattleService>();
       container.RegisterType<IBattleSearchService, BattleSearchService>();
       container.RegisterType<ILiveBattleService, LiveBattleService>();
+      container.RegisterType<IUserService, UserService>();
 
       container.RegisterType<IStatsLibrary, StatsLibrary>();
       container.RegisterType<IFieldFactory, FieldFactoryStub>();

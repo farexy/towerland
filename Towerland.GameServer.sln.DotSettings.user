@@ -2,4 +2,5 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="D:\Workfiles\GameServer\GameServer.Api\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/Build/IIS/SkipGenerateApplicationHostConfig/=e3467774_002D83e6_002D442a_002Db621_002Dc58b6afaf38a/@EntryIndexedValue">True</s:Boolean>
 	<s:Int64 x:Key="/Default/Environment/SearchAndNavigation/DefaultOccurrencesGroupingIndex/@EntryValue">2</s:Int64></wpf:ResourceDictionary>
