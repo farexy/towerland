@@ -1,5 +1,4 @@
 ﻿using System;
-using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.State;
 
 namespace GameServer.Api.Models

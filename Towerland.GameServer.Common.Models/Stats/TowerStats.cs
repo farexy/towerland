@@ -11,6 +11,7 @@ namespace GameServer.Common.Models.Stats
     [JsonProperty("Range")] public int Range { set; get; }
     [JsonProperty("AttackSpeed")] public int AttackSpeed { set; get; }
     [JsonProperty("Attack")] public AttackType Attack { set; get; }
+    [JsonProperty("TargetPriority")] public AttackPriority TargetPriority { set; get; }
     [JsonProperty("SpecialEffects")] public SpecialEffect[] SpecialEffects { set; get; }
     [JsonProperty("Cost")] public int Cost { set; get; }
 
@@ -19,6 +20,12 @@ namespace GameServer.Common.Models.Stats
       Usual,
       Magic,
       Burst
+    }
+    
+    public enum AttackPriority
+    {
+      Random,
+      Optimal
     }
   }
 }
