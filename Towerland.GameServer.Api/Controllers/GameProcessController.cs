@@ -38,7 +38,9 @@ namespace GameServer.Api.Controllers
     {
       return new ActionsResponseModel
       {
-        ActionsByTicks = _liveBattleService.GetCalculatedActionsByTicks(battle)
+        ActionsByTicks = _liveBattleService.GetCalculatedActionsByTicks(battle),
+        State = _liveBattleService.GetFieldState(battle),
+        Revision = _liveBattleService.GetRevision(battle)
       };
     }
 

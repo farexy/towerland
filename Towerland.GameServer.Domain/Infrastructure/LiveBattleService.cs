@@ -59,13 +59,30 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _battles[battleId] != version;
     }
 
-    public Field GetFieldState(Guid battleId)
+    public int GetRevision(Guid battleId)
     {
-      return _provider.Get(battleId).State;
+      if (!_battles.ContainsKey(battleId))
+      {
+        throw new ArgumentException("No such battle");
+      }
+      return _battles[battleId];
+    }
+
+    public FieldState GetFieldState(Guid battleId)
+    {
+      if (!_battles.ContainsKey(battleId))
+      {
+        throw new ArgumentException("No such battle");
+      }
+      return _provider.Get(battleId).State.State;
     }
 
     public IEnumerable<GameTick> GetCalculatedActionsByTicks(Guid battleId)
     {
+      if (!_battles.ContainsKey(battleId))
+      {
+        throw new ArgumentException("No such battle");
+      }
       return _provider.Get(battleId).Ticks;
     }
 

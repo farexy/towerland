@@ -1,12 +1,13 @@
 ﻿using System;
 using GameServer.Common.Models.State;
+using Newtonsoft.Json;
 
 namespace GameServer.Api.Models
 {
   public class BattleSearchCheckResponseModel
   {
-    public bool Found { get; set; }
-    public Guid BattleId { get; set; }
-    public PlayerSide Side { get; set; }
+    [JsonProperty("found")] public bool Found { get; set; }
+    [JsonProperty("battleId")] public Guid BattleId { get; set; }
+    [JsonProperty("side")] public PlayerSide Side { get; set; }
   }
 }

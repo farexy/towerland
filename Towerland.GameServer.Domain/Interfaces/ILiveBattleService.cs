@@ -10,7 +10,8 @@ namespace Towerland.GameServer.Domain.Interfaces
   public interface ILiveBattleService
   {
     bool CheckChanged(Guid battleId, int version);
-    Field GetFieldState(Guid battleId);
+    int GetRevision(Guid battleId);
+    FieldState GetFieldState(Guid battleId);
     IEnumerable<GameTick> GetCalculatedActionsByTicks(Guid battleId);
     Task RecalculateAsync(StateChangeCommand command, int curTick);
     Task TryEndBattleAsync(Guid battleId, Guid userId);
