@@ -10,7 +10,7 @@ namespace GameServer.Common.Models.GameObjects
       Type = GameObjectType.Castle;
     }
 
-    [JsonProperty("Health")] public int Health { set; get; }
+    [JsonProperty("h")] public int Health { set; get; }
     
     public object Clone()
     {

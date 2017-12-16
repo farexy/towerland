@@ -6,8 +6,8 @@ namespace GameServer.Common.Models.GameActions
 {
   public class GameTick
   {
-    [JsonProperty("RelativeTime")] public int RelativeTime { get; set; }
-    [JsonProperty("Actions")] public IEnumerable<GameAction> Actions { get; set; }
+    [JsonProperty("t")] public int RelativeTime { get; set; }
+    [JsonProperty("a")] public IEnumerable<GameAction> Actions { get; set; }
 
     [JsonIgnore]
     public bool HasNoActions

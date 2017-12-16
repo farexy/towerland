@@ -6,11 +6,11 @@ namespace GameServer.Common.Models.GameObjects
 {
   public abstract class GameObject
   {
-    [JsonProperty("GameId")] public int GameId { set; get; }
-    [JsonProperty("Position")] public Point Position { get; set; }
-    [JsonProperty("WaitTicks")] public int WaitTicks { set; get; }
-    [JsonProperty("Effect")] public SpecialEffect Effect { set; get; }
-    [JsonProperty("Type")] public GameObjectType Type { set; get; }
+    [JsonProperty("i")] public int GameId { set; get; }
+    [JsonProperty("p")] public Point Position { get; set; }
+    [JsonProperty("w")] public int WaitTicks { set; get; }
+    [JsonProperty("e")] public SpecialEffect Effect { set; get; }
+    [JsonProperty("t")] public GameObjectType Type { set; get; }
 
     protected GameObject()
     {

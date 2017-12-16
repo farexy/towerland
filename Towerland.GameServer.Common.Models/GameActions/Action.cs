@@ -5,12 +5,12 @@ namespace GameServer.Common.Models.GameActions
 {
   public struct GameAction
   {
-    [JsonProperty("ActionId")] public ActionId ActionId;
-    [JsonProperty("UnitId")] public int UnitId;
-    [JsonProperty("TowerId")] public int TowerId;
-    [JsonProperty("Position")] public Point Position;
-    [JsonProperty("Damage")] public int Damage;
-    [JsonProperty("WaitTicks")] public int WaitTicks;
-    [JsonProperty("Money")] public int Money;
+    [JsonProperty("i")] public ActionId ActionId;
+    [JsonProperty("u")] public int UnitId;
+    [JsonProperty("t")] public int TowerId;
+    [JsonProperty("p")] public Point Position;
+    [JsonProperty("d")] public int Damage;
+    [JsonProperty("w")] public int WaitTicks;
+    [JsonProperty("m")] public int Money;
   }
 }

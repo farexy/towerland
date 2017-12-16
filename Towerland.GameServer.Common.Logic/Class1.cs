@@ -97,7 +97,7 @@ namespace Towerland.GameServer.Common.Logic
           }
           else
           {
-            var effectSpeedCoeff = unit.Effect != null && unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
+            var effectSpeedCoeff = unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
             var nextPoint = path.GetNext(unit.Position);
             unit.Position = nextPoint;
             unit.WaitTicks = stats.Speed * effectSpeedCoeff;
@@ -265,6 +265,7 @@ namespace Towerland.GameServer.Common.Logic
           switch (effect.Effect)
           {
               case EffectId.UnitFreezed:
+                unit.WaitTicks *= SpecialEffect.FreezedSlowCoeff;
                 unit.Effect = new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = effect.Duration};
                 actions.Add(new GameAction{ActionId = ActionId.UnitFreezes, UnitId = unit.GameId, WaitTicks = effect.Duration});
                 break;

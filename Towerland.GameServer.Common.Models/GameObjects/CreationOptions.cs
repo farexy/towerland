@@ -5,7 +5,7 @@ namespace GameServer.Common.Models.GameObjects
 {
   public struct CreationOptions
   {
-    [JsonProperty("Position")] public Point Position;
-    [JsonProperty("PathId")] public int PathId;
+    [JsonProperty("p")] public Point Position;
+    [JsonProperty("i")] public int PathId;
   }
 }

@@ -12,8 +12,8 @@ namespace GameServer.Common.Models.GameField
       Cells = cells;
     }
     
-    [JsonProperty("Path")] public Path[] Path { set; get; }
-    [JsonProperty("Cells")] public FieldCell[,] Cells { private set; get; }
+    [JsonProperty("p")] public Path[] Path { set; get; }
+    [JsonProperty("m")] public FieldCell[,] Cells { private set; get; }
     
     public Point Start { get; private set; }
     public Point Finish { get; private set; }
