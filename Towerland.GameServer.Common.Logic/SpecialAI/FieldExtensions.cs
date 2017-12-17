@@ -10,15 +10,14 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
   {
     public static void MoveUnit(this Field field, int gameId, Point position, int wait)
     {
-      var unit = (Unit) field[gameId];
-      var path = field.StaticData.Path[unit.PathId.Value];
+      var unit = field[gameId];
       unit.Position = position;
       unit.WaitTicks = wait;
     }
 
     public static Unit[] FindUnitsAt(this Field field, Point position)
     {
-      return field.FindGameObjects(obj => obj.Position == position).OfType<Unit>().ToArray();
+      return field.State.Units.Where(u => u.Position == position).ToArray();
     }
 
     public static int[] FindTowersThatCanAttack(this Field field, Point position, IStatsLibrary stats)

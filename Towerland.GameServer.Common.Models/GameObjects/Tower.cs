@@ -1,4 +1,6 @@
-﻿namespace GameServer.Common.Models.GameObjects
+﻿using GameServer.Common.Models.Effects;
+
+namespace GameServer.Common.Models.GameObjects
 {
   public class Tower : GameObject
   {
@@ -6,6 +8,17 @@
     {
       Type = GameObjectType.Tower;
     }
-    
+
+    public override object Clone()
+    {
+      return new Tower
+      {
+        GameId = GameId,
+        Position = Position,
+        Type = Type,
+        WaitTicks = WaitTicks,
+        Effect = new SpecialEffect{Effect = Effect.Effect, Duration = Effect.Duration}
+      };
+    }
   }
 }

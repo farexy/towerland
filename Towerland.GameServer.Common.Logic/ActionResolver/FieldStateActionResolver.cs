@@ -1,4 +1,5 @@
-﻿using GameServer.Common.Models.Effects;
+﻿using System.Threading;
+using GameServer.Common.Models.Effects;
 using GameServer.Common.Models.GameActions;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
@@ -40,7 +41,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           break;
           
         case ActionId.UnitDies:
-          _field.RemoveGameObject(action.UnitId);
+            _field.RemoveGameObject(action.UnitId);
           break;
           
         case ActionId.UnitEffectCanseled:

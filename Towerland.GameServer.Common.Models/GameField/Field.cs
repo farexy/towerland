@@ -84,11 +84,11 @@ namespace GameServer.Common.Models.GameField
             }
             if (type == GameObjectType.Unit)
             {
-                State.Units.Remove((Unit)gameObj);
+                State.Units.Remove(State.Units.First(u => u.GameId == gameId));
             }
             if (type == GameObjectType.Tower)
             {
-                State.Towers.Remove((Tower)gameObj);
+                State.Towers.Remove(State.Towers.First(t => t.GameId == gameId));
             }
 
             _objects.Remove(gameId);
@@ -115,11 +115,10 @@ namespace GameServer.Common.Models.GameField
         public void SetState(FieldState state)
         {
             this._objects = state.Objects.ToDictionary(item => item.Key, item => item.Value);
-            this._state = new FieldState(State.Towers, State.Units)
+            this._state = new FieldState(state.Towers, state.Units, state.Castle)
             {
-                Castle = (Castle)State.Castle.Clone(),
-                MonsterMoney = State.MonsterMoney,
-                TowerMoney = State.TowerMoney
+                MonsterMoney = state.MonsterMoney,
+                TowerMoney = state.TowerMoney
             };
         }
 
@@ -131,10 +130,9 @@ namespace GameServer.Common.Models.GameField
                 {
                     Path = StaticData.Path
                 },
-                _objects = _objects.ToDictionary(item => item.Key, item => item.Value),
-                _state = new FieldState(State.Towers, State.Units)
+                _objects = _objects.ToDictionary(item => item.Key, item => (GameObject)item.Value.Clone()),
+                _state = new FieldState(State.Towers, State.Units, State.Castle)
                 {
-                    Castle = new Castle { Health = State.Castle.Health, Position = State.Castle.Position },
                     MonsterMoney = State.MonsterMoney,
                     TowerMoney = State.TowerMoney
                 },

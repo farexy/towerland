@@ -39,6 +39,11 @@ namespace Towerland.GameServer.Core.DataAccess
       Delete(id);
     }
 
+    public void Clear()
+    {
+      throw new NotImplementedException();
+    }
+
     public T[] Get(object[] ids)
     {
       return new[] {_db.Set<T>().Find(ids)};

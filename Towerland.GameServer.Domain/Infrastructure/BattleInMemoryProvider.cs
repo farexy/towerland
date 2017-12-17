@@ -48,5 +48,10 @@ namespace Towerland.GameServer.Domain.Infrastructure
       }
       _battles.Remove(id);
     }
+
+    public void Clear()
+    {
+      _battles.Clear();
+    }
   }
 }

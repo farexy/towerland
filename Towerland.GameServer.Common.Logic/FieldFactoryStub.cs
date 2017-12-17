@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic.Interfaces;
@@ -6,16 +7,16 @@ using Towerland.GameServer.Common.Logic.Interfaces;
 namespace Towerland.GameServer.Common.Logic
 {
   public class FieldFactoryStub : IFieldFactory
-  {
-    private const int BattleDurationMin = 30;
-    
-    private static Field _classicField;
+    {
+        private const int FieldRoadCoeff = 30;
+
+        private static Field _classicField;
 
 
-    private static readonly int[,] Cells2 =
+        private static readonly int[,] Cells2 =
         {
       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-      {2,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1},
+      {3,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1},
       {1,1,0,1,1,1,1,0,0,0,0,0,0,0,1,0,1,1},
       {1,1,0,0,0,0,1,1,0,1,1,1,1,1,1,0,1,1},
       {1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,0,1,1},
@@ -31,7 +32,7 @@ namespace Towerland.GameServer.Common.Logic
       {1,1,0,0,1,1,1,0,1,1,1,1,1,1,0,1,1,1},
       {1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1},
       {1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1},
-      {1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1}
+      {1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1}
     };
 
         private static readonly Point[] Path1 =
@@ -77,104 +78,107 @@ namespace Towerland.GameServer.Common.Logic
         private static readonly Point[] Path5 =
         {
             new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 2), new Point(3, 2), new Point(4, 2),
-            new Point(5, 2), new Point(6, 2), new Point(7, 2), new Point(7, 3), new Point(8, 3), new Point(8, 4),
+            new Point(5, 2), new Point(6, 2), new Point(7, 2), new Point(7, 3), new Point(8, 3), new Point(8, 4), 
             new Point(9, 4), new Point(10,4), new Point(11,4), new Point(12,4), new Point(12,3), new Point(12,2),
             new Point(13,2), new Point(14,2), new Point(14,3), new Point(15,3), new Point(15,4), new Point(15,5),
             new Point(16,5), new Point(16,6), new Point(16,7), new Point(17,7),
         };
 
-    public Field ClassicField
-    {
-      get
-      {
-        if (_classicField != null)
-          return _classicField;
-
-        var cells = new FieldCell[Cells2.GetLength(0), Cells2.GetLength(1)];
-
-        for (int i = 0; i < Cells2.GetLength(0); i++)
-        {
-          for (int j = 0; j < Cells2.GetLength(1); j++)
-          {
-            cells[i,j] = new FieldCell
-            {
-              Position = new Point(i,j),
-              Object = (FieldObject)Cells2[i,j]
-            };
-          }
-        }
-
-        _classicField = new Field(cells)
-        {
-          State =
-          {
-            Castle = new Castle
-            {
-              Health = 100,
-              Position = new Point(7, 9)
-            },
-            MonsterMoney = 100,
-            TowerMoney = 100,
-          },
-          StaticData =
-          {
-            EndTimeUtc = DateTime.UtcNow + TimeSpan.FromMinutes(BattleDurationMin),
-            Path = new[] { new Path(Path1), new Path(Path2), new Path(Path3), new Path(Path4), new Path(Path5),  }
-          }
-        };
         
-        return _classicField;
-      }
-    }
-
-    public Field GenerateNewField(int width, int height, Point startPoint, Point endPoint)
-    {
-      int roadCount = width * height / BattleDurationMin;
-      var map = CalcWave(width, height, startPoint);
-
-      return new Field(new FieldCell[2,2]);
-    }
-
-    private static int[,] CalcWave(int width, int height, Point startPoint)
-    {
-      int[,] map = new int[width, height];
-
-      //int groundIndicator = GroundIndicator; //represents the wall
-      int notVisited = -1; // -1 represents the cell, where we were not 
-      int i, j, step = 0;
-
-      for (j = 0; j < width; j++)
-      {
-        for (i = 0; i < height; i++)
+        public Field ClassicField
         {
-          map[j, i] = notVisited;
+            get
+            {
+                if (_classicField != null)
+                    return _classicField;
+
+                var cells = new FieldCell[Cells2.GetLength(0), Cells2.GetLength(1)];
+
+                for (int i = 0; i < Cells2.GetLength(0); i++)
+                {
+                    for (int j = 0; j < Cells2.GetLength(1); j++)
+                    {
+                        cells[i,j] = new FieldCell
+                        {
+                            Position = new Point(i,j),
+                            Object = (FieldObject)Cells2[i,j]
+                        };
+                    }
+                }
+
+                _classicField = new Field(cells)
+                {
+                    State =
+                    {
+                        Castle = new Castle
+                        {
+                            Health = 100,
+                            Position = new Point(7, 9)
+                        },
+                        MonsterMoney = 120,
+                        TowerMoney = 120,
+                    },
+                    StaticData =
+                    {
+                        Path = new[]
+                        {
+                            new Path(Path1.Reverse()), new Path(Path2.Reverse()), new Path(Path3.Reverse()), new Path(Path4.Reverse()), new Path(Path5.Reverse()),
+                        }
+                    }
+                };
+        
+                return _classicField;
+            }
         }
-      }
 
-      map[startPoint.X, startPoint.Y] = step;
-
-      //we watch the cells of maze while target point not found
-      while (step <= Math.Max(height, width) * 2)
-      {
-        for (i = 0; i < width; i++)
-        for (j = 0; j < height; j++)
+        public Field GenerateNewField(int width, int height, Point startPoint, Point endPoint)
         {
-          if (map[i, j] == step)
-          {
-            if (i != 0 && map[i - 1, j] == notVisited)
-              map[i - 1, j] = step + 1;
-            if (j != 0 && map[i, j - 1] == notVisited)
-              map[i, j - 1] = step + 1;
-            if (i != width - 1 && map[i + 1, j] == notVisited)
-              map[i + 1, j] = step + 1;
-            if (j != height - 1 && map[i, j + 1] == notVisited)
-              map[i, j + 1] = step + 1;
-          }
-        }
-        step++;
-      }
+            int roadCount = width * height / FieldRoadCoeff;
+            var map = CalcWave(width, height, startPoint);
 
-      return map;
+            return new Field(new FieldCell[2, 2]);
+        }
+
+        private static int[,] CalcWave(int width, int height, Point startPoint)
+        {
+            int[,] map = new int[width, height];
+
+            //int groundIndicator = GroundIndicator; //represents the wall
+            int notVisited = -1; // -1 represents the cell, where we were not 
+            int i, j, step = 0;
+
+            for (j = 0; j < width; j++)
+            {
+                for (i = 0; i < height; i++)
+                {
+                    map[j, i] = notVisited;
+                }
+            }
+
+            map[startPoint.X, startPoint.Y] = step;
+
+            //we watch the cells of maze while target point not found
+            while (step <= Math.Max(height, width) * 2)
+            {
+                for (i = 0; i < width; i++)
+                    for (j = 0; j < height; j++)
+                    {
+                        if (map[i, j] == step)
+                        {
+                            if (i != 0 && map[i - 1, j] == notVisited)
+                                map[i - 1, j] = step + 1;
+                            if (j != 0 && map[i, j - 1] == notVisited)
+                                map[i, j - 1] = step + 1;
+                            if (i != width - 1 && map[i + 1, j] == notVisited)
+                                map[i + 1, j] = step + 1;
+                            if (j != height - 1 && map[i, j + 1] == notVisited)
+                                map[i, j + 1] = step + 1;
+                        }
+                    }
+                step++;
+            }
+
+            return map;
+        }
     }
-  }
 }

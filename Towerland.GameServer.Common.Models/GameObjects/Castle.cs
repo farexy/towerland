@@ -1,9 +1,10 @@
 ﻿using System;
+using GameServer.Common.Models.Effects;
 using Newtonsoft.Json;
 
 namespace GameServer.Common.Models.GameObjects
 {
-  public class Castle : GameObject, ICloneable
+  public class Castle : GameObject
   {    
     public Castle() : base()
     {
@@ -12,15 +13,16 @@ namespace GameServer.Common.Models.GameObjects
 
     [JsonProperty("h")] public int Health { set; get; }
     
-    public object Clone()
+    public override object Clone()
     {
       return new Castle
       {
         GameId = GameId,
-        Effect = Effect,
-        Health = Health,
         Position = Position,
-        Type = Type
+        Type = Type,
+        WaitTicks = WaitTicks,
+        Effect = new SpecialEffect{Effect = Effect.Effect, Duration = Effect.Duration},
+        Health = Health
       };
     }
   }

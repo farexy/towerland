@@ -6,13 +6,13 @@ namespace Towerland.GameServer.Common.Logic
 {
   public class StatsFactory
   {
-    public readonly UnitStats[] Units =
+    public UnitStats[] Units =
     {
       new UnitStats
       {
         Type = GameObjectType.Unit_Skeleton,
-        Damage = 10,
-        Health = 200,
+        Damage = 5,
+        Health = 100,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Fastest,
         Speed = 2,
@@ -22,8 +22,8 @@ namespace Towerland.GameServer.Common.Logic
       new UnitStats
       {
         Type = GameObjectType.Unit_Orc,
-        Damage = 20,
-        Health = 500,
+        Damage = 10,
+        Health = 300,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
@@ -40,7 +40,7 @@ namespace Towerland.GameServer.Common.Logic
         Speed = 4,
         Cost = 200,
         Defence = UnitStats.DefenceType.LightArmor
-      }, 
+      },  
       new UnitStats
       {
         Type = GameObjectType.Unit_Goblin,
@@ -56,7 +56,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Dragon,
         Damage = 25,
-        Health = 400,
+        Health = 300,
         IsAir = true,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
@@ -67,7 +67,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Golem,
         Damage = 30,
-        Health = 700,
+        Health = 500,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
@@ -76,16 +76,16 @@ namespace Towerland.GameServer.Common.Logic
       },
     };
 
-    public readonly TowerStats[] Towers =
+    public TowerStats[] Towers =
     {
       new TowerStats
       {
         Type = GameObjectType.Tower_Usual,
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Usual,
-        AttackSpeed = 8,
-        Damage = 10,
-        Range = 2,
+        AttackSpeed = 6,
+        Damage = 60,
+        Range = 3,
         Cost = 50
       },
       new TowerStats
@@ -94,8 +94,8 @@ namespace Towerland.GameServer.Common.Logic
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Magic,
         AttackSpeed = 3,
-        Damage = 4,
-        Range = 3,
+        Damage = 35,
+        Range = 4,
         Cost = 120,
         SpecialEffects = new []{new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = 16}}
       },
@@ -104,8 +104,8 @@ namespace Towerland.GameServer.Common.Logic
         Type = GameObjectType.Tower_Cannon,
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Burst,
-        AttackSpeed = 15,
-        Damage = 20,
+        AttackSpeed = 12,
+        Damage = 70,
         Range = 4,
         Cost = 200
       },
@@ -114,8 +114,8 @@ namespace Towerland.GameServer.Common.Logic
         Type = GameObjectType.Tower_FortressWatchtower,
         TargetPriority = TowerStats.AttackPriority.Optimal,
         Attack = TowerStats.AttackType.Usual,
-        AttackSpeed = 12,
-        Damage = 30,
+        AttackSpeed = 8,
+        Damage = 100,
         Range = 5,
         Cost = 350,
       },
@@ -124,15 +124,15 @@ namespace Towerland.GameServer.Common.Logic
         Type = GameObjectType.Tower_Magic,
         TargetPriority = TowerStats.AttackPriority.Optimal,
         Attack = TowerStats.AttackType.Magic,
-        AttackSpeed = 6,
-        Damage = 20,
+        AttackSpeed = 5,
+        Damage = 70,
         Range = 6,
         Cost = 400,
         SpecialEffects = new []{new SpecialEffect{Effect = EffectId.Unit10xDamage_10PercentProbability}}
       }
     };
 
-    public readonly DefenceCoeff[] DefenceCoeffs =
+    public DefenceCoeff[] DefenceCoeffs =
     {
       new DefenceCoeff
       {

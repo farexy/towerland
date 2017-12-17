@@ -25,7 +25,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
     public int GetTowerReward(GameAction action)
     {
-      if (action.ActionId == ActionId.TowerKills)
+      if (action.ActionId == ActionId.UnitDies)
       {
         var towerStats = _statsLibrary.GetTowerStats(_field[action.TowerId].Type);
         var unitStats = _statsLibrary.GetUnitStats(_field[action.UnitId].Type);
@@ -47,19 +47,29 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         
         return GetUnitReward(path, action.Position, unitStats);
       }
+      if (action.ActionId == ActionId.UnitAttacksCastle)
+      {
+        var unit = (Unit)_field[action.UnitId];
+        var unitStats = _statsLibrary.GetUnitStats(unit.Type);
+        var path = unit.PathId.HasValue 
+          ? _field.StaticData.Path[unit.PathId.Value] 
+          : new Path(Enumerable.Empty<Point>());
+        
+        return GetUnitReward(path, path.End, unitStats);
+      }
 
       return 0;
     }
 
     private static int GetTowerReward(TowerStats tower, UnitStats unit)
     {
-      return (int)Math.Round(unit.Health / HealthCoeff + unit.Speed / SpeedCoeff + unit.Damage / DamageCoeff);
+      return (int)Math.Round(unit.Health / HealthCoeff + unit.Speed / SpeedCoeff + unit.Damage / DamageCoeff) / 2;
     }
     
     private static int GetUnitReward(Path p, Point f, UnitStats u)
     {
       double pathPercent = (double) p.PointOnThePathPosition(f) / p.Length;
-      return (int)pathPercent * 100;
+      return (int)(pathPercent * 200);
     }
   }
 }

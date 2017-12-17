@@ -1,10 +1,11 @@
-﻿using GameServer.Common.Models.Effects;
+﻿using System;
+using GameServer.Common.Models.Effects;
 using GameServer.Common.Models.GameField;
 using Newtonsoft.Json;
 
 namespace GameServer.Common.Models.GameObjects
 {
-  public abstract class GameObject
+  public class GameObject: ICloneable
   {
     [JsonProperty("i")] public int GameId { set; get; }
     [JsonProperty("p")] public Point Position { get; set; }
@@ -16,7 +17,7 @@ namespace GameServer.Common.Models.GameObjects
     {
       Effect = SpecialEffect.Empty;
     }
-
+    
     public GameObjectType ResolveType()
     {
       return ResolveType(Type);
@@ -27,8 +28,11 @@ namespace GameServer.Common.Models.GameObjects
       if(type >= GameObjectType.Reserved && type < GameObjectType.Castle)
         return GameObjectType.Reserved;
 
-      if (type >= GameObjectType.Castle && type < GameObjectType.Tower)
+      if (type >= GameObjectType.Castle && type < GameObjectType.Whizzbang)
         return GameObjectType.Castle;
+
+      if (type >= GameObjectType.Whizzbang && type < GameObjectType.Tower)
+        return GameObjectType.Whizzbang;
 
       if (type >= GameObjectType.Tower && type < GameObjectType.Unit)
         return GameObjectType.Tower;
@@ -37,6 +41,18 @@ namespace GameServer.Common.Models.GameObjects
         return GameObjectType.Unit;
 
       return GameObjectType.Undefined;
+    }
+
+    public virtual object Clone()
+    {
+      return new GameObject
+      {
+        GameId = GameId,
+        Position = Position,
+        Type = Type,
+        WaitTicks = WaitTicks,
+        Effect = new SpecialEffect{Effect = Effect.Effect, Duration = Effect.Duration}
+      };
     }
   }
 }

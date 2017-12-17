@@ -9,5 +9,6 @@ namespace Towerland.GameServer.Core.DataAccess
     Guid Add(T obj);
     void Update(Guid id, T obj);
     void Delete(Guid id);
+    void Clear();
   }
 }

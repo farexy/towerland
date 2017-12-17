@@ -104,14 +104,14 @@ namespace Towerland.GameServer.Domain.Infrastructure
         
         ResolveActions(fieldState, ticks);
     
-        if (command.Id.HasFlag(CommandId.AddUnit))
+        if (command.UnitCreationOptions != null)
         {
           foreach (var opt in command.UnitCreationOptions)
           {
             _recalculator.AddNewUnit(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
           }
         }
-        if (command.Id.HasFlag(CommandId.AddTower))
+        if (command.TowerCreationOptions != null)
         {
           foreach (var opt in command.TowerCreationOptions)
           {
@@ -126,14 +126,13 @@ namespace Towerland.GameServer.Domain.Infrastructure
         
         IncrementBattleVersionAsync(command.BattleId);
         
-        fieldSerialized.State = fieldState;
         _provider.Update(fieldSerialized.Id, fieldSerialized);
       });
     }
 
     public async Task TryEndBattleAsync(Guid battleId, Guid userId)
     {
-      await Task.Run(() =>
+      await Task.Run(() => 
       {
         var battle = _provider.Get(battleId);
         var entity = _battleRepository.Get(battleId);
@@ -180,7 +179,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
         var newBattle = new LiveBattleModel
         {
           Id = battleId,
-          State = _fieldFactory.ClassicField,
+          State = (Field)_fieldFactory.ClassicField.Clone(),
           Ticks = Enumerable.Empty<GameTick>()
         };
         _provider.Add(newBattle);

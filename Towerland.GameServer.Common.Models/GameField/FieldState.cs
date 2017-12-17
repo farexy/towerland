@@ -12,10 +12,11 @@ namespace GameServer.Common.Models.GameField
       Units = new List<Unit>();
     }
 
-    public FieldState(IEnumerable<Tower> towers, IEnumerable<Unit> units)
+    public FieldState(IEnumerable<Tower> towers, IEnumerable<Unit> units, Castle castle)
     {
-      Towers = towers.ToList();
-      Units = units.ToList();
+      Castle = (Castle)castle.Clone();
+      Towers = towers.Select(t => (Tower)t.Clone()).ToList();
+      Units = units.Select(u => (Unit)u.Clone()).ToList();
     }
     
     public Dictionary<int, GameObject> Objects { set; get; }
@@ -23,7 +24,7 @@ namespace GameServer.Common.Models.GameField
     public List<Unit> Units { private set; get; }
     public Castle Castle { set; get; }
 
-        public int MonsterMoney { set; get; }
+    public int MonsterMoney { set; get; }
     public int TowerMoney { set; get; }
   }
 }

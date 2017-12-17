@@ -65,7 +65,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     private void RecalcUnitPath(Field field, Unit unit)
     {      
       var stats = _statsLib.GetUnitStats(unit.Type);
-      if (!unit.PathId.HasValue || stats.MovementPriority != UnitStats.MovementPriorityType.Random)
+      if (!unit.PathId.HasValue)
       {
         unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.StaticData.Path, field, unit)
           : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.StaticData.Path, unit)

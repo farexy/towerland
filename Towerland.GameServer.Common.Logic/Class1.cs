@@ -91,9 +91,19 @@ namespace Towerland.GameServer.Common.Logic
           var stats = _statsLib.GetUnitStats(unit.Type);
           if (path.End == unit.Position)
           {
-            actions.Add(new GameAction { ActionId = ActionId.UnitAttacksCastle, UnitId = unit.GameId, Damage = stats.Damage });
+            var attackAction = new GameAction
+            {
+              ActionId = ActionId.UnitAttacksCastle,
+              UnitId = unit.GameId,
+              Damage = stats.Damage
+            };
+            actions.Add(attackAction);
             _field.State.Castle.Health -= stats.Damage;
             unitsToRemove.Add(unit.GameId);
+            
+            var unitReward = _moneyProvider.GetUnitReward(attackAction);
+            _field.State.MonsterMoney += unitReward;                  
+            actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
           }
           else
           {
@@ -160,7 +170,7 @@ namespace Towerland.GameServer.Common.Logic
                 if (unit.Health <= 0)
                 {
                   var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId};
-                  var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId};
+                  var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId, Position = unit.Position};
                   
                   actions.Add(dieAction);
                   actions.Add(killAction);
@@ -215,7 +225,7 @@ namespace Towerland.GameServer.Common.Logic
                   if (unit.Health <= 0)
                   {
                     var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = unit.GameId, TowerId = tower.GameId};
-                    var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = unit.GameId};
+                    var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = unit.GameId, Position = unit.Position};
                   
                     actions.Add(dieAction);
                     actions.Add(killAction);
@@ -296,15 +306,24 @@ namespace Towerland.GameServer.Common.Logic
           var p = new Point(x, y + range);
           units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
 
+          p = new Point(x, y - range);
+          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
+          
+          p = new Point(x + range, y - range);
+          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
+          
+          p = new Point(x + range, y);
+          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
+          
           p = new Point(x + range, y + range);
           units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
 
+          p = new Point(x - range, y + range);
+          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
+          
           p = new Point(x - range, y);
           units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
           
-          p = new Point(x, y - range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-
           p = new Point(x - range, y - range);
           units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
             
