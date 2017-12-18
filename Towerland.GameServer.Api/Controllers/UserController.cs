@@ -1,8 +1,12 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
+using GameServer.Api.Models;
 using Towerland.GameServer.Domain.Interfaces;
+using Towerland.GameServer.Domain.Models;
 
 namespace GameServer.Api.Controllers
 {
+  [RoutePrefix("user")]
   public class UserController : ApiController
   {
     private readonly IUserService _userService;
@@ -10,6 +14,24 @@ namespace GameServer.Api.Controllers
     public UserController(IUserService service)
     {
       _userService = service;
+    }
+
+    [HttpPost, Route("signin")]
+    public bool SignIn(SignInRequestModel requestModel)
+    {
+      return _userService.CheckPassword(requestModel.Email, requestModel.Password);
+    }
+
+    [HttpGet, Route("exp/{id:guid}")]
+    public UserExperience GetExp(Guid id)
+    {
+      return _userService.GetUserExpirience(id);
+    }
+
+    [HttpGet, Route("rating")]
+    public UserRating[] GetRating()
+    {
+      return _userService.GetUserRating();
     }
   }
 }

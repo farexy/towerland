@@ -46,6 +46,11 @@ namespace Towerland.GameServer.Core.DataAccess
       throw new NotImplementedException();
     }
 
+    public void Clear()
+    {
+      throw new NotImplementedException();
+    }
+
     public Battle Get(int id)
     {
       throw new NotImplementedException();

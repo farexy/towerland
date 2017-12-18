@@ -1,4 +1,5 @@
-﻿using Towerland.GameServer.Domain.Models;
+﻿using System;
+using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Interfaces
 {
@@ -7,6 +8,6 @@ namespace Towerland.GameServer.Domain.Interfaces
     bool CheckPassword(string email, string password);
 
     UserRating[] GetUserRating();
-    UserExperience GetUserExpirience();
+    UserExperience GetUserExpirience(Guid id);
   }
 }
