@@ -17,9 +17,9 @@ namespace GameServer.Api.Controllers
     }
 
     [HttpPost, Route("signin")]
-    public bool SignIn(SignInRequestModel requestModel)
+    public string SignIn(SignInRequestModel requestModel)
     {
-      return _userService.CheckPassword(requestModel.Email, requestModel.Password);
+      return _userService.CheckPassword(requestModel.Email, requestModel.Password).ToString();
     }
 
     [HttpGet, Route("exp/{id:guid}")]

@@ -24,7 +24,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     {
       return field.FindGameObjects(obj => 
           obj.ResolveType() == GameObjectType.Tower 
-          && stats.GetTowerStats(obj.ResolveType()).Range >= GameMath.Distance(obj.Position, position))
+          && stats.GetTowerStats(obj.Type).Range >= GameMath.Distance(obj.Position, position))
         .Select(obj => obj.GameId)
         .ToArray();
     }

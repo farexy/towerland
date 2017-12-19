@@ -15,45 +15,43 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     private const double SpeedCoeff = 0.3;
     
     private readonly IStatsLibrary _statsLibrary;
-    private readonly Field _field;
     
-    public MoneyProvider(Field field, IStatsLibrary stats)
+    public MoneyProvider(IStatsLibrary stats)
     {
       _statsLibrary = stats;
-      _field = field;
     }
 
-    public int GetTowerReward(GameAction action)
+    public int GetTowerReward(Field field, GameAction action)
     {
       if (action.ActionId == ActionId.UnitDies)
       {
-        var towerStats = _statsLibrary.GetTowerStats(_field[action.TowerId].Type);
-        var unitStats = _statsLibrary.GetUnitStats(_field[action.UnitId].Type);
+        var towerStats = _statsLibrary.GetTowerStats(field[action.TowerId].Type);
+        var unitStats = _statsLibrary.GetUnitStats(field[action.UnitId].Type);
         return GetTowerReward(towerStats, unitStats);
       }
 
       return 0;
     }
 
-    public int GetUnitReward(GameAction action)
+    public int GetUnitReward(Field field, GameAction action)
     {
       if (action.ActionId == ActionId.TowerKills)
       {
-        var unit = (Unit)_field[action.UnitId];
+        var unit = (Unit)field[action.UnitId];
         var unitStats = _statsLibrary.GetUnitStats(unit.Type);
         var path = unit.PathId.HasValue 
-          ? _field.StaticData.Path[unit.PathId.Value] 
-          : new Path(Enumerable.Empty<Point>());
+          ? field.StaticData.Path[unit.PathId.Value] 
+          : new Path(new Point[0]);
         
         return GetUnitReward(path, action.Position, unitStats);
       }
       if (action.ActionId == ActionId.UnitAttacksCastle)
       {
-        var unit = (Unit)_field[action.UnitId];
+        var unit = (Unit)field[action.UnitId];
         var unitStats = _statsLibrary.GetUnitStats(unit.Type);
         var path = unit.PathId.HasValue 
-          ? _field.StaticData.Path[unit.PathId.Value] 
-          : new Path(Enumerable.Empty<Point>());
+          ? field.StaticData.Path[unit.PathId.Value] 
+          : new Path(new Point[0]);
         
         return GetUnitReward(path, path.End, unitStats);
       }

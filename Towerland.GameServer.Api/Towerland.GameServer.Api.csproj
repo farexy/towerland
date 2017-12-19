@@ -139,6 +139,7 @@
     <Compile Include="Models\ActionsResponseModel.cs" />
     <Compile Include="Models\BattleSearchCheckResponseModel.cs" />
     <Compile Include="Models\BattleSearchRequestModel.cs" />
+    <Compile Include="Models\SignInRequestModel.cs" />
     <Compile Include="Models\StateChangeCommandRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

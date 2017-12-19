@@ -9,6 +9,7 @@ namespace Towerland.GameServer.Domain.Interfaces
 {
   public interface ILiveBattleService
   {
+    Field GetField(Guid battleId);
     bool CheckChanged(Guid battleId, int version);
     int GetRevision(Guid battleId);
     FieldState GetFieldState(Guid battleId);

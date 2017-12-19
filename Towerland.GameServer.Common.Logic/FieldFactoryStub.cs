@@ -120,9 +120,10 @@ namespace Towerland.GameServer.Common.Logic
                     },
                     StaticData =
                     {
+                        EndTimeUtc = DateTime.UtcNow.AddMinutes(5),
                         Path = new[]
                         {
-                            new Path(Path1.Reverse()), new Path(Path2.Reverse()), new Path(Path3.Reverse()), new Path(Path4.Reverse()), new Path(Path5.Reverse()),
+                            new Path(Path1.Reverse().ToArray()), new Path(Path2.Reverse().ToArray()), new Path(Path3.Reverse().ToArray()), new Path(Path4.Reverse().ToArray()), new Path(Path5.Reverse().ToArray()),
                         }
                     }
                 };

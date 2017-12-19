@@ -23,6 +23,12 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       _towersFactory = towerFactory;
     }
 
+    public void AddMoney(Field field, int money)
+    {
+      field.State.MonsterMoney += money;
+      field.State.TowerMoney += money;
+    }
+
     public void AddNewUnit(Field field, GameObjectType type, CreationOptions? opt = null)
     {
       var cost = _statsLib.GetUnitStats(type).Cost;

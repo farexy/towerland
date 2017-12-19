@@ -6,6 +6,7 @@ using AutoMapper;
 using GameServer.Api.Helpers;
 using GameServer.Api.Models;
 using GameServer.Common.Models.GameActions;
+using GameServer.Common.Models.GameField;
 using GameServer.Common.Models.State;
 using Towerland.GameServer.Domain.Interfaces;
 
@@ -25,6 +26,13 @@ namespace GameServer.Api.Controllers
       _mapper = mapper;
     }
 
+    [HttpGet]
+    [Route("{battle:guid}/init")]
+    public Field GetField(Guid battle)
+    {
+      return _liveBattleService.GetField(battle);
+    }
+    
     [HttpGet]
     [Route("{battle:guid}/check/{v:int}")]
     public bool CheckBattleStateChanged(Guid battle, int v)

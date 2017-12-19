@@ -23,7 +23,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Orc,
         Damage = 10,
-        Health = 300,
+        Health = 330,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
@@ -34,7 +34,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Impling,
         Damage = 15,
-        Health = 250,
+        Health = 280,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
@@ -45,7 +45,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Goblin,
         Damage = 15,
-        Health = 200,
+        Health = 350,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
@@ -56,7 +56,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Dragon,
         Damage = 25,
-        Health = 300,
+        Health = 600,
         IsAir = true,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
@@ -67,7 +67,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Golem,
         Damage = 30,
-        Health = 500,
+        Health = 700,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,

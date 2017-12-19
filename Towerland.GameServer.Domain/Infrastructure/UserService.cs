@@ -20,14 +20,14 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _battleRepository = battleRepository;
     }
     
-    public bool CheckPassword(string email, string password)
+    public Guid CheckPassword(string email, string password)
     {
       var entity = _userRepository.Get().FirstOrDefault(u => u.Email == email);
       if (entity == null)
       {
         throw new LogicException("Email isn't exists");
       }
-      return entity.Password == password;
+      return entity.Password == password ? entity.Id : Guid.Empty;
     }
 
     public UserRating[] GetUserRating()
@@ -53,7 +53,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         Experience = exp,
         RelativeExperience = exp % 100,
-        Level = exp / 100,
+        Level = 1 + exp / 100,
         TotalLevelExperience = 100
       };
     }

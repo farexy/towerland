@@ -50,6 +50,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _mapper = mapper;
     }
 
+    public Field GetField(Guid battleId)
+    {
+      if (!_battles.ContainsKey(battleId))
+      {
+        throw new ArgumentException("No such battle");
+      }
+      return _provider.Get(battleId).State;
+    }
+
     public bool CheckChanged(Guid battleId, int version)
     {
       if (!_battles.ContainsKey(battleId))
@@ -117,6 +126,10 @@ namespace Towerland.GameServer.Domain.Infrastructure
           {
             _recalculator.AddNewTower(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
           }
+        }
+        if (command.Money != 0)
+        {
+          _recalculator.AddMoney(fieldState, command.Money);
         }
         
         var calc = new StateCalculator(_statsLibrary, fieldState);

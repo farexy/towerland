@@ -31,7 +31,7 @@ namespace Towerland.GameServer.Common.Logic
         _statsLib = statsLibrary;
         _field = (Field)fieldState.Clone();
         
-        _moneyProvider = new MoneyProvider(_field, statsLibrary);
+        _moneyProvider = new MoneyProvider(statsLibrary);
       }
 
       public void SetState(FieldState fieldState)
@@ -72,6 +72,11 @@ namespace Towerland.GameServer.Common.Logic
 
         foreach (var unit in _field.State.Units)
         {
+          if (unit.Health <= 0)
+          {
+            unitsToRemove.Add(unit.GameId);
+            continue;
+          }
           if (unit.WaitTicks != 0)
           {
             unit.WaitTicks -= 1;
@@ -101,7 +106,7 @@ namespace Towerland.GameServer.Common.Logic
             _field.State.Castle.Health -= stats.Damage;
             unitsToRemove.Add(unit.GameId);
             
-            var unitReward = _moneyProvider.GetUnitReward(attackAction);
+            var unitReward = _moneyProvider.GetUnitReward(_field, attackAction);
             _field.State.MonsterMoney += unitReward;                  
             actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
           }
@@ -169,14 +174,15 @@ namespace Towerland.GameServer.Common.Logic
                 unit.Health -= damage;
                 if (unit.Health <= 0)
                 {
+                  var unitTrue = _field.State.Units.First(u => u.GameId == targetId);
                   var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId};
-                  var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId, Position = unit.Position};
+                  var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId, Position = unitTrue.Position};
                   
                   actions.Add(dieAction);
                   actions.Add(killAction);
                   
-                  var towerReward = _moneyProvider.GetTowerReward(dieAction);
-                  var unitReward = _moneyProvider.GetUnitReward(killAction);
+                  var towerReward = _moneyProvider.GetTowerReward(_field, dieAction);
+                  var unitReward = _moneyProvider.GetUnitReward(_field, killAction);
 
                   _field.State.MonsterMoney += unitReward;
                   _field.State.TowerMoney += towerReward;
@@ -187,10 +193,10 @@ namespace Towerland.GameServer.Common.Logic
                   _field.RemoveGameObject(targetId);
                 }
               }
-              else
-              {
-                actions.Add(new GameAction {ActionId = ActionId.TowerSearches, TowerId = tower.GameId});
-              }
+//              else
+//              {
+//                actions.Add(new GameAction {ActionId = ActionId.TowerSearches, TowerId = tower.GameId});
+//              }
               break;
 
             case TowerStats.AttackType.Burst:
@@ -230,8 +236,8 @@ namespace Towerland.GameServer.Common.Logic
                     actions.Add(dieAction);
                     actions.Add(killAction);
                   
-                    var towerReward = _moneyProvider.GetTowerReward(dieAction);
-                    var unitReward = _moneyProvider.GetUnitReward(killAction);
+                    var towerReward = _moneyProvider.GetTowerReward(_field, dieAction);
+                    var unitReward = _moneyProvider.GetUnitReward(_field, killAction);
 
                     _field.State.MonsterMoney += unitReward;
                     _field.State.TowerMoney += towerReward;
@@ -243,10 +249,10 @@ namespace Towerland.GameServer.Common.Logic
                   }
                 }
               }
-              else
-              {
-                actions.Add(new GameAction { ActionId = ActionId.TowerSearches, TowerId = tower.GameId });
-              }
+//              else
+//              {
+//                actions.Add(new GameAction { ActionId = ActionId.TowerSearches, TowerId = tower.GameId });
+//              }
               break;
           }
         }

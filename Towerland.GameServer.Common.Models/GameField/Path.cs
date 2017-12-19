@@ -7,8 +7,11 @@ namespace GameServer.Common.Models.GameField
 {
   public class Path : IEnumerable<Point>
   {
-    public Path(IEnumerable<Point> way)
+    private IEnumerable<Point> _pts;
+    
+    public Path(ICollection<Point> way)
     {
+      _pts = way;
       _way = way.ToArray();
     }
 
@@ -58,7 +61,7 @@ namespace GameServer.Common.Models.GameField
     
     public IEnumerator<Point> GetEnumerator()
     {
-      return (IEnumerator<Point>) _way.GetEnumerator();
+      return _pts.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
