@@ -73,7 +73,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
         UserId = user.Id,
         Nickname = user.Nickname,
         Expirience = exp,
-        VictoryPercent = wins / battles.Length * 100,
+        VictoryPercent = (int)((double)wins / battles.Length * 100),
         RatingPoints = exp * wins / battles.Length
       };
     }

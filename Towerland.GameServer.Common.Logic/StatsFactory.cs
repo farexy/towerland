@@ -34,7 +34,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Type = GameObjectType.Unit_Impling,
         Damage = 15,
-        Health = 280,
+        Health = 290,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,

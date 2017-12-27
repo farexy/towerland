@@ -114,7 +114,7 @@ namespace GameServer.Common.Models.GameField
 
         public void SetState(FieldState state)
         {
-            this._objects = state.Objects.ToDictionary(item => item.Key, item => item.Value);
+            this._objects = CloneObjects(state.Towers, state.Units);
             this._state = new FieldState(state.Towers, state.Units, state.Castle)
             {
                 MonsterMoney = state.MonsterMoney,
@@ -137,6 +137,20 @@ namespace GameServer.Common.Models.GameField
                     TowerMoney = State.TowerMoney
                 },
             };
+        }
+        
+        private static Dictionary<int, GameObject> CloneObjects(List<Tower> objects, List<Unit> objects1)
+        {
+            var res = new Dictionary<int, GameObject>();
+            foreach (var o in objects)
+            {
+                res.Add(o.GameId, o);
+            }
+            foreach (var o1 in objects1)
+            {
+                res.Add(o1.GameId, o1);
+            }
+            return res;
         }
     }
 }
