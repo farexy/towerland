@@ -117,7 +117,7 @@ namespace Towerland.GameServer.Common.Logic
         AttackSpeed = 8,
         Damage = 100,
         Range = 5,
-        Cost = 350,
+        Cost = 400,
       },
       new TowerStats
       {
@@ -127,7 +127,7 @@ namespace Towerland.GameServer.Common.Logic
         AttackSpeed = 5,
         Damage = 70,
         Range = 6,
-        Cost = 400,
+        Cost = 600,
         SpecialEffects = new []{new SpecialEffect{Effect = EffectId.Unit10xDamage_10PercentProbability}}
       }
     };
@@ -174,7 +174,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Defence = UnitStats.DefenceType.HeavyArmor,
         Attack = TowerStats.AttackType.Usual,
-        Coeff = 0.7
+        Coeff = 0.2
       },
       new DefenceCoeff
       {
@@ -186,7 +186,7 @@ namespace Towerland.GameServer.Common.Logic
       {
         Defence = UnitStats.DefenceType.HeavyArmor,
         Attack = TowerStats.AttackType.Magic,
-        Coeff = 0.2
+        Coeff = 0.6
       },
     };
   }

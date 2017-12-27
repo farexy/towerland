@@ -9,6 +9,7 @@ namespace Towerland.GameServer.Common.Logic
   public class FieldFactoryStub : IFieldFactory
     {
         private const int FieldRoadCoeff = 30;
+        private const int BattleDurationMinutes = 6;
 
         private static Field _classicField;
 
@@ -90,7 +91,10 @@ namespace Towerland.GameServer.Common.Logic
             get
             {
                 if (_classicField != null)
+                {
+                    _classicField.StaticData.EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes);
                     return _classicField;
+                }
 
                 var cells = new FieldCell[Cells2.GetLength(0), Cells2.GetLength(1)];
 
@@ -120,7 +124,7 @@ namespace Towerland.GameServer.Common.Logic
                     },
                     StaticData =
                     {
-                        EndTimeUtc = DateTime.UtcNow.AddMinutes(5),
+                        EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes),
                         Path = new[]
                         {
                             new Path(Path1.Reverse().ToArray()), new Path(Path2.Reverse().ToArray()), new Path(Path3.Reverse().ToArray()), new Path(Path4.Reverse().ToArray()), new Path(Path5.Reverse().ToArray()),
