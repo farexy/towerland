@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameServer.Common.Models.GameObjects;
-using Newtonsoft.Json;
 
 namespace GameServer.Common.Models.GameField
 {
     public class Field : ICloneable
     {
+        public GameObject this[int gameId] => _objects[gameId];
+
         public FieldStaticData StaticData { private set; get; }
 
         private FieldState _state;
@@ -100,11 +101,6 @@ namespace GameServer.Common.Models.GameField
             {
                 RemoveGameObject(id);
             }
-        }
-
-        public GameObject this[int gameId]
-        {
-            get { return _objects[gameId]; }
         }
 
         public IEnumerable<GameObject> FindGameObjects(Predicate<GameObject> predicate)

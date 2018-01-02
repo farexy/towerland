@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Http;
+using GameServer.Api.Controllers.Base;
 using GameServer.Api.Models;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
@@ -7,7 +8,7 @@ using Towerland.GameServer.Domain.Models;
 namespace GameServer.Api.Controllers
 {
   [RoutePrefix("user")]
-  public class UserController : ApiController
+  public class UserController : BaseAuthorizeController
   {
     private readonly IUserService _userService;
 

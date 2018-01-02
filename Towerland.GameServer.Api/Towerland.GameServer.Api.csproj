@@ -128,9 +128,11 @@
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="App_Start\UnityConfiguration.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Base\BaseAuthorizeController.cs" />
     <Compile Include="Controllers\BattleSearchController.cs" />
     <Compile Include="Controllers\GameProcessController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -41,7 +41,7 @@ namespace Towerland.GameServer.Common.Logic
 
       public GameTick[] CalculateActionsByTicks()
       {
-        var ticks = new List<List<GameAction>>(100);
+        var ticks = new List<List<GameAction>>(40);
         while (_field.State.Castle.Health > 0
           && _field.State.Units.Any())
         {

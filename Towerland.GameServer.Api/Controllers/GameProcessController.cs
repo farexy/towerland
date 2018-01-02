@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
+using GameServer.Api.Controllers.Base;
 using GameServer.Api.Helpers;
 using GameServer.Api.Models;
 using GameServer.Common.Models.GameActions;
@@ -13,7 +14,7 @@ using Towerland.GameServer.Domain.Interfaces;
 namespace GameServer.Api.Controllers
 {
   [RoutePrefix("game")]
-  public class GameProcessController : ApiController
+  public class GameProcessController : BaseAuthorizeController
   {
     private readonly ILiveBattleService _liveBattleService;
     private readonly IMapper _mapper;
