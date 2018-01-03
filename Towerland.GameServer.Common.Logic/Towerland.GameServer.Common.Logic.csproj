@@ -46,6 +46,7 @@
     <Compile Include="Interfaces\IGameObjectFactory.cs" />
     <Compile Include="Interfaces\IPathOptimiser.cs" />
     <Compile Include="Interfaces\IStateChangeRecalculator.cs" />
+    <Compile Include="SpecialAI\ComputerEnemyAI.cs" />
     <Compile Include="SpecialAI\FieldExtensions.cs" />
     <Compile Include="FieldFactoryStub.cs" />
     <Compile Include="ActionResolver\FieldStateActionResolver.cs" />

@@ -137,11 +137,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalExceptionHandler.cs" />
-    <Compile Include="Helpers\RequestHelper.cs" />
+    <Compile Include="Helpers\RequestExtensions.cs" />
+    <Compile Include="Helpers\UserSessionHelper.cs" />
     <Compile Include="Models\ActionsResponseModel.cs" />
     <Compile Include="Models\BattleSearchCheckResponseModel.cs" />
     <Compile Include="Models\BattleSearchRequestModel.cs" />
     <Compile Include="Models\SignInRequestModel.cs" />
+    <Compile Include="Models\SignUpRequestModel.cs" />
     <Compile Include="Models\StateChangeCommandRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

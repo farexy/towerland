@@ -73,7 +73,11 @@ namespace Towerland.GameServer.Core.DataAccess
 
     public Guid Create(IGuidEntity entity)
     {
-      throw new NotImplementedException();
+      using (var cx = _db.OpenDbConnection())
+      {
+        cx.Insert((User) entity);
+        return entity.Id;
+      }
     }
 
     public int Update(IIdentityEntity entity)

@@ -4,6 +4,7 @@ using GameServer.Common.Models.Exceptions;
 using GameServer.Common.Models.State;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
+using Towerland.GameServer.Domain.Helpers;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
 
@@ -28,6 +29,20 @@ namespace Towerland.GameServer.Domain.Infrastructure
         throw new LogicException("Email isn't exists");
       }
       return entity.Password == password ? entity.Id : Guid.Empty;
+    }
+
+    public Guid SignUp(string email, string name, string pwd, string nickname)
+    {
+      var id = Guid.NewGuid();
+      var pwdHash = pwd.ToPwdHash();
+      return _userRepository.Create(new User
+      {
+        Id = id,
+        Email = email,
+        FullName = name,
+        Nickname = nickname,
+        Password = pwdHash
+      });
     }
 
     public UserRating[] GetUserRating()
