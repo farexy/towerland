@@ -34,6 +34,10 @@ namespace Towerland.GameServer.Domain.Infrastructure
       }
       await Task.Run(() =>
         {
+          if (_sessionQueue.Contains(sessionId))
+          {
+            return;
+          }
           if (_sessionQueue.Any())
           {
             if (_sessionQueue.TryDequeue(out var enemySession))

@@ -21,11 +21,10 @@ namespace Towerland.GameServer.Api.Controllers
     [HttpPost, Route("signin")]
     public string SignIn(SignInRequestModel requestModel)
     {
-      return _userService.CheckPassword(requestModel.Email, requestModel.Password).ToString(); 
-//      var uid = _userService.CheckPassword(requestModel.Email, requestModel.Password);
-//      return uid == Guid.Empty
-//        ? string.Empty 
-//        : UserSessionHelper.GetSessionHash(uid);
+      var uid = _userService.CheckPassword(requestModel.Email, requestModel.Password);
+      return uid == Guid.Empty
+        ? string.Empty
+        : UserSessionHelper.GetSessionHash(uid);
     }
 
     [HttpPost, Route("signup")]
@@ -35,10 +34,10 @@ namespace Towerland.GameServer.Api.Controllers
         _userService.SignUp(requestModel.Email, requestModel.FullName, requestModel.Password, requestModel.Nickname));
     }
 
-    [HttpGet, Route("exp/{id:guid}")]
-    public UserExperience GetExp(Guid id)
+    [HttpGet, Route("exp")]
+    public UserExperience GetExp()
     {
-      return _userService.GetUserExpirience(id);
+      return _userService.GetUserExpirience(UserSessionId);
     }
 
     [HttpGet, Route("rating")]

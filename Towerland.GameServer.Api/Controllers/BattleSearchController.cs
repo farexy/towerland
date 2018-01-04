@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using Towerland.GameServer.Api.Controllers.Base;
 using Towerland.GameServer.Api.Models;
@@ -18,19 +17,19 @@ namespace Towerland.GameServer.Api.Controllers
     }
 
     [HttpGet]
-    [Route("search/{sessionId:guid}")]
-    public async Task Search(Guid sessionId)
+    [Route("search")]
+    public async Task Search()
     {
-      await _battleSearchService.AddToQueueAsync(sessionId);
+      await _battleSearchService.AddToQueueAsync(UserSessionId);
     }
 
     [HttpGet]
-    [Route("check/{sessionId:guid}")]
-    public BattleSearchCheckResponseModel Check(Guid sessionId)
+    [Route("check")]
+    public BattleSearchCheckResponseModel Check()
     {
       return new BattleSearchCheckResponseModel
       {
-        Found = _battleSearchService.TryGetBattle(sessionId, out var battleId, out var side),
+        Found = _battleSearchService.TryGetBattle(UserSessionId, out var battleId, out var side),
         BattleId = battleId,
         Side = side
       };
