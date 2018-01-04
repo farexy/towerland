@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI

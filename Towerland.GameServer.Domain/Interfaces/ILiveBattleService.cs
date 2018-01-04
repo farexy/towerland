@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameServer.Common.Models.GameActions;
-using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Models.GameActions;
+using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.State;
 
 namespace Towerland.GameServer.Domain.Interfaces
 {

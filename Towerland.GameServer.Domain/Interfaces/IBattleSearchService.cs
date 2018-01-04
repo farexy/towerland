@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Models.State;
 
 namespace Towerland.GameServer.Domain.Interfaces
 {

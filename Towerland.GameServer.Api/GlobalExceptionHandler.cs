@@ -7,10 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
-using GameServer.Common.Models.Exceptions;
 using log4net;
+using Towerland.GameServer.Common.Models.Exceptions;
 
-namespace GameServer.Api
+namespace Towerland.GameServer.Api
 {
   public class GlobalExceptionHandler : ExceptionHandler
   {

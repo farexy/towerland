@@ -7,7 +7,7 @@
     <ProjectGuid>{5150D21C-932F-4CCC-84E6-10C3398FAF8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GameServer.Common.Models</RootNamespace>
+    <RootNamespace>Towerland.GameServer.Common.Models</RootNamespace>
     <AssemblyName>GameServer.Common.Models</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -60,7 +60,6 @@
     <Compile Include="GameObjects\Tower.cs" />
     <Compile Include="GameObjects\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="State\CommandId.cs" />
     <Compile Include="State\Side.cs" />
     <Compile Include="State\StateChangeCommand.cs" />
     <Compile Include="State\TowerCreationOption.cs" />

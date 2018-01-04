@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameServer.Common.Models.Exceptions;
+using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Core.DataAccess;
-using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Infrastructure

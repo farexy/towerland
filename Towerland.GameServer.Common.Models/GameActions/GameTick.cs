@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace GameServer.Common.Models.GameActions
+namespace Towerland.GameServer.Common.Models.GameActions
 {
   public class GameTick
   {

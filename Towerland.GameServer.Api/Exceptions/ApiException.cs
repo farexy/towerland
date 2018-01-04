@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameServer.Api.Exceptions
+namespace Towerland.GameServer.Api.Exceptions
 {
   public class ApiException : ArgumentException
   {

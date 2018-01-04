@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using GameServer.Common.Models.GameActions;
-using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Models.GameActions;
+using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.ActionResolver;
 using Towerland.GameServer.Common.Logic.Interfaces;

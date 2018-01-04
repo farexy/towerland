@@ -2,8 +2,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
-using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Models.State;
 using Towerland.GameServer.Domain.Interfaces;
 
 namespace Towerland.GameServer.Domain.Infrastructure

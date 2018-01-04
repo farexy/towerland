@@ -6,7 +6,7 @@ using log4net;
 using log4net.Config;
 using Unity.WebApi;
 
-namespace GameServer.Api
+namespace Towerland.GameServer.Api
 {
   public class Global : System.Web.HttpApplication
   {    

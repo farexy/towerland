@@ -1,4 +1,4 @@
-﻿namespace GameServer.Common.Models.GameActions
+﻿namespace Towerland.GameServer.Common.Models.GameActions
 {
   public enum ActionId
   {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GameServer.Common.Models.Exceptions;
-using GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Models.Exceptions;
+using Towerland.GameServer.Common.Models.State;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Helpers;
@@ -22,13 +22,13 @@ namespace Towerland.GameServer.Domain.Infrastructure
     }
     
     public Guid CheckPassword(string email, string password)
-    {
+     {
       var entity = _userRepository.Get().FirstOrDefault(u => u.Email == email);
       if (entity == null)
       {
         throw new LogicException("Email isn't exists");
       }
-      return entity.Password == password ? entity.Id : Guid.Empty;
+      return entity.Password.SequenceEqual(password.ToPwdHash()) ? entity.Id : Guid.Empty;
     }
 
     public Guid SignUp(string email, string name, string pwd, string nickname)

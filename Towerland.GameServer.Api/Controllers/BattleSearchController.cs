@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
-using GameServer.Api.Controllers.Base;
-using GameServer.Api.Models;
+using Towerland.GameServer.Api.Controllers.Base;
+using Towerland.GameServer.Api.Models;
 using Towerland.GameServer.Domain.Interfaces;
 
-namespace GameServer.Api.Controllers
+namespace Towerland.GameServer.Api.Controllers
 {
   [RoutePrefix("battlesearch")]
   public class BattleSearchController : BaseAuthorizeController

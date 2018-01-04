@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameServer.Common.Models.GameField
+namespace Towerland.GameServer.Common.Models.GameField
 {
   public class Path : IEnumerable<Point>
   {

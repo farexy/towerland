@@ -1,8 +1,8 @@
-﻿using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.GameObjects;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameObjects;
 
-namespace GameServer.Common.Models.State
+namespace Towerland.GameServer.Common.Models.State
 {
   public class TowerCreationOption
   {

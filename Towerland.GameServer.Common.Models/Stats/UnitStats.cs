@@ -1,8 +1,8 @@
-﻿using GameServer.Common.Models.Effects;
-using GameServer.Common.Models.GameObjects;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.Effects;
+using Towerland.GameServer.Common.Models.GameObjects;
 
-namespace GameServer.Common.Models.Stats
+namespace Towerland.GameServer.Common.Models.Stats
 {
   public struct UnitStats : IStats
   {

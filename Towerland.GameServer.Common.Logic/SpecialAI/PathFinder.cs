@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameField;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI
 {

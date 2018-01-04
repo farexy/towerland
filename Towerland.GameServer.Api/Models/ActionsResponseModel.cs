@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GameServer.Common.Models.GameActions;
-using GameServer.Common.Models.GameField;
 using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.GameActions;
+using Towerland.GameServer.Common.Models.GameField;
 
-namespace GameServer.Api.Models
+namespace Towerland.GameServer.Api.Models
 {
   public class ActionsResponseModel
   {

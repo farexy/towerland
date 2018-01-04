@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="GameServer.Api.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Towerland.GameServer.Api.Global" Language="C#" %>

@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
-using GameServer.Api.Controllers.Base;
-using GameServer.Api.Helpers;
-using GameServer.Api.Models;
-using GameServer.Common.Models.GameActions;
-using GameServer.Common.Models.GameField;
-using GameServer.Common.Models.State;
+using Towerland.GameServer.Api.Controllers.Base;
+using Towerland.GameServer.Api.Models;
+using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.State;
 using Towerland.GameServer.Domain.Interfaces;
 
-namespace GameServer.Api.Controllers
+namespace Towerland.GameServer.Api.Controllers
 {
   [RoutePrefix("game")]
   public class GameProcessController : BaseAuthorizeController

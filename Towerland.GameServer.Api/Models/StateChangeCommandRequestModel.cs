@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameServer.Common.Models.State;
 using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.State;
 
-namespace GameServer.Api.Models
+namespace Towerland.GameServer.Api.Models
 {
   public class StateChangeCommandRequestModel
   {
-    [JsonProperty("id")] public CommandId Id { set; get; }
     [JsonProperty("battleId")] public Guid BattleId { set; get; }
     [JsonProperty("unitCreationOptions")] public IEnumerable<UnitCreationOption> UnitCreationOptions { set; get; }
     [JsonProperty("towerCreationOptions")] public IEnumerable<TowerCreationOption> TowerCreationOptions { set; get; }

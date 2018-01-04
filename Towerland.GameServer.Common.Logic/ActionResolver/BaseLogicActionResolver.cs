@@ -1,12 +1,12 @@
-﻿using GameServer.Common.Models.GameActions;
-using GameServer.Common.Models.GameField;
+﻿using Towerland.GameServer.Common.Models.GameActions;
+using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic.ActionResolver
 {
   public abstract class BaseActionResolver : IActionResolver
   {
-    protected Field _field;
+    protected readonly Field _field;
 
     protected BaseActionResolver(Field filed)
     {

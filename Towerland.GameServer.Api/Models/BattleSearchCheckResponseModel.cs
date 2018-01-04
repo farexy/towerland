@@ -1,8 +1,8 @@
 ﻿using System;
-using GameServer.Common.Models.State;
 using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.State;
 
-namespace GameServer.Api.Models
+namespace Towerland.GameServer.Api.Models
 {
   public class BattleSearchCheckResponseModel
   {

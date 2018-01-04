@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GameServer.Api.Exceptions;
 using Newtonsoft.Json;
+using Towerland.GameServer.Api.Exceptions;
 
-namespace GameServer.Api.Helpers
+namespace Towerland.GameServer.Api.Helpers
 {
   public static class RequestExtensions
   {

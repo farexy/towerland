@@ -1,4 +1,4 @@
-﻿namespace GameServer.Common.Models.GameObjects
+﻿namespace Towerland.GameServer.Common.Models.GameObjects
 {
   public enum GameObjectType
   {

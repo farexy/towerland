@@ -1,7 +1,7 @@
-﻿using GameServer.Common.Models.GameField;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.GameField;
 
-namespace GameServer.Common.Models.GameActions
+namespace Towerland.GameServer.Common.Models.GameActions
 {
   public struct GameAction
   {

@@ -1,13 +1,11 @@
-﻿using System.Net.Http.Formatting;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
-using AutoMapper;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Unity.WebApi;
 
-namespace GameServer.Api
+namespace Towerland.GameServer.Api
 {
   public static class WebApiConfig
   {

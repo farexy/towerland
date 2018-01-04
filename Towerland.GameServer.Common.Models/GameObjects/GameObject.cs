@@ -1,9 +1,9 @@
 ﻿using System;
-using GameServer.Common.Models.Effects;
-using GameServer.Common.Models.GameField;
 using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.Effects;
+using Towerland.GameServer.Common.Models.GameField;
 
-namespace GameServer.Common.Models.GameObjects
+namespace Towerland.GameServer.Common.Models.GameObjects
 {
   public class GameObject: ICloneable
   {

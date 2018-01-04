@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameServer.Common.Models.GameActions;
-using GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameActions;
+using Towerland.GameServer.Common.Models.GameField;
 
 namespace Towerland.GameServer.Domain.Models
 {

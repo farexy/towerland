@@ -1,6 +1,6 @@
-﻿using GameServer.Common.Models.GameObjects;
+﻿using Towerland.GameServer.Common.Models.GameObjects;
 
-namespace GameServer.Common.Models.Stats
+namespace Towerland.GameServer.Common.Models.Stats
 {
   public interface IStats
   {

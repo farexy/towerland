@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameServer.Common.Models.GameObjects;
-using GameServer.Common.Models.Stats;
+using Towerland.GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Models.Stats;
 using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic

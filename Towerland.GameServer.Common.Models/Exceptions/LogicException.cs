@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameServer.Common.Models.Exceptions
+namespace Towerland.GameServer.Common.Models.Exceptions
 {
   public class LogicException : Exception
   {

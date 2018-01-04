@@ -1,19 +1,19 @@
 ﻿using System.Configuration;
 using AutoMapper;
-using GameServer.Common.Models.GameObjects;
 using Microsoft.Practices.Unity;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
+using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Infrastructure;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
 
-namespace GameServer.Api
+namespace Towerland.GameServer.Api
 {
   public static class UnityConfig
   {

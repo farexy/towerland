@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GameServer.Common.Models.GameField
+namespace Towerland.GameServer.Common.Models.GameField
 {
   public struct FieldCell
   {

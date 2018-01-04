@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GameServer.Common.Models.Effects
+namespace Towerland.GameServer.Common.Models.Effects
 {
   public class SpecialEffect
   {

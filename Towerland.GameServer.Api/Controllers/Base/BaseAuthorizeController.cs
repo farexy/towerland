@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Web.Http;
-using GameServer.Api.Helpers;
+using Towerland.GameServer.Api.Helpers;
 
-namespace GameServer.Api.Controllers.Base
+namespace Towerland.GameServer.Api.Controllers.Base
 {
   public class BaseAuthorizeController : ApiController
   {
-    protected Guid UserSessionId => Guid.Parse(Request.GetHeader("user-session"));
+    protected Guid UserSessionId => UserSessionHelper.GetUserId(Request.GetHeader("user-session"));
   }
 }

@@ -1,4 +1,4 @@
-﻿namespace GameServer.Api.Models
+﻿namespace Towerland.GameServer.Api.Models
 {
   public class SignInRequestModel
   {

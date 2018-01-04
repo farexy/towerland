@@ -1,4 +1,4 @@
-﻿namespace GameServer.Common.Models.Stats
+﻿namespace Towerland.GameServer.Common.Models.Stats
 {
   public struct DefenceCoeff
   {

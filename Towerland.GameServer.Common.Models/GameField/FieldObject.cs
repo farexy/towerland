@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameServer.Common.Models.GameField
+namespace Towerland.GameServer.Common.Models.GameField
 {
   [Flags]
   public enum FieldObject

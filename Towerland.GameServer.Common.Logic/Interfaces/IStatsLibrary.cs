@@ -1,5 +1,5 @@
-﻿using GameServer.Common.Models.GameObjects;
-using GameServer.Common.Models.Stats;
+﻿using Towerland.GameServer.Common.Models.GameObjects;
+using Towerland.GameServer.Common.Models.Stats;
 
 namespace Towerland.GameServer.Common.Logic.Interfaces
 {

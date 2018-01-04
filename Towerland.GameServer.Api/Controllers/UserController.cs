@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Http;
-using GameServer.Api.Controllers.Base;
-using GameServer.Api.Helpers;
-using GameServer.Api.Models;
+using Towerland.GameServer.Api.Controllers.Base;
+using Towerland.GameServer.Api.Helpers;
+using Towerland.GameServer.Api.Models;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
 
-namespace GameServer.Api.Controllers
+namespace Towerland.GameServer.Api.Controllers
 {
   [RoutePrefix("user")]
   public class UserController : BaseAuthorizeController
@@ -21,7 +21,11 @@ namespace GameServer.Api.Controllers
     [HttpPost, Route("signin")]
     public string SignIn(SignInRequestModel requestModel)
     {
-      return _userService.CheckPassword(requestModel.Email, requestModel.Password).ToString();
+      return _userService.CheckPassword(requestModel.Email, requestModel.Password).ToString(); 
+//      var uid = _userService.CheckPassword(requestModel.Email, requestModel.Password);
+//      return uid == Guid.Empty
+//        ? string.Empty 
+//        : UserSessionHelper.GetSessionHash(uid);
     }
 
     [HttpPost, Route("signup")]

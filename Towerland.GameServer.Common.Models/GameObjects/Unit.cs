@@ -1,7 +1,7 @@
-﻿using GameServer.Common.Models.Effects;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Towerland.GameServer.Common.Models.Effects;
 
-namespace GameServer.Common.Models.GameObjects
+namespace Towerland.GameServer.Common.Models.GameObjects
 {
   public class Unit : GameObject
   {

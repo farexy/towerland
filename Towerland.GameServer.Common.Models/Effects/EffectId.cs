@@ -1,4 +1,4 @@
-﻿namespace GameServer.Common.Models.Effects
+﻿namespace Towerland.GameServer.Common.Models.Effects
 {
   public enum EffectId
   {

@@ -1,11 +1,10 @@
-﻿using Microsoft.Practices.Unity;
-using AutoMapper;
-using GameServer.Api.Models;
-using GameServer.Common.Models.State;
+﻿using AutoMapper;
+using Towerland.GameServer.Api.Models;
+using Towerland.GameServer.Common.Models.State;
 
-namespace GameServer.Api
+namespace Towerland.GameServer.Api
 {
-  public class AutoMapperConfiguration
+  public static class AutoMapperConfiguration
   {
     public static IMapper Configure()
     {
