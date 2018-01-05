@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
@@ -6,6 +7,7 @@ using Towerland.GameServer.Api.Controllers.Base;
 using Towerland.GameServer.Api.Models;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.State;
+using Towerland.GameServer.Domain.Helpers;
 using Towerland.GameServer.Domain.Interfaces;
 
 namespace Towerland.GameServer.Api.Controllers
@@ -32,21 +34,19 @@ namespace Towerland.GameServer.Api.Controllers
     }
     
     [HttpGet]
-    [Route("{battle:guid}/check/{v:int}")]
-    public bool CheckBattleStateChanged(Guid battle, int v)
+    [Route("{battle:guid}/checkstate/{v:int}")]
+    public HttpResponseMessage CheckBattleStateChanged(Guid battle, int v)
     {
-      return _liveBattleService.CheckChanged(battle, v);
-    }
-
-    [HttpGet]
-    [Route("{battle:guid}/ticks")]
-    public ActionsResponseModel GetActionsByTicks(Guid battle)
-    {
-      return new ActionsResponseModel
+      return new HttpResponseMessage
       {
-        ActionsByTicks = _liveBattleService.GetCalculatedActionsByTicks(battle),
-        State = _liveBattleService.GetFieldState(battle),
-        Revision = _liveBattleService.GetRevision(battle)
+        Content = new StringContent(_liveBattleService.CheckChanged(battle, v)
+          ? new ActionsResponseModel
+            {
+              ActionsByTicks = _liveBattleService.GetCalculatedActionsByTicks(battle),
+              State = _liveBattleService.GetFieldState(battle),
+              Revision = _liveBattleService.GetRevision(battle)
+            }.ToJsonString()
+          : string.Empty)
       };
     }
 

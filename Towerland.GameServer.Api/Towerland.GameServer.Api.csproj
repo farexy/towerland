@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="log.config" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -141,7 +142,6 @@
     <Compile Include="Helpers\UserSessionHelper.cs" />
     <Compile Include="Models\ActionsResponseModel.cs" />
     <Compile Include="Models\BattleSearchCheckResponseModel.cs" />
-    <Compile Include="Models\BattleSearchRequestModel.cs" />
     <Compile Include="Models\SignInRequestModel.cs" />
     <Compile Include="Models\SignUpRequestModel.cs" />
     <Compile Include="Models\StateChangeCommandRequestModel.cs" />

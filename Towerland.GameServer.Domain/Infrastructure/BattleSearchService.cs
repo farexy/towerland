@@ -10,7 +10,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
   public class BattleSearchService : IBattleSearchService
   {
     private static readonly Random Rnd = new Random();
-    private static ConcurrentQueue<Guid> _sessionQueue;
+    private static ConcurrentQueue<BattleSearchSession> _sessionQueue;
     private static ConcurrentDictionary<Guid, Guid> _sessionBattles;
     private static ConcurrentDictionary<Guid, PlayerSide> _battlePlayerSides;
       
@@ -25,7 +25,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       if (_sessionQueue == null)
       {
-        _sessionQueue = new ConcurrentQueue<Guid>();
+        _sessionQueue = new ConcurrentQueue<BattleSearchSession>();
       }
       if (_sessionBattles == null)
       {
@@ -34,10 +34,16 @@ namespace Towerland.GameServer.Domain.Infrastructure
       }
       await Task.Run(() =>
         {
-          if (_sessionQueue.Contains(sessionId))
+          if (_sessionQueue.Any(s => s.SessionId == sessionId))
           {
             return;
           }
+
+          var session = new BattleSearchSession
+          {
+            SessionId = sessionId,
+            SearchBegin = DateTime.UtcNow
+          };
           if (_sessionQueue.Any())
           {
             if (_sessionQueue.TryDequeue(out var enemySession))
@@ -46,11 +52,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
               if (Rnd.Next() % 2 == 0)
               {
                 monstersUser = sessionId;
-                towersUser = enemySession;
+                towersUser = enemySession.SessionId;
               }
               else
               {
-                monstersUser = enemySession;
+                monstersUser = enemySession.SessionId;
                 towersUser = sessionId;
               }
               _battlePlayerSides.TryAdd(monstersUser, PlayerSide.Monsters);
@@ -58,12 +64,12 @@ namespace Towerland.GameServer.Domain.Infrastructure
               
               var battleId = _battleProvider.InitNewBattle(monstersUser, towersUser);
               _sessionBattles.TryAdd(sessionId, battleId);
-              _sessionBattles.TryAdd(enemySession, battleId);
+              _sessionBattles.TryAdd(enemySession.SessionId, battleId);
               
               return;
             }
           }
-          _sessionQueue.Enqueue(sessionId);
+          _sessionQueue.Enqueue(session);
         }
       );
     }
@@ -79,6 +85,12 @@ namespace Towerland.GameServer.Domain.Infrastructure
       side = PlayerSide.Undefined;
       battleId = Guid.Empty;
       return false;
+    }
+        
+    private struct BattleSearchSession
+    {
+      public Guid SessionId;
+      public DateTime SearchBegin;
     }
   }
 }

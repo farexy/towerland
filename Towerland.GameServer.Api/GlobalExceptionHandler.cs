@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using log4net;
+using Towerland.GameServer.Api.Exceptions;
 using Towerland.GameServer.Common.Models.Exceptions;
 
 namespace Towerland.GameServer.Api
@@ -25,6 +26,11 @@ namespace Towerland.GameServer.Api
       {
         statusCode = HttpStatusCode.BadRequest;
         Log.WarnFormat(CultureInfo.InvariantCulture, "BusinessLogicException occured: {0}", ex.Message);
+      }
+      else if (ex is ApiException)
+      {
+        statusCode = HttpStatusCode.Forbidden;
+        Log.WarnFormat(CultureInfo.InvariantCulture, "ApiException occured: {0}", ex.Message);
       }
       else
       {
