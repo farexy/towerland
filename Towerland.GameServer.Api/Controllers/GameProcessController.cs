@@ -37,16 +37,17 @@ namespace Towerland.GameServer.Api.Controllers
     [Route("{battle:guid}/checkstate/{v:int}")]
     public HttpResponseMessage CheckBattleStateChanged(Guid battle, int v)
     {
+      var content = string.Empty;
+      if (_liveBattleService.CheckChanged(battle, v))
+      {
+        var actions = _mapper.Map<ActionsResponseModel>(_liveBattleService.GetActualBattleState(battle, out var revision));
+        actions.Revision = revision;
+        content = actions.ToJsonString();
+      }
+      
       return new HttpResponseMessage
       {
-        Content = new StringContent(_liveBattleService.CheckChanged(battle, v)
-          ? new ActionsResponseModel
-            {
-              ActionsByTicks = _liveBattleService.GetCalculatedActionsByTicks(battle),
-              State = _liveBattleService.GetFieldState(battle),
-              Revision = _liveBattleService.GetRevision(battle)
-            }.ToJsonString()
-          : string.Empty)
+        Content = new StringContent(content)
       };
     }
 

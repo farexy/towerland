@@ -13,6 +13,7 @@ using Towerland.GameServer.Common.Logic.ActionResolver;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
+using Towerland.GameServer.Domain.Helpers;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
 
@@ -23,6 +24,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
     private static readonly ConcurrentDictionary<Guid, int> _battles;
 
     private readonly IBattleRepository _battleRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IProvider<LiveBattleModel> _provider;
     private readonly IStateChangeRecalculator _recalculator;
     private readonly IFieldFactory _fieldFactory;
@@ -34,7 +36,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _battles = new ConcurrentDictionary<Guid, int>();
     }
     
-    public LiveBattleService(IBattleRepository repo,
+    public LiveBattleService(
+      IBattleRepository repo,
+      IUserRepository userRepo,
       IProvider<LiveBattleModel> provider, 
       IStateChangeRecalculator recalc, 
       IFieldFactory fieldFactory, 
@@ -42,6 +46,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       IMapper mapper)
     {
       _battleRepository = repo;
+      _userRepository = userRepo;
       _provider = provider;
       _recalculator = recalc;
       _fieldFactory = fieldFactory;
@@ -67,15 +72,6 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _battles[battleId] != version;
     }
 
-    public int GetRevision(Guid battleId)
-    {
-      if (!_battles.ContainsKey(battleId))
-      {
-        throw new ArgumentException("No such battle");
-      }
-      return _battles[battleId];
-    }
-
     public FieldState GetFieldState(Guid battleId)
     {
       if (!_battles.ContainsKey(battleId))
@@ -85,13 +81,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _provider.Find(battleId).State.State;
     }
 
-    public IEnumerable<GameTick> GetCalculatedActionsByTicks(Guid battleId)
+    public LiveBattleModel GetActualBattleState(Guid battleId, out int revision)
     {
       if (!_battles.ContainsKey(battleId))
       {
         throw new ArgumentException("No such battle");
       }
-      return _provider.Find(battleId).Ticks;
+
+      revision = _battles[battleId];
+      return _provider.Find(battleId);
     }
 
     public Guid InitNewBattle(Guid monstersPlayer, Guid towersPlayer)
@@ -104,7 +102,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public async Task RecalculateAsync(StateChangeCommand command, int curTick)
     {
-      await Task.Run(() =>
+      await Task.Run(async () =>
       {
         var fieldSerialized = _provider.Find(command.BattleId);
         var fieldState = fieldSerialized.State;
@@ -136,21 +134,23 @@ namespace Towerland.GameServer.Domain.Infrastructure
         fieldSerialized.Ticks = newTicks;
         _provider.Update(fieldSerialized);
         
-        IncrementBattleVersionAsync(command.BattleId);
+        await IncrementBattleVersionAsync(command.BattleId);
       });
     }
 
     public async Task TryEndBattleAsync(Guid battleId, Guid userId)
     {
-      await Task.Run(() => 
+      await Task.Run(async () => 
       {
         var battle = _provider.Find(battleId);
         var entity = _battleRepository.Find(battleId);
 
         PlayerSide winSide;
-        if (battle.State.StaticData.EndTimeUtc < DateTime.UtcNow)
+        Guid? left = null;
+        if (battle.State.StaticData.EndTimeUtc > DateTime.UtcNow)
         {
           winSide = entity.Monsters_UserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
+          left = userId;
         }
         else
         {
@@ -159,11 +159,18 @@ namespace Towerland.GameServer.Domain.Infrastructure
         }
         entity.Winner = (int) winSide;
         entity.EndTime = DateTime.UtcNow;
-        _battleRepository.Update(entity);
+        using (var ts = new TransactionScopeWrapper())
+        {
+          _battleRepository.Update(entity);
+          _userRepository.IncrementExperience(entity.Monsters_UserId, CalcUserExp(entity, entity.Monsters_UserId, left));
+          _userRepository.IncrementExperience(entity.Towers_UserId, CalcUserExp(entity, entity.Towers_UserId, left));
+
+          ts.Complete();
+        }
 
         battle.Ticks = CreateBattleEndTick(winSide);
 
-        IncrementBattleVersionAsync(battleId);
+        await IncrementBattleVersionAsync(battleId);
         _provider.Update(battle);      
       });
     }
@@ -218,6 +225,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
           }
         }
       };
+    }
+
+    private static int CalcUserExp(Battle b, Guid uid, Guid? left)
+    {
+      return b.IsWinner(uid)
+        ? GameConstants.UserWonExp
+        : left.HasValue && uid == left
+          ? GameConstants.UserLeftExp
+          : GameConstants.UserLoosedExp;
     }
       
     private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)

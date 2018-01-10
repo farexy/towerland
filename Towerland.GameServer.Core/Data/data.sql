@@ -15,7 +15,8 @@ CREATE TABLE User(
   FullName VARCHAR(128) NOT NULL,
   Email VARCHAR(128) NOT NULL,
   Nickname VARCHAR(128) NOT NULL,
-  Password VARCHAR(128) NOT NULL
+  Password VARCHAR(128) NOT NULL,
+  Experience INT DEFAULT 0
 ) Engine InnoDB CHARSET=utf8;
 
 CREATE TABLE Battle(

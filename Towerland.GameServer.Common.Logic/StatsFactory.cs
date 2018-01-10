@@ -21,26 +21,26 @@ namespace Towerland.GameServer.Common.Logic
       },
       new UnitStats
       {
-        Type = GameObjectType.Unit_Orc,
+        Type = GameObjectType.Unit_Impling,
         Damage = 10,
+        Health = 200,
+        IsAir = false,
+        MovementPriority = UnitStats.MovementPriorityType.Random,
+        Speed = 4,
+        Cost = 120,
+        Defence = UnitStats.DefenceType.LightArmor
+      },
+      new UnitStats
+      {
+        Type = GameObjectType.Unit_Orc,
+        Damage = 15,
         Health = 330,
         IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
-        Cost = 120,
+        Cost = 200,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
-      new UnitStats
-      {
-        Type = GameObjectType.Unit_Impling,
-        Damage = 15,
-        Health = 290,
-        IsAir = false,
-        MovementPriority = UnitStats.MovementPriorityType.Random,
-        Speed = 4,
-        Cost = 200,
-        Defence = UnitStats.DefenceType.LightArmor
-      },  
       new UnitStats
       {
         Type = GameObjectType.Unit_Goblin,
@@ -51,7 +51,7 @@ namespace Towerland.GameServer.Common.Logic
         Speed = 3,
         Cost = 250,
         Defence = UnitStats.DefenceType.LightArmor
-      }, 
+      },
       new UnitStats
       {
         Type = GameObjectType.Unit_Dragon,
@@ -97,7 +97,7 @@ namespace Towerland.GameServer.Common.Logic
         Damage = 35,
         Range = 4,
         Cost = 120,
-        SpecialEffects = new []{new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = 16}}
+        SpecialEffects = new[] {new SpecialEffect {Effect = EffectId.UnitFreezed, Duration = 16}}
       },
       new TowerStats
       {
@@ -128,7 +128,7 @@ namespace Towerland.GameServer.Common.Logic
         Damage = 70,
         Range = 6,
         Cost = 600,
-        SpecialEffects = new []{new SpecialEffect{Effect = EffectId.Unit10xDamage_10PercentProbability}}
+        SpecialEffects = new[] {new SpecialEffect {Effect = EffectId.Unit10xDamage_10PercentProbability}}
       }
     };
 

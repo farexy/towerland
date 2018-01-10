@@ -58,12 +58,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public UserExperience GetUserExpirience(Guid id)
     {
-      var battles = _battleRepository.Get().Where(b => b.Monsters_UserId == id || b.Towers_UserId == id).ToArray();
-      var exp = 0;
-      foreach (var b in battles)
-      {
-        exp += IsWinner(b, id) ? 10 : 3;
-      }
+      var exp = _userRepository.Find(id).Experience;
       return new UserExperience
       {
         Experience = exp,
@@ -80,8 +75,8 @@ namespace Towerland.GameServer.Domain.Infrastructure
       var wins = 0;
       foreach (var b in battles)
       {
-        exp += IsWinner(b, user.Id) ? 10 : 3;
-        wins += IsWinner(b, user.Id) ? 1 : 0;
+        exp += user.Experience;
+        wins += b.IsWinner(user.Id) ? 1 : 0;
       }
       return new UserRating
       {
@@ -93,10 +88,6 @@ namespace Towerland.GameServer.Domain.Infrastructure
       };
     }
 
-    private static bool IsWinner(Battle b, Guid uid)
-    {
-      return b.Monsters_UserId == uid && b.Winner == (int) PlayerSide.Monsters ||
-             b.Towers_UserId == uid && b.Winner == (int) PlayerSide.Towers;
-    }
+   
   }
 }

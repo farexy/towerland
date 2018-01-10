@@ -14,7 +14,6 @@ namespace Towerland.GameServer.Common.Logic
     {
       private readonly IStatsLibrary _statsLib;
       private readonly Field _field;
-
       private readonly MoneyProvider _moneyProvider;
       
       private const int NotFound = -1;
@@ -87,7 +86,7 @@ namespace Towerland.GameServer.Common.Logic
             if (unit.Effect.Duration == 0)
             {
               unit.Effect = SpecialEffect.Empty;
-              actions.Add(new GameAction{ActionId = ActionId.UnitEffectCanseled, UnitId = unit.GameId});
+              actions.Add(new GameAction {ActionId = ActionId.UnitEffectCanseled, UnitId = unit.GameId});
             }
           }
 
@@ -111,16 +110,16 @@ namespace Towerland.GameServer.Common.Logic
           }
           else
           {
-            var effectSpeedCoeff = unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
+            var contextSpeedCoeff = GetContextSpeedCoeff(unit);
             var nextPoint = path.GetNext(unit.Position);
             unit.Position = nextPoint;
-            unit.WaitTicks = stats.Speed * effectSpeedCoeff;
+            unit.WaitTicks = stats.Speed * contextSpeedCoeff;
             actions.Add(new GameAction
             {
               ActionId = ActionId.UnitMoves,
               Position = nextPoint,
               UnitId = unit.GameId,
-              WaitTicks = stats.Speed * effectSpeedCoeff
+              WaitTicks = stats.Speed * contextSpeedCoeff
             });
           }        
         }
@@ -267,6 +266,11 @@ namespace Towerland.GameServer.Common.Logic
           return 0;
 
         return GameMath.Round(tower.Damage * _statsLib.GetDefenceCoeff(unit.Defence, tower.Attack));
+      }
+
+      private static int GetContextSpeedCoeff(Unit unit)
+      {
+        return unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
       }
       
       private static void ApplyTowerEffects(TowerStats tower, Unit unit, List<GameAction> actions)

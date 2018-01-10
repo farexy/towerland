@@ -42,7 +42,10 @@ namespace Towerland.GameServer.Core.DataAccess
 
     public void IncrementExperience(Guid id, int exp)
     {
-      throw new NotImplementedException();
+      using (var cx = _db.OpenDbConnection())
+      {
+        cx.UpdateAdd(() => new User {Experience = exp}, where: u => u.Id == id);
+      }
     }
   }
 }
