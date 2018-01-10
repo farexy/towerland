@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Towerland.GameServer.Common.Models.GameActions;
@@ -19,11 +18,11 @@ using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Infrastructure
 {
-  public class LiveBattleService : ILiveBattleService, IBattleService
+  public class LiveBattleService : ILiveBattleService, IBattleInitializationService
   {
     private static readonly ConcurrentDictionary<Guid, int> _battles;
 
-    private readonly ICrudRepository<Battle> _battleRepository;
+    private readonly IBattleRepository _battleRepository;
     private readonly IProvider<LiveBattleModel> _provider;
     private readonly IStateChangeRecalculator _recalculator;
     private readonly IFieldFactory _fieldFactory;
@@ -35,7 +34,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _battles = new ConcurrentDictionary<Guid, int>();
     }
     
-    public LiveBattleService(ICrudRepository<Battle> repo,
+    public LiveBattleService(IBattleRepository repo,
       IProvider<LiveBattleModel> provider, 
       IStateChangeRecalculator recalc, 
       IFieldFactory fieldFactory, 
@@ -56,7 +55,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         throw new ArgumentException("No such battle");
       }
-      return _provider.Get(battleId).State;
+      return _provider.Find(battleId).State;
     }
 
     public bool CheckChanged(Guid battleId, int version)
@@ -83,7 +82,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         throw new ArgumentException("No such battle");
       }
-      return _provider.Get(battleId).State.State;
+      return _provider.Find(battleId).State.State;
     }
 
     public IEnumerable<GameTick> GetCalculatedActionsByTicks(Guid battleId)
@@ -92,7 +91,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         throw new ArgumentException("No such battle");
       }
-      return _provider.Get(battleId).Ticks;
+      return _provider.Find(battleId).Ticks;
     }
 
     public Guid InitNewBattle(Guid monstersPlayer, Guid towersPlayer)
@@ -107,7 +106,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       await Task.Run(() =>
       {
-        var fieldSerialized = _provider.Get(command.BattleId);
+        var fieldSerialized = _provider.Find(command.BattleId);
         var fieldState = fieldSerialized.State;
         var ticks = fieldSerialized.Ticks.Take(curTick);
         
@@ -135,11 +134,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
         var calc = new StateCalculator(_statsLibrary, fieldState);
         var newTicks = calc.CalculateActionsByTicks();
         fieldSerialized.Ticks = newTicks;
-        _provider.Update(command.BattleId, fieldSerialized);
+        _provider.Update(fieldSerialized);
         
         IncrementBattleVersionAsync(command.BattleId);
-        
-        _provider.Update(fieldSerialized.Id, fieldSerialized);
       });
     }
 
@@ -147,8 +144,8 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       await Task.Run(() => 
       {
-        var battle = _provider.Get(battleId);
-        var entity = _battleRepository.Get(battleId);
+        var battle = _provider.Find(battleId);
+        var entity = _battleRepository.Find(battleId);
 
         PlayerSide winSide;
         if (battle.State.StaticData.EndTimeUtc < DateTime.UtcNow)
@@ -167,7 +164,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
         battle.Ticks = CreateBattleEndTick(winSide);
 
         IncrementBattleVersionAsync(battleId);
-        _provider.Update(battleId, battle);      
+        _provider.Update(battle);      
       });
     }
 
@@ -195,7 +192,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
           State = (Field)_fieldFactory.ClassicField.Clone(),
           Ticks = Enumerable.Empty<GameTick>()
         };
-        _provider.Add(newBattle);
+        _provider.Create(newBattle);
         _battleRepository.Create(new Battle
         {
           Id = battleId,

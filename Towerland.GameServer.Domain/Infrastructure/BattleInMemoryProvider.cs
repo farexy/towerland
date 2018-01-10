@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Towerland.GameServer.Common.Models.Exceptions;
-using Towerland.GameServer.Core.DataAccess;
+using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Infrastructure
@@ -15,7 +15,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _battles = new Dictionary<Guid, LiveBattleModel>();
     }
 
-    public LiveBattleModel Get(Guid id)
+    public LiveBattleModel Find(Guid id)
     {
       if (!_battles.ContainsKey(id))
       {
@@ -24,19 +24,19 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _battles[id];
     }
 
-    public Guid Add(LiveBattleModel obj)
+    public Guid Create(LiveBattleModel obj)
     {
       _battles.Add(obj.Id, obj);
       return obj.Id;
     }
 
-    public void Update(Guid id, LiveBattleModel obj)
+    public void Update(LiveBattleModel obj)
     {
-      if (!_battles.ContainsKey(id))
+      if (!_battles.ContainsKey(obj.Id))
       {
         throw new LogicException("Not found");
       }
-      _battles[id] = obj;
+      _battles[obj.Id] = obj;
     }
 
     public void Delete(Guid id)

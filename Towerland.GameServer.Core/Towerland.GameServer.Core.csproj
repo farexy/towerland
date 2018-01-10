@@ -66,11 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\BaseCrudRepository.cs" />
     <Compile Include="DataAccess\BattleRepository.cs" />
-    <Compile Include="DataAccess\ICrudRepository.cs" />
-    <Compile Include="DataAccess\IProvider.cs" />
-    <Compile Include="DataAccess\MySqlCrudRepository.cs" />
+    <Compile Include="DataAccess\IBattleRepository.cs" />
+    <Compile Include="DataAccess\IUserRepository.cs" />
     <Compile Include="DataAccess\UserRepository.cs" />
     <Compile Include="Entities\Battle.cs" />
     <Compile Include="Entities\User.cs" />

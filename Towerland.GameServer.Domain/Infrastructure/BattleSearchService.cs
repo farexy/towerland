@@ -14,9 +14,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
     private static ConcurrentDictionary<Guid, Guid> _sessionBattles;
     private static ConcurrentDictionary<Guid, PlayerSide> _battlePlayerSides;
       
-    private readonly IBattleService _battleProvider;
+    private readonly IBattleInitializationService _battleProvider;
 
-    public BattleSearchService(IBattleService battleProvider)
+    public BattleSearchService(IBattleInitializationService battleProvider)
     {
       _battleProvider = battleProvider;
     }

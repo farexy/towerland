@@ -8,7 +8,6 @@ using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Core.DataAccess;
-using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Infrastructure;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
@@ -25,10 +24,10 @@ namespace Towerland.GameServer.Api
         new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["Towerland"].ConnectionString, MySqlDialect.Provider));
       
       container.RegisterType<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
-      container.RegisterType<ICrudRepository<Battle>, BattleRepository>();
-      container.RegisterType<ICrudRepository<User>, UserRepository>();
+      container.RegisterType<IBattleRepository, BattleRepository>();
+      container.RegisterType<IUserRepository, UserRepository>();
       
-      container.RegisterType<IBattleService, LiveBattleService>();
+      container.RegisterType<IBattleInitializationService, LiveBattleService>();
       container.RegisterType<IBattleSearchService, BattleSearchService>();
       container.RegisterType<ILiveBattleService, LiveBattleService>();
       container.RegisterType<IUserService, UserService>();

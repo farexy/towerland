@@ -2,7 +2,7 @@
 
 namespace Towerland.GameServer.Domain.Interfaces
 {
-  public interface IBattleService
+  public interface IBattleInitializationService
   {
     Guid InitNewBattle(Guid monstersPlayer, Guid towersPlayer);
   }

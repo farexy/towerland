@@ -12,10 +12,10 @@ namespace Towerland.GameServer.Domain.Infrastructure
 {
   public class UserService : IUserService
   {
-    private readonly ICrudRepository<User> _userRepository;
-    private readonly ICrudRepository<Battle> _battleRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IBattleRepository _battleRepository;
 
-    public UserService(ICrudRepository<User> userRepository, ICrudRepository<Battle> battleRepository)
+    public UserService(IUserRepository userRepository, IBattleRepository battleRepository)
     {
       _userRepository = userRepository;
       _battleRepository = battleRepository;
