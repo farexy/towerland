@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Towerland.GameServer.Domain.Helpers
+namespace Towerland.GameServer.Domain.Lockers
 {
   public class BattleLocker : IDisposable
   {

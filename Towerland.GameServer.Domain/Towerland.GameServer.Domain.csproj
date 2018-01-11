@@ -49,9 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\BattleExtensions.cs" />
-    <Compile Include="Helpers\BattleLocker.cs" />
-    <Compile Include="Helpers\GameConstants.cs" />
-    <Compile Include="Helpers\KeyLocker.cs" />
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Helpers\TransactionScopeWrapper.cs" />
     <Compile Include="Infrastructure\BattleInMemoryProvider.cs" />
@@ -63,6 +61,8 @@
     <Compile Include="Interfaces\ILiveBattleService.cs" />
     <Compile Include="Interfaces\IProvider.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Lockers\BattleLocker.cs" />
+    <Compile Include="Lockers\KeyLocker.cs" />
     <Compile Include="Models\LiveBattleModel.cs" />
     <Compile Include="Models\StateChangeCommand.cs" />
     <Compile Include="Models\UserExperience.cs" />

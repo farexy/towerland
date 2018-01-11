@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Models.GameField
@@ -9,9 +10,12 @@ namespace Towerland.GameServer.Common.Models.GameField
     {
         public GameObject this[int gameId] => _objects[gameId];
 
+        [JsonProperty("sd")]
         public FieldStaticData StaticData { private set; get; }
 
+        [JsonProperty("state")]
         private FieldState _state;
+        [JsonIgnore]
         public FieldState State
         {
             get
@@ -23,18 +27,23 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         private Dictionary<int, GameObject> _objects;
 
-        protected Field()
-        {
-        }
-
-        public Field(FieldCell[,] cells)
+        public Field()
         {
             _objects = new Dictionary<int, GameObject>();
-            StaticData = new FieldStaticData(cells,
-              cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Entrance).Position,
-              cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Castle).Position
-              );
             _state = new FieldState();
+        }
+
+        public Field(FieldStaticData staticData) : this()
+        {
+            StaticData = staticData;
+        }
+
+        public Field(FieldCell[,] cells) : this()
+        {
+            StaticData = new FieldStaticData(cells,
+                cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Entrance).Position,
+                cells.Cast<FieldCell>().First(c => c.Object == FieldObject.Castle).Position
+            );
         }
 
         public int AddGameObject(GameObject gameObj)

@@ -1,6 +1,6 @@
 ﻿namespace Towerland.GameServer.Domain.Helpers
 {
-  internal class GameConstants
+  internal static class Constants
   {
     public const int UserLeftExp = 1;
     public const int UserLoosedExp = 3;

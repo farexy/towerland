@@ -15,6 +15,7 @@ using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Helpers;
 using Towerland.GameServer.Domain.Interfaces;
+using Towerland.GameServer.Domain.Lockers;
 using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Infrastructure
@@ -125,8 +126,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
           }
 
           var calc = new StateCalculator(_statsLibrary, fieldState);
-          var newTicks = calc.CalculateActionsByTicks();
-          fieldSerialized.Ticks = newTicks;
+          fieldSerialized.Ticks = calc.CalculateActionsByTicks();;
           _provider.Update(fieldSerialized);
 
           IncrementBattleVersion(command.BattleId);
@@ -228,10 +228,10 @@ namespace Towerland.GameServer.Domain.Infrastructure
     private static int CalcUserExp(Battle b, Guid uid, Guid? left)
     {
       return b.IsWinner(uid)
-        ? GameConstants.UserWonExp
+        ? Constants.UserWonExp
         : left.HasValue && uid == left
-          ? GameConstants.UserLeftExp
-          : GameConstants.UserLoosedExp;
+          ? Constants.UserLeftExp
+          : Constants.UserLoosedExp;
     }
       
     private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)

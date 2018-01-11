@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Serialization;
 using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Models.GameField

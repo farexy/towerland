@@ -191,10 +191,6 @@ namespace Towerland.GameServer.Common.Logic
                   _field.RemoveGameObject(targetId);
                 }
               }
-//              else
-//              {
-//                actions.Add(new GameAction {ActionId = ActionId.TowerSearches, TowerId = tower.GameId});
-//              }
               break;
 
             case TowerStats.AttackType.Burst:
@@ -247,10 +243,6 @@ namespace Towerland.GameServer.Common.Logic
                   }
                 }
               }
-//              else
-//              {
-//                actions.Add(new GameAction { ActionId = ActionId.TowerSearches, TowerId = tower.GameId });
-//              }
               break;
           }
         }

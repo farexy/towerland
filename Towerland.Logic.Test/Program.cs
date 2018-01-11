@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Newtonsoft.Json;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
@@ -54,7 +55,10 @@ namespace Towerland.Logic.Test
 //      {
 //        Console.WriteLine(p);
 //      }
-
+      var ss = JsonConvert.SerializeObject(f);
+      var f2 = JsonConvert.DeserializeObject<Field>(ss);
+      f = f2;
+      
       var statsStub = new StatsLibrary();
       var uFactory = new UnitFactory(statsStub);
       var tFactory = new TowerFactory(statsStub);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
-namespace Towerland.GameServer.Domain.Helpers
+namespace Towerland.GameServer.Domain.Lockers
 {
   public class KeyLocker<T> where T : struct
   {
