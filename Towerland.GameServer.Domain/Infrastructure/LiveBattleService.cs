@@ -72,15 +72,6 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _battles[battleId] != version;
     }
 
-    public FieldState GetFieldState(Guid battleId)
-    {
-      if (!_battles.ContainsKey(battleId))
-      {
-        throw new ArgumentException("No such battle");
-      }
-      return _provider.Find(battleId).State.State;
-    }
-
     public LiveBattleModel GetActualBattleState(Guid battleId, out int revision)
     {
       if (!_battles.ContainsKey(battleId))
@@ -102,91 +93,98 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public async Task RecalculateAsync(StateChangeCommand command, int curTick)
     {
-      await Task.Run(async () =>
+      await Task.Run(() =>
       {
-        var fieldSerialized = _provider.Find(command.BattleId);
-        var fieldState = fieldSerialized.State;
-        var ticks = fieldSerialized.Ticks.Take(curTick);
-        
-        ResolveActions(fieldState, ticks);
-    
-        if (command.UnitCreationOptions != null)
+        using (new BattleLocker(command.BattleId))
         {
-          foreach (var opt in command.UnitCreationOptions)
+          var fieldSerialized = _provider.Find(command.BattleId);
+          var fieldState = fieldSerialized.State;
+          var ticks = fieldSerialized.Ticks.Take(curTick);
+
+          ResolveActions(fieldState, ticks);
+
+          if (command.UnitCreationOptions != null)
           {
-            _recalculator.AddNewUnit(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
+            foreach (var opt in command.UnitCreationOptions)
+            {
+              _recalculator.AddNewUnit(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
+            }
           }
-        }
-        if (command.TowerCreationOptions != null)
-        {
-          foreach (var opt in command.TowerCreationOptions)
+
+          if (command.TowerCreationOptions != null)
           {
-            _recalculator.AddNewTower(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
+            foreach (var opt in command.TowerCreationOptions)
+            {
+              _recalculator.AddNewTower(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
+            }
           }
+
+          if (command.Money != 0)
+          {
+            _recalculator.AddMoney(fieldState, command.Money);
+          }
+
+          var calc = new StateCalculator(_statsLibrary, fieldState);
+          var newTicks = calc.CalculateActionsByTicks();
+          fieldSerialized.Ticks = newTicks;
+          _provider.Update(fieldSerialized);
+
+          IncrementBattleVersion(command.BattleId);
         }
-        if (command.Money != 0)
-        {
-          _recalculator.AddMoney(fieldState, command.Money);
-        }
-        
-        var calc = new StateCalculator(_statsLibrary, fieldState);
-        var newTicks = calc.CalculateActionsByTicks();
-        fieldSerialized.Ticks = newTicks;
-        _provider.Update(fieldSerialized);
-        
-        await IncrementBattleVersionAsync(command.BattleId);
       });
     }
 
     public async Task TryEndBattleAsync(Guid battleId, Guid userId)
     {
-      await Task.Run(async () => 
+      await Task.Run(() => 
       {
-        var battle = _provider.Find(battleId);
-        var entity = _battleRepository.Find(battleId);
-
-        PlayerSide winSide;
         Guid? left = null;
-        if (battle.State.StaticData.EndTimeUtc > DateTime.UtcNow)
+        using (new BattleLocker(battleId))
         {
-          winSide = entity.Monsters_UserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
-          left = userId;
-        }
-        else
-        {
-          ResolveActions(battle.State, battle.Ticks);
-          winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
-        }
-        entity.Winner = (int) winSide;
-        entity.EndTime = DateTime.UtcNow;
-        using (var ts = new TransactionScopeWrapper())
-        {
-          _battleRepository.Update(entity);
-          _userRepository.IncrementExperience(entity.Monsters_UserId, CalcUserExp(entity, entity.Monsters_UserId, left));
-          _userRepository.IncrementExperience(entity.Towers_UserId, CalcUserExp(entity, entity.Towers_UserId, left));
+          var battle = _provider.Find(battleId);
+          var entity = _battleRepository.Find(battleId);
+          
+          PlayerSide winSide;
+          if (battle.State.StaticData.EndTimeUtc > DateTime.UtcNow)
+          {
+            winSide = entity.Monsters_UserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
+            left = userId;
+          }
+          else
+          {
+            ResolveActions(battle.State, battle.Ticks);
+            winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
+          }
 
-          ts.Complete();
+          entity.Winner = (int) winSide;
+          entity.EndTime = DateTime.UtcNow;
+          using (var ts = new TransactionScopeWrapper())
+          {
+            _battleRepository.Update(entity);
+            _userRepository.IncrementExperience(entity.Monsters_UserId,
+              CalcUserExp(entity, entity.Monsters_UserId, left));
+            _userRepository.IncrementExperience(entity.Towers_UserId, CalcUserExp(entity, entity.Towers_UserId, left));
+
+            ts.Complete();
+          }
+
+          battle.Ticks = CreateBattleEndTick(winSide);
+
+          IncrementBattleVersion(battleId);
+          _provider.Update(battle);
         }
-
-        battle.Ticks = CreateBattleEndTick(winSide);
-
-        await IncrementBattleVersionAsync(battleId);
-        _provider.Update(battle);      
       });
     }
 
 
-    private async Task<bool> IncrementBattleVersionAsync(Guid battleId)
+    private bool IncrementBattleVersion(Guid battleId)
     {
-      return await Task.Run(() =>
+      if (!_battles.TryGetValue(battleId, out var curValue))
       {
-        while (_battles.TryGetValue(battleId, out var curValue))
-        {
-          if (_battles.TryUpdate(battleId, curValue + 1, curValue))
-            return true;
-        }
         return false;
-      });
+      }
+
+      return _battles.TryUpdate(battleId, curValue + 1, curValue);
     }
 
     private async void CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)

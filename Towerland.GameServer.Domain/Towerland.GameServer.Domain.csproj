@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\BattleExtensions.cs" />
+    <Compile Include="Helpers\BattleLocker.cs" />
     <Compile Include="Helpers\GameConstants.cs" />
+    <Compile Include="Helpers\KeyLocker.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Helpers\TransactionScopeWrapper.cs" />
     <Compile Include="Infrastructure\BattleInMemoryProvider.cs" />

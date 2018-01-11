@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
@@ -8,11 +8,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
 {
   public class BattleInMemoryProvider : IProvider<LiveBattleModel>
   {
-    private static readonly Dictionary<Guid, LiveBattleModel> _battles;
+    private static readonly ConcurrentDictionary<Guid, LiveBattleModel> _battles;
 
     static BattleInMemoryProvider()
     {
-      _battles = new Dictionary<Guid, LiveBattleModel>();
+      _battles = new ConcurrentDictionary<Guid, LiveBattleModel>();
     }
 
     public LiveBattleModel Find(Guid id)
@@ -26,7 +26,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public Guid Create(LiveBattleModel obj)
     {
-      _battles.Add(obj.Id, obj);
+      _battles.TryAdd(obj.Id, obj);
       return obj.Id;
     }
 
@@ -45,7 +45,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         throw new LogicException("Not found");
       }
-      _battles.Remove(id);
+      _battles.TryRemove(id, out var _);
     }
 
     public void Clear()
