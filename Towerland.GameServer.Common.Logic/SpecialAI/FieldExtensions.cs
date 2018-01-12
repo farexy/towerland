@@ -6,7 +6,7 @@ using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
-  static class FieldExtensions
+  internal static class FieldExtensions
   {
     public static void MoveUnit(this Field field, int gameId, Point position, int wait)
     {

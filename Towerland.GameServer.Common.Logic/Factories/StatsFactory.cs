@@ -2,7 +2,7 @@
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
 
-namespace Towerland.GameServer.Common.Logic
+namespace Towerland.GameServer.Common.Logic.Factories
 {
   public class StatsFactory
   {

@@ -74,10 +74,7 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public IEnumerable<int> AddMany(IEnumerable<GameObject> objects)
         {
-            foreach (var o in objects)
-            {
-                yield return AddGameObject(o);
-            }
+            return objects.Select(AddGameObject);
         }
 
         public void RemoveGameObject(int gameId)
@@ -119,7 +116,7 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public void SetState(FieldState state)
         {
-            this._objects = CloneObjects(state.Towers, state.Units);
+            this._objects = SetObjects(state.Towers, state.Units);
             this._state = new FieldState(state.Towers, state.Units, state.Castle)
             {
                 MonsterMoney = state.MonsterMoney,
@@ -144,7 +141,7 @@ namespace Towerland.GameServer.Common.Models.GameField
             };
         }
         
-        private static Dictionary<int, GameObject> CloneObjects(List<Tower> objects, List<Unit> objects1)
+        private static Dictionary<int, GameObject> SetObjects(List<Tower> objects, List<Unit> objects1)
         {
             var res = new Dictionary<int, GameObject>();
             foreach (var o in objects)

@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using Towerland.GameServer.Common.Logic;
+using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
 using Towerland.GameServer.Common.Models.GameObjects;
@@ -32,6 +33,7 @@ namespace Towerland.GameServer.Api
       container.RegisterType<ILiveBattleService, LiveBattleService>();
       container.RegisterType<IUserService, UserService>();
 
+      container.RegisterType<ICheatCommandManager, CheatCommandManager>();
       container.RegisterType<IStatsLibrary, StatsLibrary>();
       container.RegisterType<IFieldFactory, FieldFactoryStub>();
       container.RegisterType<IPathOptimiser, PathOptimisation>();

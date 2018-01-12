@@ -3,6 +3,7 @@ using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
 using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Models.State;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
@@ -21,10 +22,21 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       _towersFactory = towerFactory;
     }
 
-    public void AddMoney(Field field, int money)
+    public void AddMoney(Field field, int money, PlayerSide side)
     {
-      field.State.MonsterMoney += money;
-      field.State.TowerMoney += money;
+      switch (side)
+      {
+        case PlayerSide.Monsters:
+          field.State.MonsterMoney += money;
+          break;
+        case PlayerSide.Towers:
+          field.State.TowerMoney += money;
+          break;
+        default:
+          field.State.MonsterMoney += money;
+          field.State.TowerMoney += money;
+          break;
+      }
     }
 
     public void AddNewUnit(Field field, GameObjectType type, CreationOptions? opt = null)

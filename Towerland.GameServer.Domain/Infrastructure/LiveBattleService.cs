@@ -30,6 +30,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
     private readonly IStateChangeRecalculator _recalculator;
     private readonly IFieldFactory _fieldFactory;
     private readonly IStatsLibrary _statsLibrary;
+    private readonly ICheatCommandManager _cheatCommandManager;
     private readonly IMapper _mapper;
 
     static LiveBattleService()
@@ -44,6 +45,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       IStateChangeRecalculator recalc, 
       IFieldFactory fieldFactory, 
       IStatsLibrary statsLibrary,
+      ICheatCommandManager cheatCommandManager,
       IMapper mapper)
     {
       _battleRepository = repo;
@@ -52,6 +54,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _recalculator = recalc;
       _fieldFactory = fieldFactory;
       _statsLibrary = statsLibrary;
+      _cheatCommandManager = cheatCommandManager;
       _mapper = mapper;
     }
 
@@ -120,9 +123,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
             }
           }
 
-          if (command.Money != 0)
+          if (!string.IsNullOrWhiteSpace(command.CheatCommand))
           {
-            _recalculator.AddMoney(fieldState, command.Money);
+            _cheatCommandManager.ResolveCommand(command.CheatCommand, fieldState);
           }
 
           var calc = new StateCalculator(_statsLibrary, fieldState);

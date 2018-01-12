@@ -41,14 +41,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResolver\BaseLogicActionResolver.cs" />
+    <Compile Include="CheatCommandManager.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Factories\FieldFactoryStub.cs" />
+    <Compile Include="Factories\StatsFactory.cs" />
+    <Compile Include="Factories\TowerFactory.cs" />
+    <Compile Include="Factories\UnitFactory.cs" />
     <Compile Include="Interfaces\IFieldFactory.cs" />
     <Compile Include="Interfaces\IGameObjectFactory.cs" />
     <Compile Include="Interfaces\IPathOptimiser.cs" />
     <Compile Include="Interfaces\IStateChangeRecalculator.cs" />
+    <Compile Include="Interfaces\ICheatCommandManager.cs" />
     <Compile Include="SpecialAI\ComputerEnemyAI.cs" />
     <Compile Include="SpecialAI\FieldExtensions.cs" />
-    <Compile Include="FieldFactoryStub.cs" />
     <Compile Include="ActionResolver\FieldStateActionResolver.cs" />
     <Compile Include="Interfaces\IActionResolver.cs" />
     <Compile Include="GameMath.cs" />
@@ -58,10 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecialAI\PathOptimisation.cs" />
     <Compile Include="SpecialAI\StateChangeRecalculator.cs" />
-    <Compile Include="StatsFactory.cs" />
     <Compile Include="StatsLibrary.cs" />
-    <Compile Include="TowerFactory.cs" />
-    <Compile Include="UnitFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Towerland.GameServer.Common.Models\Towerland.GameServer.Common.Models.csproj">

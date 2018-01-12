@@ -7,6 +7,7 @@ using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.ActionResolver;
+using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
 
@@ -49,12 +50,6 @@ namespace Towerland.Logic.Test
     static void Main(string[] args)
     {
       var f = new FieldFactoryStub().ClassicField;
-
-//      var pf = new PathFinder();
-//      foreach (var p in pf.ResolvePath(f.StaticData.Cells, f.StaticData.Start, f.StaticData.Finish))
-//      {
-//        Console.WriteLine(p);
-//      }
       var ss = JsonConvert.SerializeObject(f);
       var f2 = JsonConvert.DeserializeObject<Field>(ss);
       f = f2;

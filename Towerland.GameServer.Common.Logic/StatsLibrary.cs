@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
 using Towerland.GameServer.Common.Logic.Interfaces;
