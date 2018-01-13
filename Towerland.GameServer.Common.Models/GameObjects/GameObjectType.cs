@@ -23,8 +23,8 @@
 
     Unit = 1000,
     Unit_Skeleton = 1001,
-    Unit_Orc = 1002,
-    Unit_Impling = 1003,
+    Unit_Impling = 1002,
+    Unit_Orc= 1003,
     Unit_Goblin = 1004,
     Unit_Dragon = 1005,
     Unit_Golem = 1006

@@ -116,12 +116,12 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public void SetState(FieldState state)
         {
-            this._objects = SetObjects(state.Towers, state.Units);
             this._state = new FieldState(state.Towers, state.Units, state.Castle)
             {
                 MonsterMoney = state.MonsterMoney,
                 TowerMoney = state.TowerMoney
             };
+            this._objects = SetObjects(_state.Towers, _state.Units);
         }
 
         public object Clone()
@@ -130,7 +130,8 @@ namespace Towerland.GameServer.Common.Models.GameField
             {
                 StaticData = new FieldStaticData(StaticData.Cells, StaticData.Start, StaticData.Finish)
                 {
-                    Path = StaticData.Path
+                    Path = StaticData.Path,
+                    EndTimeUtc = StaticData.EndTimeUtc
                 },
                 _objects = _objects.ToDictionary(item => item.Key, item => (GameObject)item.Value.Clone()),
                 _state = new FieldState(State.Towers, State.Units, State.Castle)

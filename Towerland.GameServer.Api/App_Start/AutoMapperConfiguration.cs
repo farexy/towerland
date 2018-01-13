@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Towerland.GameServer.Api.Models;
+using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Models.State;
 using Towerland.GameServer.Domain.Models;
 
@@ -26,6 +27,9 @@ namespace Towerland.GameServer.Api
       cfg.CreateMap<LiveBattleModel, ActionsResponseModel>()
         .ForMember(dest => dest.ActionsByTicks, opt => opt.MapFrom(src => src.Ticks))
         .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.State));
+      cfg.CreateMap<StatsFactory, StatsResponseModel>()
+        .ForMember(dest => dest.UnitStats, opt => opt.MapFrom(src => src.Units))
+        .ForMember(dest => dest.TowerStats, opt => opt.MapFrom(src => src.Towers));
     }
   }
 }

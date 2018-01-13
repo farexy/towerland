@@ -132,6 +132,7 @@
     <Compile Include="Controllers\Base\BaseAuthorizeController.cs" />
     <Compile Include="Controllers\BattleSearchController.cs" />
     <Compile Include="Controllers\GameProcessController.cs" />
+    <Compile Include="Controllers\StaticDataControler.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Global.asax.cs">
@@ -145,6 +146,7 @@
     <Compile Include="Models\SignInRequestModel.cs" />
     <Compile Include="Models\SignUpRequestModel.cs" />
     <Compile Include="Models\StateChangeCommandRequestModel.cs" />
+    <Compile Include="Models\StatsResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
