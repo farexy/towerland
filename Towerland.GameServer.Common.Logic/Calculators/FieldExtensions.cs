@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
-using Towerland.GameServer.Common.Logic.Interfaces;
 
-namespace Towerland.GameServer.Common.Logic.SpecialAI
+namespace Towerland.GameServer.Common.Logic.Calculators
 {
   internal static class FieldExtensions
   {
@@ -22,9 +22,10 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
     public static int[] FindTowersThatCanAttack(this Field field, Point position, IStatsLibrary stats)
     {
+      var gameCalc = new GameCalculator(stats);
       return field.FindGameObjects(obj => 
           obj.ResolveType() == GameObjectType.Tower 
-          && stats.GetTowerStats(obj.Type).Range >= GameMath.Distance(obj.Position, position))
+          && gameCalc.IsTowerCanAttack(obj, position))
         .Select(obj => obj.GameId)
         .ToArray();
     }

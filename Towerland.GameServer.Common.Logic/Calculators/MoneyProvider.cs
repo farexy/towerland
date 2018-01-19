@@ -1,11 +1,11 @@
 ﻿using System;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
-using Towerland.GameServer.Common.Logic.Interfaces;
 
-namespace Towerland.GameServer.Common.Logic.SpecialAI
+namespace Towerland.GameServer.Common.Logic.Calculators
 {
   public class MoneyProvider
   {

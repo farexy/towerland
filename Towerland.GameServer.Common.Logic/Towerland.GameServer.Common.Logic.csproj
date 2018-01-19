@@ -41,8 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResolver\BaseLogicActionResolver.cs" />
+    <Compile Include="Calculators\AdditiveConvolutionCalculator.cs" />
+    <Compile Include="Calculators\Class1.cs" />
+    <Compile Include="Calculators\FieldExtensions.cs" />
+    <Compile Include="Calculators\GameCalculator.cs" />
+    <Compile Include="Calculators\MoneyProvider.cs" />
+    <Compile Include="Calculators\StateChangeRecalculator.cs" />
     <Compile Include="CheatCommandManager.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Factories\FieldFactoryStub.cs" />
     <Compile Include="Factories\StatsFactory.cs" />
     <Compile Include="Factories\TowerFactory.cs" />
@@ -53,16 +58,13 @@
     <Compile Include="Interfaces\IStateChangeRecalculator.cs" />
     <Compile Include="Interfaces\ICheatCommandManager.cs" />
     <Compile Include="SpecialAI\ComputerEnemyAI.cs" />
-    <Compile Include="SpecialAI\FieldExtensions.cs" />
     <Compile Include="ActionResolver\FieldStateActionResolver.cs" />
     <Compile Include="Interfaces\IActionResolver.cs" />
     <Compile Include="GameMath.cs" />
     <Compile Include="Interfaces\IStatsLibrary.cs" />
-    <Compile Include="SpecialAI\MoneyProvider.cs" />
     <Compile Include="SpecialAI\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecialAI\PathOptimisation.cs" />
-    <Compile Include="SpecialAI\StateChangeRecalculator.cs" />
     <Compile Include="StatsLibrary.cs" />
   </ItemGroup>
   <ItemGroup>

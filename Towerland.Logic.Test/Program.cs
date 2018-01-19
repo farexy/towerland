@@ -7,6 +7,7 @@ using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Logic.ActionResolver;
+using Towerland.GameServer.Common.Logic.Calculators;
 using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
@@ -60,21 +61,16 @@ namespace Towerland.Logic.Test
       var pathOpt = new PathOptimisation(statsStub);
       var stateChang = new StateChangeRecalculator(pathOpt, statsStub, uFactory, tFactory);
 
-      f.State.MonsterMoney = 1000;
-      f.State.TowerMoney = 1000;
+      f.State.MonsterMoney = 10000;
+      f.State.TowerMoney = 10000;
       
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(4, 4)});
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      //stateChang.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
-      //stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 5)});
-      //stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = new Point(5, 0)});
-      //stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = new Point(9, 9)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 5)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = new Point(5, 0)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = new Point(9, 9)});
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Dragon);
 
       
       var calc = new StateCalculator(statsStub, f);
@@ -87,7 +83,7 @@ namespace Towerland.Logic.Test
         {
           resolver.Resolve(action);
           Show(f);
-          Thread.Sleep(50);
+          Thread.Sleep(200);
         }
         if (actions.Actions.Any() && actions.Actions.First().Position == new Point(2, 7))
         {

@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
-using Towerland.GameServer.Common.Logic.Interfaces;
-using Towerland.GameServer.Common.Logic.SpecialAI;
 
-namespace Towerland.GameServer.Common.Logic
+namespace Towerland.GameServer.Common.Logic.Calculators
 {
     public class StateCalculator
     {
       private readonly IStatsLibrary _statsLib;
       private readonly Field _field;
       private readonly MoneyProvider _moneyProvider;
+      private readonly GameCalculator _gameCalculator;
       
       private const int NotFound = -1;
       private static readonly Point NotFoundPoint = new Point(-1, -1);
@@ -30,6 +30,7 @@ namespace Towerland.GameServer.Common.Logic
         _field = (Field)fieldState.Clone();
         
         _moneyProvider = new MoneyProvider(statsLibrary);
+        _gameCalculator = new GameCalculator(statsLibrary);
       }
 
       public void SetState(FieldState fieldState)
@@ -151,7 +152,7 @@ namespace Towerland.GameServer.Common.Logic
               if (targetId != NotFound)
               {
                 var unit = (Unit) _field[targetId];
-                var damage = CalculateDamage(_statsLib.GetUnitStats(unit.Type), stats);
+                var damage = _gameCalculator.CalculateDamage(unit.Type, stats);
                 tower.WaitTicks = stats.AttackSpeed;
                 
                 actions.Add(new GameAction
@@ -210,7 +211,7 @@ namespace Towerland.GameServer.Common.Logic
                 foreach (var unit in _field.FindUnitsAt(targetPoint))
                 {
                   ApplyTowerEffects(stats, unit, actions);
-                  var damage = CalculateDamage(_statsLib.GetUnitStats(unit.Type), stats);
+                  var damage =  _gameCalculator.CalculateDamage(unit.Type, stats);
                   
                   if(damage == 0)
                     continue;
@@ -251,14 +252,6 @@ namespace Towerland.GameServer.Common.Logic
       }
 
       #region Logic
-      
-      private int CalculateDamage(UnitStats unit, TowerStats tower)
-      {
-        if(tower.Attack == TowerStats.AttackType.Burst && unit.IsAir)
-          return 0;
-
-        return GameMath.Round(tower.Damage * _statsLib.GetDefenceCoeff(unit.Defence, tower.Attack));
-      }
 
       private static int GetContextSpeedCoeff(Unit unit)
       {

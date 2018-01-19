@@ -1,11 +1,11 @@
-﻿using Towerland.GameServer.Common.Models.Exceptions;
+﻿using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
-using Towerland.GameServer.Common.Models.Stats;
-using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.State;
+using Towerland.GameServer.Common.Models.Stats;
 
-namespace Towerland.GameServer.Common.Logic.SpecialAI
+namespace Towerland.GameServer.Common.Logic.Calculators
 {
   public class StateChangeRecalculator : IStateChangeRecalculator
   {
@@ -83,7 +83,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       var stats = _statsLib.GetUnitStats(unit.Type);
       if (!unit.PathId.HasValue)
       {
-        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field.StaticData.Path, field, unit)
+        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field, unit)
           : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.StaticData.Path, unit)
             : GameMath.Rand.Next(field.StaticData.Path.Length);
       }

@@ -1,8 +1,8 @@
-﻿﻿using Towerland.GameServer.Common.Models.Effects;
+using Towerland.GameServer.Common.Logic.Calculators;
+using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
-using Towerland.GameServer.Common.Logic.SpecialAI;
 
 namespace Towerland.GameServer.Common.Logic.ActionResolver
 {

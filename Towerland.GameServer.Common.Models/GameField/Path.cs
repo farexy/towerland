@@ -7,7 +7,7 @@ namespace Towerland.GameServer.Common.Models.GameField
 {
   public class Path : IEnumerable<Point>
   {
-    private IEnumerable<Point> _pts;
+    private readonly ICollection<Point> _pts;
     
     public Path(ICollection<Point> way)
     {

@@ -6,6 +6,6 @@ namespace Towerland.GameServer.Common.Logic.Interfaces
   public interface IPathOptimiser
   {
     int GetFastestPath(Path[] paths, Unit unit);
-    int GetOptimalPath(Path[] paths, Field field, Unit unit);
+    int GetOptimalPath(Field field, Unit unit);
   }
 }
