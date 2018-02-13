@@ -48,11 +48,18 @@ namespace Towerland.GameServer.Domain.Infrastructure
     public async Task<UserRating[]> GetUserRatingAsync()
     {
       var users = await _userRepository.GetAsync();
-      var rating = users.Select(CalcRating).OrderByDescending(u => u.RatingPoints).ToArray();
+      var userRating = new UserRating[users.Length];
+      for (int i = 0; i < userRating.Length; i++)
+      {
+        userRating[i] = await CalcRatingAsync(users[i]);
+      }
+      var rating = userRating.OrderByDescending(u => u.RatingPoints).ToArray();
       for (int i = 0; i < rating.Length; i++)
       {
         rating[i].Position = i + 1;
       }
+
+      GC.Collect();
       return rating;
     }
 
@@ -68,9 +75,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       };
     }
 
-    private UserRating CalcRating(User user)
+    private async Task<UserRating> CalcRatingAsync(User user)
     {
-      var battles = _battleRepository.Get().Where(b => b.Monsters_UserId == user.Id || b.Towers_UserId == user.Id).ToArray();
+      var battles = await _battleRepository.GetByUserAsync(user.Id);
       var exp = 0;
       var wins = 0;
       foreach (var b in battles)

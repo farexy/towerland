@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using Towerland.GameServer.Core.Entities;
@@ -22,12 +23,12 @@ namespace Towerland.GameServer.Core.DataAccess
         return cx.Select<Battle>(u => u.Id == id).SingleOrDefault();
       }
     }
-    
-    public Battle[] Get()
+
+    public async Task<Battle[]> GetByUserAsync(Guid userId)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        return cx.Select<Battle>().ToArray();
+        return (await cx.SelectAsync<Battle>(b => b.Monsters_UserId == userId || b.Towers_UserId == userId)).ToArray();
       }
     }
 
