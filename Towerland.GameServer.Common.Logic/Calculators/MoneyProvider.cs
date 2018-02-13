@@ -12,9 +12,9 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     private const double HealthCoeff = 0.5;
     private const double DamageCoeff = 0.2;
     private const double SpeedCoeff = 0.3;
-    
+
     private readonly IStatsLibrary _statsLibrary;
-    
+
     public MoneyProvider(IStatsLibrary stats)
     {
       _statsLibrary = stats;
@@ -41,7 +41,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         var path = unit.PathId.HasValue 
           ? field.StaticData.Path[unit.PathId.Value] 
           : new Path(new Point[0]);
-        
+
         return GetUnitReward(path, action.Position, unitStats);
       }
       if (action.ActionId == ActionId.UnitAttacksCastle)
@@ -51,7 +51,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         var path = unit.PathId.HasValue 
           ? field.StaticData.Path[unit.PathId.Value] 
           : new Path(new Point[0]);
-        
+
         return GetUnitReward(path, path.End, unitStats);
       }
 
@@ -62,7 +62,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     {
       return (int)Math.Round(unit.Health / HealthCoeff + unit.Speed / SpeedCoeff + unit.Damage / DamageCoeff) / 2;
     }
-    
+
     private static int GetUnitReward(Path p, Point f, UnitStats u)
     {
       double pathPercent = (double) p.PointOnThePathPosition(f) / p.Length;

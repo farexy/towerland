@@ -8,7 +8,7 @@ namespace Towerland.GameServer.Core.Entities
     public Guid Id { get; set; }
     public Guid Monsters_UserId { get; set; }
     public Guid Towers_UserId { get; set; }
-    public int Winner { get; set; }
+    public Guid WinnerId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
   }

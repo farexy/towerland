@@ -21,7 +21,7 @@ namespace Towerland.GameServer.Common.Models.Stats
       Magic,
       Burst
     }
-    
+
     public enum AttackPriority
     {
       Random,

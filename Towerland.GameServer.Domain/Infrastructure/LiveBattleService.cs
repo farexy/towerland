@@ -37,7 +37,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       _battles = new ConcurrentDictionary<Guid, int>();
     }
-    
+
     public LiveBattleService(
       IBattleRepository repo,
       IUserRepository userRepo,
@@ -134,21 +134,21 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
           IncrementBattleVersion(command.BattleId);
         }
-        
+
         GC.Collect();
       });
     }
 
     public async Task TryEndBattleAsync(Guid battleId, Guid userId)
     {
-      await Task.Run(() => 
+      await Task.Run(() =>
       {
         Guid? left = null;
         using (new BattleLocker(battleId))
         {
           var battle = _provider.Find(battleId);
           var entity = _battleRepository.Find(battleId);
-          
+
           PlayerSide winSide;
           if (battle.State.StaticData.EndTimeUtc > DateTime.UtcNow)
           {
@@ -161,7 +161,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
             winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
           }
 
-          entity.Winner = (int) winSide;
+          entity.WinnerId = winSide == PlayerSide.Monsters ? entity.Monsters_UserId : entity.Towers_UserId;
           entity.EndTime = DateTime.UtcNow;
           using (var ts = new TransactionScopeWrapper())
           {
@@ -238,7 +238,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
           ? Constants.UserLeftExp
           : Constants.UserLoosedExp;
     }
-      
+
     private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
     {
       if (ticks == null)
