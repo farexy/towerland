@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Core.DataAccess;
 using Towerland.GameServer.Core.Entities;
@@ -20,9 +21,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _battleRepository = battleRepository;
     }
     
-    public Guid CheckPassword(string email, string password)
+    public async Task<Guid> CheckPasswordAsync(string email, string password)
      {
-      var entity = _userRepository.Get().FirstOrDefault(u => u.Email == email);
+      var entity = (await _userRepository.GetAsync()).FirstOrDefault(u => u.Email == email);
       if (entity == null)
       {
         throw new LogicException("Email isn't exists");
@@ -30,11 +31,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return entity.Password.SequenceEqual(password.ToPwdHash()) ? entity.Id : Guid.Empty;
     }
 
-    public Guid SignUp(string email, string name, string pwd, string nickname)
+    public async Task<Guid> SignUpAsync(string email, string name, string pwd, string nickname)
     {
       var id = Guid.NewGuid();
       var pwdHash = pwd.ToPwdHash();
-      return _userRepository.Create(new User
+      return await _userRepository.CreateAsync(new User
       {
         Id = id,
         Email = email,
@@ -44,9 +45,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       });
     }
 
-    public UserRating[] GetUserRating()
+    public async Task<UserRating[]> GetUserRatingAsync()
     {
-      var users = _userRepository.Get();
+      var users = await _userRepository.GetAsync();
       var rating = users.Select(CalcRating).OrderByDescending(u => u.RatingPoints).ToArray();
       for (int i = 0; i < rating.Length; i++)
       {
@@ -55,9 +56,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return rating;
     }
 
-    public UserExperience GetUserExpirience(Guid id)
+    public async Task<UserExperience> GetUserExpirienceAsync(Guid id)
     {
-      var exp = _userRepository.Find(id).Experience;
+      var exp = (await _userRepository.FindAsync(id)).Experience;
       return new UserExperience
       {
         Experience = exp,

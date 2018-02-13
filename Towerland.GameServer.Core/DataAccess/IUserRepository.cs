@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Towerland.GameServer.Core.Entities;
 
 namespace Towerland.GameServer.Core.DataAccess
 {
   public interface IUserRepository
   {
-    User Find(Guid id);
-    User[] Get();
+    Task<User> FindAsync(Guid id);
+    Task<User[]> GetAsync();
     
-    Guid Create(User obj);
-    void IncrementExperience(Guid id, int exp);
+    Task<Guid> CreateAsync(User obj);
+    Task IncrementExperienceAsync(Guid id, int exp);
   }
 }

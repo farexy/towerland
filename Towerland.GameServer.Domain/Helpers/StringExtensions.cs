@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Towerland.GameServer.Domain.Helpers
@@ -32,7 +33,7 @@ namespace Towerland.GameServer.Domain.Helpers
       return Convert.ToBase64String(hashBytes);
     }
     
-    public static string EncryptAes256(this string s, byte[] key, byte[] iv)
+    public static async Task<string> EncryptAes256Async(this string s, byte[] key, byte[] iv)
     {
       Aes encryptor = Aes.Create();
       encryptor.Mode = CipherMode.CBC;
@@ -47,9 +48,9 @@ namespace Towerland.GameServer.Domain.Helpers
 
       byte[] plainBytes = Encoding.ASCII.GetBytes(s);
 
-      cryptoStream.Write(plainBytes, 0, plainBytes . Length);
+      await cryptoStream.WriteAsync(plainBytes, 0, plainBytes . Length);
 
-      cryptoStream . FlushFinalBlock();
+      cryptoStream.FlushFinalBlock();
 
       byte[] cipherBytes = memoryStream.ToArray();
 
@@ -61,7 +62,7 @@ namespace Towerland.GameServer.Domain.Helpers
       return cipherText;
     }
     
-    public static string DecryptAes256(this string cipher, byte[] key, byte[] iv)
+    public static async Task<string> DecryptAes256Async(this string cipher, byte[] key, byte[] iv)
     {
       Aes encryptor = Aes.Create();
       encryptor.Mode = CipherMode.CBC;
@@ -78,7 +79,7 @@ namespace Towerland.GameServer.Domain.Helpers
 
       try {
         byte[] cipherBytes = Convert.FromBase64String(cipher);
-        cryptoStream.Write(cipherBytes, 0, cipherBytes . Length);
+        await cryptoStream.WriteAsync(cipherBytes, 0, cipherBytes . Length);
 
         cryptoStream.FlushFinalBlock();
         byte[] plainBytes = memoryStream.ToArray();

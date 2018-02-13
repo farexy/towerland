@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using Towerland.GameServer.Core.Entities;
@@ -15,36 +16,36 @@ namespace Towerland.GameServer.Core.DataAccess
       _db = db;
     }
     
-    public User Find(Guid id)
+    public async Task<User> FindAsync(Guid id)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        return cx.Select<User>(u => u.Id == id).SingleOrDefault();
+        return (await cx.SelectAsync<User>(u => u.Id == id)).SingleOrDefault();
       }
     }
     
-    public User[] Get()
+    public async Task<User[]> GetAsync()
     {
       using (var cx = _db.OpenDbConnection())
       {
-        return cx.Select<User>().ToArray();
-      }    
+        return (await cx.SelectAsync<User>()).ToArray();
+      }
     }
 
-    public Guid Create(User obj)
+    public async Task<Guid> CreateAsync(User obj)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        cx.Insert(obj);
+        await cx.InsertAsync(obj);
         return obj.Id;
       }
     }
 
-    public void IncrementExperience(Guid id, int exp)
+    public async Task IncrementExperienceAsync(Guid id, int exp)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        cx.UpdateAdd(() => new User {Experience = exp}, where: u => u.Id == id);
+        await cx.UpdateAddAsync(() => new User {Experience = exp}, where: u => u.Id == id);
       }
     }
   }

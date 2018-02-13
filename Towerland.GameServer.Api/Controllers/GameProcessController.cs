@@ -55,7 +55,7 @@ namespace Towerland.GameServer.Api.Controllers
     [Route("{battle:guid}/tryend/")]
     public async Task TryEndBattle(Guid battle)
     {
-      await _liveBattleService.TryEndBattleAsync(battle, UserSessionId);
+      await _liveBattleService.TryEndBattleAsync(battle, await UserSessionIdAsync);
     }
     
     [HttpPost]

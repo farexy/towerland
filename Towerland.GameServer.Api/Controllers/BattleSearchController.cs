@@ -20,16 +20,16 @@ namespace Towerland.GameServer.Api.Controllers
     [Route("search")]
     public async Task Search()
     {
-      await _battleSearchService.AddToQueueAsync(UserSessionId);
+      await _battleSearchService.AddToQueueAsync(await UserSessionIdAsync);
     }
 
     [HttpGet]
     [Route("check")]
-    public BattleSearchCheckResponseModel Check()
+    public async Task<BattleSearchCheckResponseModel> Check()
     {
       return new BattleSearchCheckResponseModel
       {
-        Found = _battleSearchService.TryGetBattle(UserSessionId, out var battleId, out var side),
+        Found = _battleSearchService.TryGetBattle(await UserSessionIdAsync, out var battleId, out var side),
         BattleId = battleId,
         Side = side
       };

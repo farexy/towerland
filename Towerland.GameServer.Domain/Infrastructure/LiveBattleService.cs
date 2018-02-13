@@ -166,9 +166,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
           using (var ts = new TransactionScopeWrapper())
           {
             _battleRepository.Update(entity);
-            _userRepository.IncrementExperience(entity.Monsters_UserId,
+            _userRepository.IncrementExperienceAsync(entity.Monsters_UserId,
               CalcUserExp(entity, entity.Monsters_UserId, left));
-            _userRepository.IncrementExperience(entity.Towers_UserId, CalcUserExp(entity, entity.Towers_UserId, left));
+            _userRepository.IncrementExperienceAsync(entity.Towers_UserId, CalcUserExp(entity, entity.Towers_UserId, left));
 
             ts.Complete();
           }

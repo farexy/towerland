@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Domain.Interfaces
 {
   public interface IUserService
   {
-    Guid CheckPassword(string email, string password);
-    Guid SignUp(string email, string name, string pwd, string nickname);
+    Task<Guid> CheckPasswordAsync(string email, string password);
+    Task<Guid> SignUpAsync(string email, string name, string pwd, string nickname);
     
-    UserRating[] GetUserRating();
-    UserExperience GetUserExpirience(Guid id);
+    Task<UserRating[]> GetUserRatingAsync();
+    Task<UserExperience> GetUserExpirienceAsync(Guid id);
   }
 }

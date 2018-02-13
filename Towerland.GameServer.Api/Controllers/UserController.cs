@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Towerland.GameServer.Api.Controllers.Base;
 using Towerland.GameServer.Api.Helpers;
@@ -19,31 +20,31 @@ namespace Towerland.GameServer.Api.Controllers
     }
 
     [HttpPost, Route("signin")]
-    public string SignIn(SignInRequestModel requestModel)
+    public async Task<string> SignInAsync(SignInRequestModel requestModel)
     {
-      var uid = _userService.CheckPassword(requestModel.Email, requestModel.Password);
+      var uid = await _userService.CheckPasswordAsync(requestModel.Email, requestModel.Password);
       return uid == Guid.Empty
         ? string.Empty
-        : UserSessionHelper.GetSessionHash(uid);
+        : await UserSessionHelper.GetSessionHashAsync(uid);
     }
 
     [HttpPost, Route("signup")]
-    public string SignUp(SignUpRequestModel requestModel)
+    public async Task<string> SignUpAsync(SignUpRequestModel requestModel)
     {
-      return UserSessionHelper.GetSessionHash(
-        _userService.SignUp(requestModel.Email, requestModel.FullName, requestModel.Password, requestModel.Nickname));
+      return await UserSessionHelper.GetSessionHashAsync(
+        await _userService.SignUpAsync(requestModel.Email, requestModel.FullName, requestModel.Password, requestModel.Nickname));
     }
 
     [HttpGet, Route("exp")]
-    public UserExperience GetExp()
+    public async Task<UserExperience> GetExpAsync()
     {
-      return _userService.GetUserExpirience(UserSessionId);
+      return await _userService.GetUserExpirienceAsync(await UserSessionIdAsync);
     }
 
     [HttpGet, Route("rating")]
-    public UserRating[] GetRating()
+    public async Task<UserRating[]> GetRatingAsync()
     {
-      return _userService.GetUserRating();
+      return await _userService.GetUserRatingAsync();
     }
   }
 }
