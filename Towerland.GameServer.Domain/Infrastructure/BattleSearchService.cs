@@ -32,46 +32,45 @@ namespace Towerland.GameServer.Domain.Infrastructure
         _sessionBattles = new ConcurrentDictionary<Guid, Guid>();
         _battlePlayerSides = new ConcurrentDictionary<Guid, PlayerSide>();
       }
-      await Task.Run(() =>
+
+      if (_sessionQueue.Any(s => s.SessionId == sessionId))
+      {
+        return;
+      }
+
+      var session = new BattleSearchSession
+      {
+        SessionId = sessionId,
+        SearchBegin = DateTime.UtcNow
+      };
+      if (_sessionQueue.Any())
+      {
+        if (_sessionQueue.TryDequeue(out var enemySession))
         {
-          if (_sessionQueue.Any(s => s.SessionId == sessionId))
+          Guid monstersUser, towersUser;
+          if (Rnd.Next() % 2 == 0)
           {
-            return;
+            monstersUser = sessionId;
+            towersUser = enemySession.SessionId;
+          }
+          else
+          {
+            monstersUser = enemySession.SessionId;
+            towersUser = sessionId;
           }
 
-          var session = new BattleSearchSession
-          {
-            SessionId = sessionId,
-            SearchBegin = DateTime.UtcNow
-          };
-          if (_sessionQueue.Any())
-          {
-            if (_sessionQueue.TryDequeue(out var enemySession))
-            {
-              Guid monstersUser, towersUser;
-              if (Rnd.Next() % 2 == 0)
-              {
-                monstersUser = sessionId;
-                towersUser = enemySession.SessionId;
-              }
-              else
-              {
-                monstersUser = enemySession.SessionId;
-                towersUser = sessionId;
-              }
-              _battlePlayerSides.TryAdd(monstersUser, PlayerSide.Monsters);
-              _battlePlayerSides.TryAdd(towersUser, PlayerSide.Towers);
+          _battlePlayerSides.TryAdd(monstersUser, PlayerSide.Monsters);
+          _battlePlayerSides.TryAdd(towersUser, PlayerSide.Towers);
 
-              var battleId = _battleProvider.InitNewBattle(monstersUser, towersUser);
-              _sessionBattles.TryAdd(sessionId, battleId);
-              _sessionBattles.TryAdd(enemySession.SessionId, battleId);
+          var battleId = await _battleProvider.InitNewBattleAsync(monstersUser, towersUser);
+          _sessionBattles.TryAdd(sessionId, battleId);
+          _sessionBattles.TryAdd(enemySession.SessionId, battleId);
 
-              return;
-            }
-          }
-          _sessionQueue.Enqueue(session);
+          return;
         }
-      );
+      }
+
+      _sessionQueue.Enqueue(session);
     }
 
     public bool TryGetBattle(Guid sessionId, out Guid battleId, out PlayerSide side)

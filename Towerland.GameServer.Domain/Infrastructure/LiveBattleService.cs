@@ -87,11 +87,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _provider.Find(battleId);
     }
 
-    public Guid InitNewBattle(Guid monstersPlayer, Guid towersPlayer)
+    public async Task<Guid> InitNewBattleAsync(Guid monstersPlayer, Guid towersPlayer)
     {
       var id = Guid.NewGuid();
       while (!_battles.TryAdd(id, 0)) ;
-      CreateBattleAsync(id, monstersPlayer, towersPlayer);
+      await CreateBattleAsync(id, monstersPlayer, towersPlayer);
       return id;
     }
 
@@ -186,7 +186,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return _battles.TryUpdate(battleId, curValue + 1, curValue);
     }
 
-    private async void CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)
+    private async Task CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)
     {
       var newBattle = new LiveBattleModel
       {

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Towerland.GameServer.Domain.Interfaces
 {
   public interface IBattleInitializationService
   {
-    Guid InitNewBattle(Guid monstersPlayer, Guid towersPlayer);
+    Task<Guid> InitNewBattleAsync(Guid monstersPlayer, Guid towersPlayer);
   }
 }
