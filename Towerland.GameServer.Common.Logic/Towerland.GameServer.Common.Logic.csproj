@@ -49,6 +49,7 @@
     <Compile Include="Calculators\StateChangeRecalculator.cs" />
     <Compile Include="CheatCommandManager.cs" />
     <Compile Include="Factories\FieldFactoryStub.cs" />
+    <Compile Include="Factories\SpecialEffectLogicFactory.cs" />
     <Compile Include="Factories\StatsFactory.cs" />
     <Compile Include="Factories\TowerFactory.cs" />
     <Compile Include="Factories\UnitFactory.cs" />
