@@ -25,7 +25,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
       return EmptyCommand;
     }
-    
+
     public static IEnumerable<StateChangeCommand> EmptyCommand => Enumerable.Empty<StateChangeCommand>();
   }
 }

@@ -38,11 +38,11 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
         case ActionId.UnitFreezes:
           _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Effect = EffectId.UnitFreezed};
           break;
-          
+
         case ActionId.UnitDies:
             _field.RemoveGameObject(action.UnitId);
           break;
-          
+
         case ActionId.UnitEffectCanseled:
           _field[action.UnitId].Effect = SpecialEffect.Empty;
           break;

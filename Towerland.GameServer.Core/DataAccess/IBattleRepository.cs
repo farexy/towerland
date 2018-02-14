@@ -6,9 +6,9 @@ namespace Towerland.GameServer.Core.DataAccess
 {
   public interface IBattleRepository
   {
-    Battle Find(Guid id);
+    Task<Battle> FindAsync(Guid id);
     Task<Battle[]> GetByUserAsync(Guid userId);
-    Guid Create(Battle obj);
-    void Update(Battle obj);
+    Task<Guid> CreateAsync(Battle obj);
+    Task UpdateAsync(Battle obj);
   }
 }

@@ -64,7 +64,6 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         //Console.ReadKey();
         //Console.Clear();
       }
-      
     }
 
     private static Point FindNextPoint(Point point, FieldCellWrapper[,] map, int width, int height, bool reverseDirections, ref int countDirections)

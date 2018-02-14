@@ -13,7 +13,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
     private static ConcurrentQueue<BattleSearchSession> _sessionQueue;
     private static ConcurrentDictionary<Guid, Guid> _sessionBattles;
     private static ConcurrentDictionary<Guid, PlayerSide> _battlePlayerSides;
-      
+
     private readonly IBattleInitializationService _battleProvider;
 
     public BattleSearchService(IBattleInitializationService battleProvider)
@@ -61,11 +61,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
               }
               _battlePlayerSides.TryAdd(monstersUser, PlayerSide.Monsters);
               _battlePlayerSides.TryAdd(towersUser, PlayerSide.Towers);
-              
+
               var battleId = _battleProvider.InitNewBattle(monstersUser, towersUser);
               _sessionBattles.TryAdd(sessionId, battleId);
               _sessionBattles.TryAdd(enemySession.SessionId, battleId);
-              
+
               return;
             }
           }
@@ -86,7 +86,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       battleId = Guid.Empty;
       return false;
     }
-        
+
     private struct BattleSearchSession
     {
       public Guid SessionId;

@@ -17,7 +17,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
     {
       if(action.ActionId > ActionId.Reserved && action.ActionId < ActionId.Tower)
         ResolveReservedAction(action);
-      
+
       if(action.ActionId > ActionId.Tower && action.ActionId < ActionId.Unit)
         ResolveTowerAction(action);
 

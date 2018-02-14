@@ -46,14 +46,14 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         throw new LogicException("Not enough money");
       }
-      
+
       var unit = _unitsFactory.Create(type, opt);
       unit.Position = field.StaticData.Start;
 
       field.AddGameObject(unit);
       RecalcUnitPath(field, unit);
 
-      field.State.MonsterMoney -= cost;      
+      field.State.MonsterMoney -= cost;
     }
 
     public void AddNewTower(Field field, GameObjectType type, CreationOptions? opt = null)
@@ -67,7 +67,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         throw new LogicException("Tower can't be placed on the path");
       }
-      
+
       var tower = _towersFactory.Create(type, opt);
       field.AddGameObject(tower);
       foreach (Unit u in field.State.Units)
@@ -79,7 +79,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     }
 
     private void RecalcUnitPath(Field field, Unit unit)
-    {      
+    {
       var stats = _statsLib.GetUnitStats(unit.Type);
       if (!unit.PathId.HasValue)
       {

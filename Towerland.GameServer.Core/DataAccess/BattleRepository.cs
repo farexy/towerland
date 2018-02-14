@@ -15,12 +15,12 @@ namespace Towerland.GameServer.Core.DataAccess
     {
       _db = db;
     }
-    
-    public Battle Find(Guid id)
+
+    public async Task<Battle> FindAsync(Guid id)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        return cx.Select<Battle>(u => u.Id == id).SingleOrDefault();
+        return (await cx.SelectAsync<Battle>(u => u.Id == id)).SingleOrDefault();
       }
     }
 
@@ -32,20 +32,20 @@ namespace Towerland.GameServer.Core.DataAccess
       }
     }
 
-    public Guid Create(Battle obj)
+    public async Task<Guid> CreateAsync(Battle obj)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        cx.Insert(obj);
+        await cx.InsertAsync(obj);
         return obj.Id;
       }
     }
 
-    public void Update(Battle obj)
+    public async Task UpdateAsync(Battle obj)
     {
       using (var cx = _db.OpenDbConnection())
       {
-        cx.Update(obj);
+        await cx.UpdateAsync(obj);
       }
     }
   }
