@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameActions;
@@ -12,6 +13,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     public class StateCalculator
     {
       private readonly IStatsLibrary _statsLib;
+      private readonly SpecialEffectLogicFactory _effectLogicFactory;
       private readonly Field _field;
       private readonly MoneyProvider _moneyProvider;
       private readonly GameCalculator _gameCalculator;
@@ -29,6 +31,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         _statsLib = statsLibrary;
         _field = (Field)fieldState.Clone();
         
+        _effectLogicFactory = new SpecialEffectLogicFactory();
         _moneyProvider = new MoneyProvider(statsLibrary);
         _gameCalculator = new GameCalculator(statsLibrary);
       }
@@ -104,9 +107,9 @@ namespace Towerland.GameServer.Common.Logic.Calculators
             actions.Add(attackAction);
             _field.State.Castle.Health -= stats.Damage;
             unitsToRemove.Add(unit.GameId);
-            
+
             var unitReward = _moneyProvider.GetUnitReward(_field, attackAction);
-            _field.State.MonsterMoney += unitReward;                  
+            _field.State.MonsterMoney += unitReward;
             actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
           }
           else
@@ -122,7 +125,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
               UnitId = unit.GameId,
               WaitTicks = stats.Speed * contextSpeedCoeff
             });
-          }        
+          }
         }
 
         _field.RemoveMany(unitsToRemove);
@@ -258,7 +261,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         return unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
       }
       
-      private static void ApplyTowerEffects(TowerStats tower, Unit unit, List<GameAction> actions)
+      private void ApplyTowerEffects(TowerStats tower, Unit unit, List<GameAction> actions)
       {
         if (tower.SpecialEffects == null)
         {
@@ -266,26 +269,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         } 
         foreach (var effect in tower.SpecialEffects)
         {
-          switch (effect.Effect)
-          {
-              case EffectId.UnitFreezed:
-                unit.WaitTicks *= SpecialEffect.FreezedSlowCoeff;
-                unit.Effect = new SpecialEffect{Effect = EffectId.UnitFreezed, Duration = effect.Duration};
-                actions.Add(new GameAction{ActionId = ActionId.UnitFreezes, UnitId = unit.GameId, WaitTicks = effect.Duration});
-                break;
-              case EffectId.Unit10xDamage_10PercentProbability:
-                if (GameMath.CalcProbableEvent(10))
-                {
-                  unit.Health -= tower.Damage * 9;
-                  actions.Add(new GameAction
-                  {
-                    ActionId = ActionId.UnitRecievesDamage,
-                    UnitId = unit.GameId,
-                    Damage = tower.Damage * 9
-                  });
-                }
-                break;
-          }
+          var effectLogic = _effectLogicFactory.GetEffectLogic(effect.Effect);
+          effectLogic.ApplyTowerAttackEffect(tower, unit, actions, effect.Duration);
         }
       }
       
