@@ -157,7 +157,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                 var unit = (Unit) _field[targetId];
                 var damage = _gameCalculator.CalculateDamage(unit.Type, stats);
                 tower.WaitTicks = stats.AttackSpeed;
-                
+
                 actions.Add(new GameAction
                 {
                   ActionId = ActionId.TowerAttacks,
@@ -179,7 +179,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   var unitTrue = _field.State.Units.First(u => u.GameId == targetId);
                   var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId};
                   var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId, Position = unitTrue.Position};
-                  
+
                   actions.Add(dieAction);
                   actions.Add(killAction);
                   
@@ -211,7 +211,12 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   Damage = stats.Damage,
                   WaitTicks = stats.AttackSpeed
                 });
-                foreach (var unit in _field.FindUnitsAt(targetPoint))
+                var units = _field.FindUnitsAt(targetPoint);
+//                foreach (var point in _field.GetNeighbourPoints(targetPoint, 1, FieldObject.Road))
+//                {
+//                  units = units.Union(_field.FindUnitsAt(point));
+//                }
+                foreach (var unit in units)
                 {
                   ApplyTowerEffects(stats, unit, actions);
                   var damage =  _gameCalculator.CalculateDamage(unit.Type, stats);
@@ -353,7 +358,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         if (p != field.StaticData.Finish)
         {
-          var countUnits = field.FindUnitsAt(p).Length;
+          var countUnits = field.FindUnitsAt(p).Count();
           if (countUnits > maxCount)
           {
             maxCount = countUnits;
@@ -362,6 +367,6 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         }
       }
 
-      #endregion  
+      #endregion
     }
 }

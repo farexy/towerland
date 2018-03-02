@@ -48,7 +48,7 @@ namespace Towerland.GameServer.Common.Logic
         }
         _stateRecalculator.AddMoney(field, moneyVal, PlayerSide.Undefined);
       }
-      
+
       if (args.Length == 3)
       {
         if (!int.TryParse(args[1], out var moneyVal) || !int.TryParse(args[2], out var side))
@@ -63,7 +63,5 @@ namespace Towerland.GameServer.Common.Logic
         throw new LogicException("Incorrect command signature");
       }
     }
-    
-
   }
 }

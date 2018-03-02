@@ -15,9 +15,9 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       unit.WaitTicks = wait;
     }
 
-    public static Unit[] FindUnitsAt(this Field field, Point position)
+    public static IEnumerable<Unit> FindUnitsAt(this Field field, Point position)
     {
-      return field.State.Units.Where(u => u.Position == position).ToArray();
+      return field.State.Units.Where(u => u.Position == position);
     }
 
     public static int[] FindTowersThatCanAttack(this Field field, Point position, IStatsLibrary stats)
@@ -29,10 +29,25 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         .Select(obj => obj.GameId)
         .ToArray();
     }
-    
+
     public static IEnumerable<Path> GetPossiblePath(this Field field, Point position)
     {
       return field.StaticData.Path.Where(p => p.PointOnThePathPosition(position) != -1);
+    }
+
+    public static IEnumerable<Point> GetNeighbourPoints(this Field f, Point p, int range, FieldObject cellTypeToMatch)
+    {
+      for (int x = -range; x < range; x++)
+      {
+        for (int y = -range; y < range; y++)
+        {
+          if (p.X + x >= 0 && p.X + x < f.StaticData.Width && p.Y + y >= 0 && p.Y + y < f.StaticData.Height
+              && f.StaticData.Cells[p.X + x, p.Y + y].Object == cellTypeToMatch)
+          {
+            yield return new Point(p.X + x, p.Y + y);
+          }
+        }
+      }
     }
   }
 }

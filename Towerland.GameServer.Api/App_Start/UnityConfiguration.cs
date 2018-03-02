@@ -24,11 +24,11 @@ namespace Towerland.GameServer.Api
 
       container.RegisterInstance<IDbConnectionFactory>(
         new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["Towerland"].ConnectionString, MySqlDialect.Provider));
-      
+
       container.RegisterType<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
       container.RegisterType<IBattleRepository, BattleRepository>();
       container.RegisterType<IUserRepository, UserRepository>();
-      
+
       container.RegisterType<IBattleInitializationService, LiveBattleService>();
       container.RegisterType<IBattleSearchService, BattleSearchService>();
       container.RegisterType<ILiveBattleService, LiveBattleService>();
@@ -41,10 +41,10 @@ namespace Towerland.GameServer.Api
       container.RegisterType<IStateChangeRecalculator, StateChangeRecalculator>();
       container.RegisterType<IGameObjectFactory<Unit>, UnitFactory>();
       container.RegisterType<IGameObjectFactory<Tower>, TowerFactory>();
-      
+
       container.RegisterType<IMapper>(new ContainerControlledLifetimeManager(),
         new InjectionFactory(c => AutoMapperConfiguration.Configure()));
-      
+
       return container;
     }
   }

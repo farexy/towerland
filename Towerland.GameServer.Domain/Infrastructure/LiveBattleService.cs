@@ -22,7 +22,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
 {
   public class LiveBattleService : ILiveBattleService, IBattleInitializationService
   {
-    private static readonly ConcurrentDictionary<Guid, int> _battles;
+    private static readonly ConcurrentDictionary<Guid, int> Battles;
 
     private readonly IBattleRepository _battleRepository;
     private readonly IUserRepository _userRepository;
@@ -35,15 +35,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     static LiveBattleService()
     {
-      _battles = new ConcurrentDictionary<Guid, int>();
+      Battles = new ConcurrentDictionary<Guid, int>();
     }
 
     public LiveBattleService(
       IBattleRepository repo,
       IUserRepository userRepo,
-      IProvider<LiveBattleModel> provider, 
-      IStateChangeRecalculator recalc, 
-      IFieldFactory fieldFactory, 
+      IProvider<LiveBattleModel> provider,
+      IStateChangeRecalculator recalc,
+      IFieldFactory fieldFactory,
       IStatsLibrary statsLibrary,
       ICheatCommandManager cheatCommandManager,
       IMapper mapper)
@@ -60,7 +60,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public Field GetField(Guid battleId)
     {
-      if (!_battles.ContainsKey(battleId))
+      if (!Battles.ContainsKey(battleId))
       {
         throw new ArgumentException("No such battle");
       }
@@ -69,28 +69,28 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     public bool CheckChanged(Guid battleId, int version)
     {
-      if (!_battles.ContainsKey(battleId))
+      if (!Battles.ContainsKey(battleId))
       {
         throw new ArgumentException("No such battle");
       }
-      return _battles[battleId] != version;
+      return Battles[battleId] != version;
     }
 
     public LiveBattleModel GetActualBattleState(Guid battleId, out int revision)
     {
-      if (!_battles.ContainsKey(battleId))
+      if (!Battles.ContainsKey(battleId))
       {
         throw new ArgumentException("No such battle");
       }
 
-      revision = _battles[battleId];
+      revision = Battles[battleId];
       return _provider.Find(battleId);
     }
 
     public async Task<Guid> InitNewBattleAsync(Guid monstersPlayer, Guid towersPlayer)
     {
       var id = Guid.NewGuid();
-      while (!_battles.TryAdd(id, 0)) ;
+      while (!Battles.TryAdd(id, 0)) ;
       await CreateBattleAsync(id, monstersPlayer, towersPlayer);
       return id;
     }
@@ -178,12 +178,12 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
     private bool IncrementBattleVersion(Guid battleId)
     {
-      if (!_battles.TryGetValue(battleId, out var curValue))
+      if (!Battles.TryGetValue(battleId, out var curValue))
       {
         return false;
       }
 
-      return _battles.TryUpdate(battleId, curValue + 1, curValue);
+      return Battles.TryUpdate(battleId, curValue + 1, curValue);
     }
 
     private async Task CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)
