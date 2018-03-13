@@ -20,7 +20,7 @@ namespace Towerland.GameServer.Api.Helpers
     {
       if (!request.Headers.TryGetValues(header, out var values))
       {
-        throw new ApiException("No required header found!"); 
+        throw new ApiException("No required header found!");
       }
 
       return values.SingleOrDefault() ?? throw new ApiException("No required header found!");

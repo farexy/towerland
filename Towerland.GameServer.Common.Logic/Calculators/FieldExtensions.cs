@@ -23,9 +23,19 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     public static int[] FindTowersThatCanAttack(this Field field, Point position, IStatsLibrary stats)
     {
       var gameCalc = new GameCalculator(stats);
-      return field.FindGameObjects(obj => 
-          obj.ResolveType() == GameObjectType.Tower 
+      return field.FindGameObjects(obj =>
+          obj.ResolveType() == GameObjectType.Tower
           && gameCalc.IsTowerCanAttack(obj, position))
+        .Select(obj => obj.GameId)
+        .ToArray();
+    }
+
+    public static int[] FindePossibleTargetsForTower(this Field field, Tower tower, IStatsLibrary stats)
+    {
+      var gameCalc = new GameCalculator(stats);
+      return field.FindGameObjects(obj =>
+          obj.ResolveType() == GameObjectType.Unit
+          && gameCalc.IsTowerCanAttack(tower, obj.Position))
         .Select(obj => obj.GameId)
         .ToArray();
     }
