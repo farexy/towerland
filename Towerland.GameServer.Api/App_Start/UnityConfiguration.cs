@@ -26,9 +26,13 @@ namespace Towerland.GameServer.Api
         new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["Towerland"].ConnectionString, MySqlDialect.Provider));
 
       container.RegisterType<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
+      
+      //repos
       container.RegisterType<IBattleRepository, BattleRepository>();
       container.RegisterType<IUserRepository, UserRepository>();
-
+//      container.RegisterType<IBattleRepository, FakeBattleRepository>();
+//      container.RegisterType<IUserRepository, FakeUserRepository>();
+      
       container.RegisterType<IBattleInitializationService, LiveBattleService>();
       container.RegisterType<IBattleSearchService, BattleSearchService>();
       container.RegisterType<ILiveBattleService, LiveBattleService>();
