@@ -15,9 +15,11 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       unit.WaitTicks = wait;
     }
 
-    public static IEnumerable<Unit> FindUnitsAt(this Field field, Point position)
+    public static IEnumerable<Unit> FindUnitsAt(this Field field, Point position, bool deadUnits = false)
     {
-      return field.State.Units.Where(u => u.Position == position);
+      return deadUnits
+        ? field.State.DeadUnits.Where(u => u.Position == position)
+        : field.State.Units.Where(u => u.Position == position);
     }
 
     public static int[] FindTowersThatCanAttack(this Field field, Point position, IStatsLibrary stats)
@@ -35,6 +37,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       var gameCalc = new GameCalculator(stats);
       return field.FindGameObjects(obj =>
           obj.ResolveType() == GameObjectType.Unit
+          && !((Unit)obj).IsDead
           && gameCalc.IsTowerCanAttack(tower, obj.Position))
         .Select(obj => obj.GameId)
         .ToArray();
@@ -57,6 +60,26 @@ namespace Towerland.GameServer.Common.Logic.Calculators
             yield return new Point(p.X + x, p.Y + y);
           }
         }
+      }
+    }
+
+    public static void MoveUnitToDead(this Field f, int unitId)
+    {
+      MoveUnitToDead(f, (Unit)f[unitId]);
+    }
+
+    public static void MoveUnitToDead(this Field f, Unit deadUnit)
+    {
+      f.State.Units.Remove(deadUnit);
+      deadUnit.IsDead = true;
+      f.State.DeadUnits.Add(deadUnit);
+    }
+
+    public static void MoveUnitsToDead(this Field f, IEnumerable<Unit> deadUnits)
+    {
+      foreach (var unit in deadUnits)
+      {
+        MoveUnitToDead(f, unit);
       }
     }
   }

@@ -65,6 +65,10 @@ namespace Towerland.Logic.Test
       f.State.TowerMoney = 10000;
 
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+
       stateChang.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(4, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 5)});

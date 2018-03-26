@@ -40,11 +40,19 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           break;
 
         case ActionId.UnitDies:
-            _field.RemoveGameObject(action.UnitId);
+            _field.MoveUnitToDead(action.UnitId);
           break;
 
         case ActionId.UnitEffectCanseled:
           _field[action.UnitId].Effect = SpecialEffect.Empty;
+          break;
+
+        case ActionId.DeadUnitDisapears:
+          _field.RemoveGameObject(action.UnitId);
+          break;
+
+        case ActionId.UnitAppliesEffect_DarkMagic:
+          _field[action.UnitId].WaitTicks += action.WaitTicks;
           break;
       }
     }

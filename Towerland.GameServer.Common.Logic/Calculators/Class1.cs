@@ -17,7 +17,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       private readonly Field _field;
       private readonly MoneyProvider _moneyProvider;
       private readonly GameCalculator _gameCalculator;
-      
+
       private const int NotFound = -1;
       private static readonly Point NotFoundPoint = new Point(-1, -1);
 
@@ -30,7 +30,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         _statsLib = statsLibrary;
         _field = (Field)fieldState.Clone();
-        
+
         _effectLogicFactory = new SpecialEffectLogicFactory();
         _moneyProvider = new MoneyProvider(statsLibrary);
         _gameCalculator = new GameCalculator(statsLibrary);
@@ -49,6 +49,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         {
           var actions = new List<GameAction>();
 
+          actions.AddRange(CheckDeadUnits());
           actions.AddRange(GetUnitActions());
           actions.AddRange(GetTowerActions());
 
@@ -70,18 +71,18 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       private List<GameAction> GetUnitActions()
       {
         var actions = new List<GameAction>();
-        var unitsToRemove = new List<int>();
+        var deadUnits = new List<Unit>();
 
         foreach (var unit in _field.State.Units)
         {
           if (unit.Health <= 0)
           {
-            unitsToRemove.Add(unit.GameId);
+            deadUnits.Add(unit);
             continue;
           }
           if (unit.WaitTicks != 0)
           {
-            unit.WaitTicks -= 1;
+            unit.WaitTicks--;
             continue;
           }
           if (unit.Effect != null && unit.Effect.Effect != EffectId.None)
@@ -94,8 +95,13 @@ namespace Towerland.GameServer.Common.Logic.Calculators
             }
           }
 
-          var path = _field.StaticData.Path[unit.PathId.Value];
           var stats = _statsLib.GetUnitStats(unit.Type);
+
+          if (!ApplyUnitEffect(stats, unit, actions))
+          {
+            continue;
+          }
+          var path = _field.StaticData.Path[unit.PathId.Value];
           if (path.End == unit.Position)
           {
             var attackAction = new GameAction
@@ -106,7 +112,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
             };
             actions.Add(attackAction);
             _field.State.Castle.Health -= stats.Damage;
-            unitsToRemove.Add(unit.GameId);
+            deadUnits.Add(unit);
 
             var unitReward = _moneyProvider.GetUnitReward(_field, attackAction);
             _field.State.MonsterMoney += unitReward;
@@ -128,7 +134,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           }
         }
 
-        _field.RemoveMany(unitsToRemove);
+        _field.MoveUnitsToDead(deadUnits);
 
         return actions;
       }
@@ -192,7 +198,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                   actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
                   
-                  _field.RemoveGameObject(targetId);
+                  _field.MoveUnitToDead(unit);
                 }
               }
               break;
@@ -216,6 +222,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 //                {
 //                  units = units.Union(_field.FindUnitsAt(point));
 //                }
+                var deadUnits = new List<Unit>();
                 foreach (var unit in units)
                 {
                   ApplyTowerEffects(stats, unit, actions);
@@ -244,17 +251,40 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
                     _field.State.MonsterMoney += unitReward;
                     _field.State.TowerMoney += towerReward;
-                  
+
                     actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                     actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
-                  
-                    _field.RemoveGameObject(unit.GameId);
+
+                    deadUnits.Add(unit);
                   }
                 }
+                _field.MoveUnitsToDead(deadUnits);
               }
               break;
           }
         }
+
+        return actions;
+      }
+
+      private List<GameAction> CheckDeadUnits()
+      {
+        var actions = new List<GameAction>();
+        var unitsToRemove = new List<int>();
+        foreach (var unit in _field.State.DeadUnits)
+        {
+          unit.WaitTicks--;
+          if (unit.WaitTicks == 0)
+          {
+            actions.Add(new GameAction
+            {
+              ActionId = ActionId.DeadUnitDisapears,
+              UnitId = unit.GameId
+            });
+            unitsToRemove.Add(unit.GameId);
+          }
+        }
+        _field.RemoveMany(unitsToRemove);
 
         return actions;
       }
@@ -264,6 +294,31 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       private static int GetContextSpeedCoeff(Unit unit)
       {
         return unit.Effect.Effect == EffectId.UnitFreezed ? SpecialEffect.FreezedSlowCoeff : 1;
+      }
+
+      private bool ApplyUnitEffect(UnitStats stats, Unit unit, List<GameAction> actions)
+      {
+        if (stats.SpecialEffects == null)
+        {
+          return true;
+        }
+
+        bool continueAfter = true;
+        foreach (var effect in stats.SpecialEffects)
+        {
+          var effectLogic = _effectLogicFactory.GetEffectLogic(effect.Effect);
+          var neededData = new SpecialEffectLogicFactory.EffectLogicNeededData
+          {
+            StatsLibrary = _statsLib,
+            Field = _field
+          };
+          if (!effectLogic.ApplyUnitEffectOnMove(unit, neededData, actions, effect.Duration))
+          {
+            continueAfter = false;
+          }
+        }
+
+        return continueAfter;
       }
       
       private void ApplyTowerEffects(TowerStats tower, Unit unit, List<GameAction> actions)

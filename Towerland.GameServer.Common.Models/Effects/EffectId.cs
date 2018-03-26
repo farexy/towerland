@@ -4,8 +4,12 @@
   {
     None = 0,
     
+    //Tower effects
     UnitFreezed = 101,
     
     Unit10xDamage_10PercentProbability = 110,
+    
+    //Units effects
+    ReviveUnitsAtNextPoint = 501,
   }
 }

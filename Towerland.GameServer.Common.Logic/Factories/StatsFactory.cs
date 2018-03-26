@@ -6,7 +6,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
 {
   public class StatsFactory
   {
-    public UnitStats[] Units =
+    public readonly UnitStats[] Units =
     {
       new UnitStats
       {
@@ -74,9 +74,21 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Cost = 750,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
+      new UnitStats
+      {
+        Type = GameObjectType.Unit_Necromancer,
+        Damage = 10,
+        Health = 340,
+        IsAir = false,
+        MovementPriority = UnitStats.MovementPriorityType.Random,
+        Speed = 4,
+        Cost = 400,
+        Defence = UnitStats.DefenceType.Undefended,
+        SpecialEffects = new []{new SpecialEffect{Effect = EffectId.ReviveUnitsAtNextPoint} }
+      }
     };
 
-    public TowerStats[] Towers =
+    public readonly TowerStats[] Towers =
     {
       new TowerStats
       {

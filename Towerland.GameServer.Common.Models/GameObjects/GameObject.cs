@@ -5,7 +5,7 @@ using Towerland.GameServer.Common.Models.GameField;
 
 namespace Towerland.GameServer.Common.Models.GameObjects
 {
-  public class GameObject: ICloneable
+  public class GameObject: ICloneable, IEquatable<GameObject>
   {
     [JsonProperty("i")] public int GameId { set; get; }
     [JsonProperty("p")] public Point Position { get; set; }
@@ -54,5 +54,37 @@ namespace Towerland.GameServer.Common.Models.GameObjects
         Effect = new SpecialEffect{Effect = Effect.Effect, Duration = Effect.Duration}
       };
     }
+
+    #region Equals
+
+    public bool Equals(GameObject other)
+    {
+      if (ReferenceEquals(null, other)) return false;
+      if (ReferenceEquals(this, other)) return true;
+      return GameId == other.GameId;
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj)) return false;
+      if (ReferenceEquals(this, obj)) return true;
+      if (obj.GetType() != this.GetType()) return false;
+      return Equals((GameObject) obj);
+    }
+
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        var hashCode = GameId;
+        hashCode = (hashCode * 397) ^ Position.GetHashCode();
+        hashCode = (hashCode * 397) ^ WaitTicks;
+        hashCode = (hashCode * 397) ^ (Effect != null ? Effect.GetHashCode() : 0);
+        hashCode = (hashCode * 397) ^ (int) Type;
+        return hashCode;
+      }
+    }
+
+    #endregion
   }
 }
