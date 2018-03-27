@@ -91,7 +91,15 @@ namespace Towerland.GameServer.Common.Models.GameField
             }
             if (type == GameObjectType.Unit)
             {
-                State.Units.Remove(State.Units.First(u => u.GameId == gameId));
+                var unit = (Unit)this[gameId];
+                if (unit.IsDead)
+                {
+                    State.DeadUnits.Remove(unit);
+                }
+                else
+                {
+                    State.Units.Remove(unit);
+                }
             }
             if (type == GameObjectType.Tower)
             {
@@ -116,12 +124,8 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public void SetState(FieldState state)
         {
-            this._state = new FieldState(state.Towers, state.Units, state.Castle)
-            {
-                MonsterMoney = state.MonsterMoney,
-                TowerMoney = state.TowerMoney
-            };
-            this._objects = SetObjects(_state.Towers, _state.Units);
+            this._state = new FieldState(state.Towers, state.Units, state.DeadUnits, state.Castle, state.MonsterMoney, state.TowerMoney);
+            this._objects = SetObjects(_state.Towers, _state.Units, _state.DeadUnits);
         }
 
         public object Clone()
@@ -134,15 +138,11 @@ namespace Towerland.GameServer.Common.Models.GameField
                     EndTimeUtc = StaticData.EndTimeUtc
                 },
                 _objects = _objects.ToDictionary(item => item.Key, item => (GameObject)item.Value.Clone()),
-                _state = new FieldState(State.Towers, State.Units, State.Castle)
-                {
-                    MonsterMoney = State.MonsterMoney,
-                    TowerMoney = State.TowerMoney
-                },
+                _state = new FieldState(State.Towers, State.Units, State.DeadUnits, State.Castle, State.MonsterMoney, State.TowerMoney),
             };
         }
-        
-        private static Dictionary<int, GameObject> SetObjects(List<Tower> objects, List<Unit> objects1)
+
+        private static Dictionary<int, GameObject> SetObjects(List<Tower> objects, List<Unit> objects1, List<Unit> objects2)
         {
             var res = new Dictionary<int, GameObject>();
             foreach (var o in objects)
@@ -152,6 +152,10 @@ namespace Towerland.GameServer.Common.Models.GameField
             foreach (var o1 in objects1)
             {
                 res.Add(o1.GameId, o1);
+            }
+            foreach (var o2 in objects2)
+            {
+                res.Add(o2.GameId, o2);
             }
             return res;
         }
