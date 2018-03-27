@@ -63,11 +63,18 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       }
     }
 
-    public static void MoveUnitsToDead(this Field f, IEnumerable<int> deadUnits)
+    public static void MarkUnitDeadWithTicks(this Field f, int deadUnit)
+    {
+      const int deadWaitTicks = 20;
+      f[deadUnit].WaitTicks = deadWaitTicks;
+      f.MarkUnitDead(deadUnit);
+    }
+
+    public static void MarkUnitsDead(this Field f, IEnumerable<int> deadUnits)
     {
       foreach (var unit in deadUnits)
       {
-        f.MoveUnitToDead(unit);
+        MarkUnitDeadWithTicks(f, unit);
       }
     }
   }

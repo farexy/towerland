@@ -40,7 +40,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           break;
 
         case ActionId.UnitDies:
-            _field.MoveUnitToDead(action.UnitId);
+            _field.MarkUnitDeadWithTicks(action.UnitId);
           break;
 
         case ActionId.UnitEffectCanseled:

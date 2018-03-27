@@ -134,7 +134,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           }
         }
 
-        _field.MoveUnitsToDead(deadUnits);
+        _field.MarkUnitsDead(deadUnits);
 
         return actions;
       }
@@ -198,7 +198,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                   actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
                   
-                  _field.MoveUnitToDead(unit.GameId);
+                  _field.MarkUnitDeadWithTicks(unit.GameId);
                 }
               }
               break;
@@ -258,7 +258,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                     deadUnits.Add(unit.GameId);
                   }
                 }
-                _field.MoveUnitsToDead(deadUnits);
+                _field.MarkUnitsDead(deadUnits);
               }
               break;
           }
@@ -271,7 +271,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         var actions = new List<GameAction>();
         var unitsToRemove = new List<int>();
-        foreach (var unit in _field.State.DeadUnits)
+        foreach (var unit in _field.State.DeadUnits) 
         {
           unit.WaitTicks--;
           if (unit.WaitTicks <= 0)

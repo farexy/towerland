@@ -131,14 +131,11 @@ namespace Towerland.GameServer.Common.Models.GameField
             this._objects = SetObjects(_state.Towers, _state.Units, _state.DeadUnits);
         }
 
-        public void MoveUnitToDead(int unitGameId)
+        public void MarkUnitDead(int unitGameId)
         {
-            const int deadWaitTicks = 20;
-
             var deadUnit = (Unit) _objects[unitGameId];
             State.Units.Remove(deadUnit);
             deadUnit.IsDead = true;
-            deadUnit.WaitTicks = deadWaitTicks;
             State.DeadUnits.Add(deadUnit);
         }
 
