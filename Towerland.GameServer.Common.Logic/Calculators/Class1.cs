@@ -71,13 +71,13 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       private List<GameAction> GetUnitActions()
       {
         var actions = new List<GameAction>();
-        var deadUnits = new List<Unit>();
+        var deadUnits = new List<int>();
 
         foreach (var unit in _field.State.Units)
         {
           if (unit.Health <= 0)
           {
-            deadUnits.Add(unit);
+            deadUnits.Add(unit.GameId);
             continue;
           }
           if (unit.WaitTicks != 0)
@@ -112,7 +112,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
             };
             actions.Add(attackAction);
             _field.State.Castle.Health -= stats.Damage;
-            deadUnits.Add(unit);
+            deadUnits.Add(unit.GameId);
 
             var unitReward = _moneyProvider.GetUnitReward(_field, attackAction);
             _field.State.MonsterMoney += unitReward;
@@ -198,7 +198,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                   actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
                   
-                  _field.MoveUnitToDead(unit);
+                  _field.MoveUnitToDead(unit.GameId);
                 }
               }
               break;
@@ -222,7 +222,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 //                {
 //                  units = units.Union(_field.FindUnitsAt(point));
 //                }
-                var deadUnits = new List<Unit>();
+                var deadUnits = new List<int>();
                 foreach (var unit in units)
                 {
                   ApplyTowerEffects(stats, unit, actions);
@@ -255,7 +255,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                     actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                     actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
 
-                    deadUnits.Add(unit);
+                    deadUnits.Add(unit.GameId);
                   }
                 }
                 _field.MoveUnitsToDead(deadUnits);
@@ -274,7 +274,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         foreach (var unit in _field.State.DeadUnits)
         {
           unit.WaitTicks--;
-          if (unit.WaitTicks == 0)
+          if (unit.WaitTicks <= 0)
           {
             actions.Add(new GameAction
             {

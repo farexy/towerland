@@ -49,27 +49,30 @@ namespace Towerland.GameServer.Common.Models.GameField
         public int AddGameObject(GameObject gameObj)
         {
             var type = gameObj.ResolveType();
-            var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
-            gameObj.GameId = id;
-
-            switch (type)
+            unchecked
             {
-                case GameObjectType.Castle:
-                    if (State.Castle != null)
-                        throw new ArgumentException("There can be only one castle");
-                    State.Castle = (Castle)gameObj;
-                    break;
-                case GameObjectType.Unit:
-                    State.Units.Add((Unit)gameObj);
-                    break;
-                case GameObjectType.Tower:
-                    State.Towers.Add((Tower)gameObj);
-                    break;
+                var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
+                gameObj.GameId = id;
+
+                switch (type)
+                {
+                    case GameObjectType.Castle:
+                        if (State.Castle != null)
+                            throw new ArgumentException("There can be only one castle");
+                        State.Castle = (Castle) gameObj;
+                        break;
+                    case GameObjectType.Unit:
+                        State.Units.Add((Unit) gameObj);
+                        break;
+                    case GameObjectType.Tower:
+                        State.Towers.Add((Tower) gameObj);
+                        break;
+                }
+
+                _objects.Add(id, gameObj);
+
+                return id;
             }
-
-            _objects.Add(id, gameObj);
-
-            return id;
         }
 
         public IEnumerable<int> AddMany(IEnumerable<GameObject> objects)
@@ -126,6 +129,17 @@ namespace Towerland.GameServer.Common.Models.GameField
         {
             this._state = new FieldState(state.Towers, state.Units, state.DeadUnits, state.Castle, state.MonsterMoney, state.TowerMoney);
             this._objects = SetObjects(_state.Towers, _state.Units, _state.DeadUnits);
+        }
+
+        public void MoveUnitToDead(int unitGameId)
+        {
+            const int deadWaitTicks = 20;
+
+            var deadUnit = (Unit) _objects[unitGameId];
+            State.Units.Remove(deadUnit);
+            deadUnit.IsDead = true;
+            deadUnit.WaitTicks = deadWaitTicks;
+            State.DeadUnits.Add(deadUnit);
         }
 
         public object Clone()
