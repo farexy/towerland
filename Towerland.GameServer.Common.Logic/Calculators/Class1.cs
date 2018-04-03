@@ -182,16 +182,16 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
                   actions.Add(dieAction);
                   actions.Add(killAction);
-                  
+
                   var towerReward = _moneyProvider.GetTowerReward(_field, dieAction);
                   var unitReward = _moneyProvider.GetUnitReward(_field, killAction);
 
                   _field.State.MonsterMoney += unitReward;
                   _field.State.TowerMoney += towerReward;
-                  
+
                   actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                   actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
-                  
+
                   _field.RemoveGameObject(targetId);
                 }
               }
@@ -202,7 +202,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
               if (targetPoint != NotFoundPoint)
               {
                 tower.WaitTicks = stats.AttackSpeed;
-                
+
                 actions.Add(new GameAction
                 {
                   ActionId = ActionId.TowerAttacksPosition,
@@ -216,14 +216,15 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 //                {
 //                  units = units.Union(_field.FindUnitsAt(point));
 //                }
+                var deadUnits = new List<int>();
                 foreach (var unit in units)
                 {
                   ApplyTowerEffects(stats, unit, actions);
                   var damage =  _gameCalculator.CalculateDamage(unit.Type, stats);
-                  
+
                   if(damage == 0)
                     continue;
-                  
+
                   actions.Add(new GameAction
                   {
                     ActionId = ActionId.UnitRecievesDamage,
@@ -235,22 +236,23 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   {
                     var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = unit.GameId, TowerId = tower.GameId};
                     var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = unit.GameId, Position = unit.Position};
-                  
+
                     actions.Add(dieAction);
                     actions.Add(killAction);
-                  
+
                     var towerReward = _moneyProvider.GetTowerReward(_field, dieAction);
                     var unitReward = _moneyProvider.GetUnitReward(_field, killAction);
 
                     _field.State.MonsterMoney += unitReward;
                     _field.State.TowerMoney += towerReward;
-                  
+
                     actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                     actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
-                  
-                    _field.RemoveGameObject(unit.GameId);
+
+                    deadUnits.Add(unit.GameId);
                   }
                 }
+                _field.RemoveMany(deadUnits);
               }
               break;
           }

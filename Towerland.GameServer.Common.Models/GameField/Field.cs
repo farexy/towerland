@@ -8,7 +8,7 @@ namespace Towerland.GameServer.Common.Models.GameField
 {
     public class Field : ICloneable
     {
-        public GameObject this[int gameId] => _objects[gameId];
+        public GameObject this[int gameId] => !_objects.ContainsKey(gameId) ? null : _objects[gameId];
 
         [JsonProperty("sd")]
         public FieldStaticData StaticData { private set; get; }
