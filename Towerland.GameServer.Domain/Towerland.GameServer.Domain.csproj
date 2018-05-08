@@ -51,7 +51,6 @@
     <Compile Include="Helpers\BattleExtensions.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
-    <Compile Include="Helpers\TransactionScopeWrapper.cs" />
     <Compile Include="Infrastructure\BattleInMemoryProvider.cs" />
     <Compile Include="Infrastructure\BattleSearchService.cs" />
     <Compile Include="Infrastructure\LiveBattleService.cs" />

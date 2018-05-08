@@ -33,10 +33,12 @@ namespace Towerland.GameServer.Api
 //      container.RegisterType<IBattleRepository, FakeBattleRepository>();
 //      container.RegisterType<IUserRepository, FakeUserRepository>();
       
-      container.RegisterType<IBattleInitializationService, LiveBattleService>();
-      container.RegisterType<IBattleSearchService, BattleSearchService>();
-      container.RegisterType<ILiveBattleService, LiveBattleService>();
       container.RegisterType<IUserService, UserService>();
+      container.RegisterType<IBattleSearchService, BattleSearchService>(new ContainerControlledLifetimeManager());
+
+      container.RegisterType<LiveBattleService>(new ContainerControlledLifetimeManager());
+      container.RegisterType<IBattleInitializationService, LiveBattleService>();
+      container.RegisterType<ILiveBattleService, LiveBattleService>();
 
       container.RegisterType<ICheatCommandManager, CheatCommandManager>();
       container.RegisterType<IStatsLibrary, StatsLibrary>();

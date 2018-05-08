@@ -10,29 +10,23 @@ namespace Towerland.GameServer.Domain.Infrastructure
   public class BattleSearchService : IBattleSearchService
   {
     private static readonly Random Rnd = new Random();
-    private static ConcurrentQueue<BattleSearchSession> _sessionQueue;
-    private static ConcurrentDictionary<Guid, Guid> _sessionBattles;
-    private static ConcurrentDictionary<Guid, PlayerSide> _battlePlayerSides;
+    private readonly ConcurrentQueue<BattleSearchSession> _sessionQueue;
+    private readonly ConcurrentDictionary<Guid, Guid> _sessionBattles;
+    private readonly ConcurrentDictionary<Guid, PlayerSide> _battlePlayerSides;
 
     private readonly IBattleInitializationService _battleProvider;
 
     public BattleSearchService(IBattleInitializationService battleProvider)
     {
       _battleProvider = battleProvider;
+
+      _sessionQueue = new ConcurrentQueue<BattleSearchSession>();
+      _sessionBattles = new ConcurrentDictionary<Guid, Guid>();
+      _battlePlayerSides = new ConcurrentDictionary<Guid, PlayerSide>();
     }
 
     public async Task AddToQueueAsync(Guid sessionId)
     {
-      if (_sessionQueue == null)
-      {
-        _sessionQueue = new ConcurrentQueue<BattleSearchSession>();
-      }
-      if (_sessionBattles == null)
-      {
-        _sessionBattles = new ConcurrentDictionary<Guid, Guid>();
-        _battlePlayerSides = new ConcurrentDictionary<Guid, PlayerSide>();
-      }
-
       if (_sessionQueue.Any(s => s.SessionId == sessionId))
       {
         return;
