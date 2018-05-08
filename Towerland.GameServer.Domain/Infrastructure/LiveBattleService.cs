@@ -140,6 +140,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         var battle = _provider.Find(battleId);
         var entity = await _battleRepository.FindAsync(battleId);
+        var expCalc = new UserExperienceCalculator();
 
         PlayerSide winSide;
         if (battle.State.StaticData.EndTimeUtc > DateTime.UtcNow)
@@ -157,8 +158,8 @@ namespace Towerland.GameServer.Domain.Infrastructure
         entity.EndTime = DateTime.UtcNow;
 
         await Task.WhenAll(_battleRepository.UpdateAsync(entity),
-          _userRepository.IncrementExperienceAsync(entity.Monsters_UserId, CalcUserExp(entity, entity.Monsters_UserId, left)),
-          _userRepository.IncrementExperienceAsync(entity.Towers_UserId, CalcUserExp(entity, entity.Towers_UserId, left)));
+          _userRepository.IncrementExperienceAsync(entity.Monsters_UserId, expCalc.CalcUserExp(entity, entity.Monsters_UserId, left)),
+          _userRepository.IncrementExperienceAsync(entity.Towers_UserId, expCalc.CalcUserExp(entity, entity.Towers_UserId, left)));
 
         battle.Ticks = CreateBattleEndTick(winSide);
 
@@ -213,14 +214,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       };
     }
 
-    private static int CalcUserExp(Battle b, Guid uid, Guid? left)
-    {
-      return b.IsWinner(uid)
-        ? Constants.UserWonExp
-        : left.HasValue && uid == left
-          ? Constants.UserLeftExp
-          : Constants.UserLoosedExp;
-    }
+
 
     private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
     {
