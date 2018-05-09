@@ -54,6 +54,13 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
           ticks.Add(actions);
         }
+        if (_field.State.Castle.Health <= 0)
+        {
+          ticks.Add(new List<GameAction>
+          {
+            new GameAction{ActionId = ActionId.MonsterPlayerWins}
+          });
+        }
 
         var result = new GameTick[ticks.Count];
         for (int i = 0; i < ticks.Count; i++)

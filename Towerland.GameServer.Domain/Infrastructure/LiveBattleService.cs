@@ -150,6 +150,10 @@ namespace Towerland.GameServer.Domain.Infrastructure
         }
         else
         {
+          if (entity.WinnerId != Guid.Empty)
+          {
+            return;
+          }
           ResolveActions(battle.State, battle.Ticks);
           winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
         }
@@ -165,6 +169,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
 
         IncrementBattleVersion(battleId);
         _provider.Update(battle);
+        DisposeBattleAsync(battleId);
       }
     }
 
@@ -214,7 +219,12 @@ namespace Towerland.GameServer.Domain.Infrastructure
       };
     }
 
-
+    private async Task DisposeBattleAsync(Guid battleId)
+    {
+      await Task.Delay(20000);
+      _provider.Delete(battleId);
+      _battles.TryRemove(battleId, out var _);
+    }
 
     private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
     {
