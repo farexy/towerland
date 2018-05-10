@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Towerland.GameServer.Common.Logic.Calculators;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
@@ -57,9 +58,16 @@ namespace Towerland.GameServer.Common.Logic.Factories
         ApplyUnitEffectOnMove = (unit, data, actions, duration) =>
         {
           var path = data.Field.StaticData.Path[unit.PathId.Value];
-          var nextPoint = path.GetNext(unit.Position);
+          if (!path.TryGetNext(unit.Position, out var nextPoint))
+          {
+            return true;
+          }
           var deadUnits = data.Field.FindUnitsAt(nextPoint, true);
           var uFactory = new UnitFactory(data.StatsLibrary);
+          if (!deadUnits.Any())
+          {
+            return true;
+          }
           foreach (var deadUnit in deadUnits)
           {
             var skeleton = uFactory.Create(GameObjectType.Unit_Skeleton, new CreationOptions {Position = deadUnit.Position});

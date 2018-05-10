@@ -19,6 +19,25 @@ namespace Towerland.GameServer.Common.Models.GameField
 
     public Point End { get { return _way.Last(); } }
 
+    public bool TryGetNext(Point current, out Point next)
+    {
+      if (_way.Last() == current)
+      {
+        next = new Point(-1, -1);
+        return false;
+      }
+
+      for (int i = 0; i < _way.Length - 1; i++)
+      {
+        if (_way[i] == current)
+        {
+          next = _way[i + 1];
+          return true;
+        }
+      }
+      throw new ArgumentException("Point is not on the path");
+    }
+    
     public Point GetNext(Point current)
     {
       if(_way.Last() == current)

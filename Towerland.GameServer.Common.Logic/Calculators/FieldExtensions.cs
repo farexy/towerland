@@ -65,7 +65,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
     public static void MarkUnitDeadWithTicks(this Field f, int deadUnit)
     {
-      const int deadWaitTicks = 20;
+      const int deadWaitTicks = 30;
       f[deadUnit].WaitTicks = deadWaitTicks;
       f.MarkUnitDead(deadUnit);
     }

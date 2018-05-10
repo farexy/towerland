@@ -28,16 +28,33 @@ namespace Towerland.Logic.Test
     private static void Show(Field f)
     {
       Console.Clear();
+      Console.ForegroundColor = ConsoleColor.White;
+
       for (int i = 0; i < f.StaticData.Width; i++)
       {
         for (int j = 0; j < f.StaticData.Height; j++)
         {
           var unit = f.State.Units.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
           var tower = f.State.Towers.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
-          if(unit != null)
-            Console.Write("*");
+          var dead = f.State.DeadUnits.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
+          if (unit != null)
+          {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write(unit.Type == GameObjectType.Unit_Necromancer ? "N" : "*");
+            Console.ForegroundColor = ConsoleColor.White;
+          }
           else if (tower != null)
+          {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("T");
+            Console.ForegroundColor = ConsoleColor.White;
+          }
+          else if (dead != null)
+          {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("D");
+            Console.ForegroundColor = ConsoleColor.White;
+          }
           else
             Console.Write((int)f.StaticData.Cells[i,j].Object);
         }
@@ -68,10 +85,41 @@ namespace Towerland.Logic.Test
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Impling);
+      
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
 
       stateChang.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(4, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 5)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 6)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 7)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 8)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = new Point(5, 0)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = new Point(9, 9)});
       stateChang.AddNewUnit(f, GameObjectType.Unit_Dragon);
