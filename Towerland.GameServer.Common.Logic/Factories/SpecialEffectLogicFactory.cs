@@ -13,6 +13,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
 {
   public class SpecialEffectLogic
   {
+    public Func<Unit, List<GameAction>, bool> AffectAppliedUnitEffect { get; set; }
     public Action<TowerStats, Unit, List<GameAction>, int?> ApplyTowerAttackEffect { get; set; }
     public Func<Unit, SpecialEffectLogicFactory.EffectLogicNeededData, List<GameAction>, int?, bool> ApplyUnitEffectOnMove { get; set; }
   }
@@ -27,6 +28,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
       },
       [EffectId.UnitFreezed] = new SpecialEffectLogic
       {
+        AffectAppliedUnitEffect = (unit, actions) => { return false; },
         ApplyTowerAttackEffect = (towerStats, unit, actions, duration) =>
         {
           unit.WaitTicks *= SpecialEffect.FreezedSlowCoeff;

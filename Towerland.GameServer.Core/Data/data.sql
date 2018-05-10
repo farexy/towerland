@@ -23,7 +23,7 @@ CREATE TABLE Battle(
   Id CHAR(36) PRIMARY KEY,
   Monsters_UserId CHAR(36) NOT NULL,
   Towers_UserId CHAR(36) NOT NULL,
-  Winner CHAR(36),
+  WinnerId CHAR(36),
   StartTime DATETIME,
   EndTime DATETIME
 ) Engine InnoDB CHARSET=utf8;
