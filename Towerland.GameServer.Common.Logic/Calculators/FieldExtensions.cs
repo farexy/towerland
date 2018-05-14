@@ -40,9 +40,15 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         .ToArray();
     }
 
-    public static IEnumerable<Path> GetPossiblePath(this Field field, Point position)
+    public static IEnumerable<int> GetPossiblePathIds(this Field field, Point position)
     {
-      return field.StaticData.Path.Where(p => p.PointOnThePathPosition(position) != -1);
+      for (int i = 0; i < field.StaticData.Path.Length; i++)
+      {
+        if (field.StaticData.Path[i].PointOnThePathPosition(position) != -1)
+        {
+          yield return i;
+        }
+      }
     }
 
     public static IEnumerable<Point> GetNeighbourPoints(this Field f, Point p, int range, FieldObject cellTypeToMatch)

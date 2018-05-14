@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Towerland.GameServer.Common.Logic.Calculators;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.Exceptions;
@@ -65,14 +66,17 @@ namespace Towerland.GameServer.Common.Logic.Factories
           var uFactory = new UnitFactory(data.StatsLibrary);
           foreach (var deadUnitAction in diedUnits)
           {
-            var skeleton = uFactory.Create(GameObjectType.Unit_Skeleton, new CreationOptions {Position = deadUnitAction.Position});
+            var possiblePath = data.Field.GetPossiblePathIds(deadUnitAction.Position).ToArray();
+            var pathId = possiblePath[GameMath.Rand.Next(possiblePath.Length)];
+            var skeleton = uFactory.Create(GameObjectType.Unit_Skeleton, 
+              new CreationOptions {Position = deadUnitAction.Position, PathId = pathId});
             var newUnitId = data.Field.AddGameObject(skeleton);
             actions.Add(new GameAction
             {
               ActionId = ActionId.UnitAppers,
               UnitId = newUnitId,
               Position = deadUnitAction.Position,
-              GameObjectType = GameObjectType.Unit_Skeleton
+              GameObject = (GameObject) skeleton.Clone()
             });
           }
 

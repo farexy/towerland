@@ -232,7 +232,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         return;
       }
-      var resolver = new FieldStateActionResolver(f, statsLibrary);
+      var resolver = new FieldStateActionResolver(f);
       foreach (var tick in ticks)
       {
         if (tick.HasNoActions)

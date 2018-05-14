@@ -46,7 +46,18 @@ namespace Towerland.GameServer.Common.Models.GameField
             );
         }
 
-        public int AddGameObject(int gameId, GameObject gameObj)
+        public int AddGameObject(GameObject gameObj)
+        {
+            unchecked
+            {
+                var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
+                gameObj.GameId = id;
+
+                return AddGameObject(id, gameObj);
+            }
+        }
+        
+        private int AddGameObject(int gameId, GameObject gameObj)
         {
             var type = gameObj.ResolveType();
             gameObj.GameId = gameId;
@@ -69,17 +80,6 @@ namespace Towerland.GameServer.Common.Models.GameField
             _objects.Add(gameId, gameObj);
 
             return gameId;
-        }
-
-        public int AddGameObject(GameObject gameObj)
-        {
-            unchecked
-            {
-                var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
-                gameObj.GameId = id;
-
-                return AddGameObject(id, gameObj);
-            }
         }
 
         public IEnumerable<int> AddMany(IEnumerable<GameObject> objects)

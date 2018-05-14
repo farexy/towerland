@@ -13,6 +13,6 @@ namespace Towerland.GameServer.Common.Models.GameActions
     [JsonProperty("d")] public int Damage;
     [JsonProperty("w")] public int WaitTicks;
     [JsonProperty("m")] public int Money;
-    [JsonProperty("g")] public GameObjectType GameObjectType;
+    [JsonProperty("g")] public GameObject GameObject;
   }
 }

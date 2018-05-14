@@ -10,11 +10,8 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
 {
   public class FieldStateActionResolver : BaseActionResolver
   {
-    private IGameObjectFactory<Unit> _unitsFactory;
-
-    public FieldStateActionResolver(Field filed, IStatsLibrary statsLibrary) : base(filed)
+    public FieldStateActionResolver(Field filed) : base(filed)
     {
-      _unitsFactory = new UnitFactory(statsLibrary);
     }
 
     protected override void ResolveReservedAction(GameAction action)
@@ -55,8 +52,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           break;
 
         case ActionId.UnitAppers:
-          var unit = _unitsFactory.Create(action.GameObjectType, new CreationOptions {Position = action.Position});
-          _field.AddGameObject(action.UnitId, unit);
+          _field.AddGameObject((Unit)action.GameObject);
           break;
       }
     }

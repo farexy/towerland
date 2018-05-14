@@ -76,7 +76,7 @@ namespace Towerland.Logic.Test
       var calc = new StateCalculator(statsStub, f);
 
       var ticks = calc.CalculateActionsByTicks();
-      var resolver = new FieldStateActionResolver(f, statsStub);
+      var resolver = new FieldStateActionResolver(f);
       foreach (var actions in ticks)
       {
         foreach (var action in actions.Actions)
