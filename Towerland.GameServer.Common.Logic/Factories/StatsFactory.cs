@@ -17,7 +17,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Fastest,
         Speed = 2,
         Cost = 50,
-        Defence = UnitStats.DefenceType.LightArmor
+        Defence = UnitStats.DefenceType.LightArmor,
+        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -28,7 +29,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 120,
-        Defence = UnitStats.DefenceType.LightArmor
+        Defence = UnitStats.DefenceType.LightArmor,
+        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -39,7 +41,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
         Cost = 200,
-        Defence = UnitStats.DefenceType.HeavyArmor
+        Defence = UnitStats.DefenceType.HeavyArmor,
+        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -50,7 +53,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 250,
-        Defence = UnitStats.DefenceType.LightArmor
+        Defence = UnitStats.DefenceType.LightArmor,
+        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -61,7 +65,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 500,
-        Defence = UnitStats.DefenceType.Undefended
+        Defence = UnitStats.DefenceType.Undefended,
+        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -72,8 +77,22 @@ namespace Towerland.GameServer.Common.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
         Cost = 750,
-        Defence = UnitStats.DefenceType.HeavyArmor
+        Defence = UnitStats.DefenceType.HeavyArmor,
+        Priority = StrokePriority.Usual
       },
+      new UnitStats
+      {
+        Type = GameObjectType.Unit_Necromancer,
+        Damage = 10,
+        Health = 400,
+        IsAir = false,
+        MovementPriority = UnitStats.MovementPriorityType.Random,
+        Speed = 4,
+        Cost = 500,
+        Defence = UnitStats.DefenceType.Undefended,
+        SpecialEffects = new []{new SpecialEffect {Effect = EffectId.ReviveDeadUnitsAtThisTick}},
+        Priority = StrokePriority.TheLowest
+      }
     };
 
     public TowerStats[] Towers =
@@ -86,7 +105,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         AttackSpeed = 6,
         Damage = 60,
         Range = 3,
-        Cost = 50
+        Cost = 50,
+        Priority = StrokePriority.Usual
       },
       new TowerStats
       {
@@ -97,7 +117,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 35,
         Range = 4,
         Cost = 120,
-        SpecialEffects = new[] {new SpecialEffect {Effect = EffectId.UnitFreezed, Duration = 16}}
+        SpecialEffects = new[] {new SpecialEffect {Effect = EffectId.UnitFreezed, Duration = 16}},
+        Priority = StrokePriority.Usual
       },
       new TowerStats
       {
@@ -107,7 +128,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         AttackSpeed = 12,
         Damage = 70,
         Range = 4,
-        Cost = 200
+        Cost = 200,
+        Priority = StrokePriority.Usual
       },
       new TowerStats
       {
@@ -118,6 +140,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 100,
         Range = 5,
         Cost = 400,
+        Priority = StrokePriority.Usual
       },
       new TowerStats
       {
@@ -128,7 +151,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 70,
         Range = 6,
         Cost = 600,
-        SpecialEffects = new[] {new SpecialEffect {Effect = EffectId.Unit10xDamage_10PercentProbability}}
+        SpecialEffects = new[] {new SpecialEffect {Effect = EffectId.Unit10xDamage_10PercentProbability}},
+        Priority = StrokePriority.Usual
       }
     };
 

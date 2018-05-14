@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Common.Models.GameActions;
+using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
 
@@ -11,6 +14,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
   public class SpecialEffectLogic
   {
     public Func<Unit, List<GameAction>, bool> AffectAppliedUnitEffect { get; set; }
+    public Func<Unit, SpecialEffectLogicFactory.EffectLogicNeededData, List<GameAction>, bool> ApplyUnitMoveEffect { get; set; }
     public Action<TowerStats, Unit, List<GameAction>, int?> ApplyTowerAttackEffect { get; set; }
   }
   
@@ -47,6 +51,38 @@ namespace Towerland.GameServer.Common.Logic.Factories
             });
           }
         }
+      },
+      [EffectId.ReviveDeadUnitsAtThisTick] = new SpecialEffectLogic
+      {
+        ApplyUnitMoveEffect = (unit, data, actions) =>
+        {
+          var diedUnits = actions.Where(a => a.ActionId == ActionId.UnitDies);
+          if (!diedUnits.Any())
+          {
+            return true;
+          }
+
+          var uFactory = new UnitFactory(data.StatsLibrary);
+          foreach (var deadUnitAction in diedUnits)
+          {
+            var skeleton = uFactory.Create(GameObjectType.Unit_Skeleton, new CreationOptions {Position = deadUnitAction.Position});
+            var newUnitId = data.Field.AddGameObject(skeleton);
+            actions.Add(new GameAction
+            {
+              ActionId = ActionId.UnitAppers,
+              UnitId = newUnitId,
+              Position = deadUnitAction.Position,
+              GameObjectType = GameObjectType.Unit_Skeleton
+            });
+          }
+
+          actions.Add(new GameAction
+          {
+            ActionId = ActionId.UnitAppliesEffect_DarkMagic,
+            UnitId = unit.GameId,
+          });
+          return false;
+        }
       }
     };
 
@@ -57,6 +93,12 @@ namespace Towerland.GameServer.Common.Logic.Factories
         throw new LogicException("No effect with such id found");
       }
       return Effects[effectId];
-    } 
+    }
+
+    public class EffectLogicNeededData
+    {
+      internal IStatsLibrary StatsLibrary;
+      internal Field Field;
+    }
   }
 }

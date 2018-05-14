@@ -15,6 +15,7 @@ namespace Towerland.GameServer.Common.Models.Stats
     [JsonProperty("e")] public SpecialEffect[] SpecialEffects { set; get; }
     [JsonProperty("c")] public int Cost { set; get; }
     [JsonProperty("f")] public DefenceType Defence { set; get; }
+    [JsonProperty("p")] public StrokePriority Priority { set; get; }
 
     public enum MovementPriorityType
     {

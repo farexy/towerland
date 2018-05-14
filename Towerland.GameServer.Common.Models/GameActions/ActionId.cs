@@ -4,7 +4,7 @@
   {
     Reserved = 0,
 
-    
+    StateChanged = 1,
     
     Tower = 10,
     TowerAttacks = 11,
@@ -28,7 +28,9 @@
 
     UnitEffectCanseled = 401,
     
+    UnitAppliesEffect_DarkMagic = 502,
     
+    UnitAppers = 801,
     
     Other = 1000,
     MonsterPlayerRecievesMoney = 1001,

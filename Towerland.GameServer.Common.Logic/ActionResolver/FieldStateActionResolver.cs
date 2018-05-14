@@ -1,4 +1,6 @@
 using Towerland.GameServer.Common.Logic.Calculators;
+using Towerland.GameServer.Common.Logic.Factories;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
@@ -8,13 +10,15 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
 {
   public class FieldStateActionResolver : BaseActionResolver
   {
-    public FieldStateActionResolver(Field filed) : base(filed)
+    private IGameObjectFactory<Unit> _unitsFactory;
+
+    public FieldStateActionResolver(Field filed, IStatsLibrary statsLibrary) : base(filed)
     {
+      _unitsFactory = new UnitFactory(statsLibrary);
     }
 
     protected override void ResolveReservedAction(GameAction action)
     {
-      throw new System.NotImplementedException();
     }
 
     protected override void ResolveUnitAction(GameAction action)
@@ -48,6 +52,11 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
 
         case ActionId.UnitEffectCanseled:
           _field[action.UnitId].Effect = SpecialEffect.Empty;
+          break;
+
+        case ActionId.UnitAppers:
+          var unit = _unitsFactory.Create(action.GameObjectType, new CreationOptions {Position = action.Position});
+          _field.AddGameObject(action.UnitId, unit);
           break;
       }
     }

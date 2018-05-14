@@ -99,7 +99,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
         var fieldState = fieldSerialized.State;
         var ticks = fieldSerialized.Ticks.Take(curTick);
 
-        await Task.Run(() => ResolveActions(fieldState, ticks));
+        await Task.Run(() => ResolveActions(fieldState, ticks, _statsLibrary));
 
         if (command.UnitCreationOptions != null)
         {
@@ -154,7 +154,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
           {
             return;
           }
-          ResolveActions(battle.State, battle.Ticks);
+          ResolveActions(battle.State, battle.Ticks, _statsLibrary);
           winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
         }
 
@@ -223,16 +223,16 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       await Task.Delay(20000);
       _provider.Delete(battleId);
-      _battles.TryRemove(battleId, out var _);
+      _battles.TryRemove(battleId, out _);
     }
 
-    private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
+    private static void ResolveActions(Field f, IEnumerable<GameTick> ticks, IStatsLibrary statsLibrary)
     {
       if (ticks == null)
       {
         return;
       }
-      var resolver = new FieldStateActionResolver(f);
+      var resolver = new FieldStateActionResolver(f, statsLibrary);
       foreach (var tick in ticks)
       {
         if (tick.HasNoActions)

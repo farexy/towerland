@@ -46,11 +46,10 @@ namespace Towerland.GameServer.Common.Models.GameField
             );
         }
 
-        public int AddGameObject(GameObject gameObj)
+        public int AddGameObject(int gameId, GameObject gameObj)
         {
             var type = gameObj.ResolveType();
-            var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
-            gameObj.GameId = id;
+            gameObj.GameId = gameId;
 
             switch (type)
             {
@@ -67,9 +66,20 @@ namespace Towerland.GameServer.Common.Models.GameField
                     break;
             }
 
-            _objects.Add(id, gameObj);
+            _objects.Add(gameId, gameObj);
 
-            return id;
+            return gameId;
+        }
+
+        public int AddGameObject(GameObject gameObj)
+        {
+            unchecked
+            {
+                var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
+                gameObj.GameId = id;
+
+                return AddGameObject(id, gameObj);
+            }
         }
 
         public IEnumerable<int> AddMany(IEnumerable<GameObject> objects)

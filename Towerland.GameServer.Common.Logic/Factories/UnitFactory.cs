@@ -1,4 +1,5 @@
 ﻿using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Logic.Factories
@@ -17,8 +18,9 @@ namespace Towerland.GameServer.Common.Logic.Factories
       return new Unit
       {
         Type = type,
-        PathId = options.HasValue ? options.Value.PathId : default(int?),
-        Health = _statsLib.GetUnitStats(type).Health
+        PathId = options?.PathId,
+        Health = _statsLib.GetUnitStats(type).Health,
+        Position = options?.Position ?? new Point()
       };
     }
   }

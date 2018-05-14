@@ -184,7 +184,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                 if (unit.Health <= 0)
                 {
                   var unitTrue = _field.State.Units.First(u => u.GameId == targetId);
-                  var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId};
+                  var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId, Position = unitTrue.Position};
                   var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId, Position = unitTrue.Position};
 
                   actions.Add(dieAction);
@@ -241,7 +241,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   unit.Health -= damage;
                   if (unit.Health <= 0)
                   {
-                    var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = unit.GameId, TowerId = tower.GameId};
+                    var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = unit.GameId, TowerId = tower.GameId, Position = unit.Position};
                     var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = unit.GameId, Position = unit.Position};
 
                     actions.Add(dieAction);
