@@ -76,12 +76,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
     {
       unchecked
       {
-        var hashCode = GameId;
-        hashCode = (hashCode * 397) ^ Position.GetHashCode();
-        hashCode = (hashCode * 397) ^ WaitTicks;
-        hashCode = (hashCode * 397) ^ (Effect != null ? Effect.GetHashCode() : 0);
-        hashCode = (hashCode * 397) ^ (int) Type;
-        return hashCode;
+        return base.GetHashCode();
       }
     }
 

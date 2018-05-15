@@ -121,6 +121,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           }
           else
           {
+            ApplyUnitEffects(unit, actions);
             var contextSpeedCoeff = GetContextSpeedCoeff(unit);
             var nextPoint = path.GetNext(unit.Position);
             unit.Position = nextPoint;
@@ -285,6 +286,20 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         {
           var effectLogic = _effectLogicFactory.GetEffectLogic(effect.Effect);
           effectLogic.ApplyTowerAttackEffect(tower, unit, actions, effect.Duration);
+        }
+      }
+      
+      private void ApplyUnitEffects(Unit unit, List<GameAction> actions)
+      {
+        var stats = _statsLib.GetUnitStats(unit.Type);
+        if (stats.SpecialEffects == null)
+        {
+          return;
+        } 
+        foreach (var effect in stats.SpecialEffects)
+        {
+          var effectLogic = _effectLogicFactory.GetEffectLogic(effect.Effect);
+          effectLogic.ApplyUnitMoveEffect(unit, new SpecialEffectLogicFactory.EffectLogicNeededData(_statsLib, _field), actions);
         }
       }
       

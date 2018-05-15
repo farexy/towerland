@@ -73,10 +73,10 @@ namespace Towerland.GameServer.Common.Logic.Factories
             var newUnitId = data.Field.AddGameObject(skeleton);
             actions.Add(new GameAction
             {
-              ActionId = ActionId.UnitAppers,
+              ActionId = ActionId.UnitAppears,
               UnitId = newUnitId,
               Position = deadUnitAction.Position,
-              GameObject = (GameObject) skeleton.Clone()
+              GoUnit = (Unit) skeleton.Clone()
             });
           }
 
@@ -101,6 +101,12 @@ namespace Towerland.GameServer.Common.Logic.Factories
 
     public class EffectLogicNeededData
     {
+      public EffectLogicNeededData(IStatsLibrary statsLibrary, Field field)
+      {
+        StatsLibrary = statsLibrary;
+        Field = field;
+      }
+
       internal IStatsLibrary StatsLibrary;
       internal Field Field;
     }

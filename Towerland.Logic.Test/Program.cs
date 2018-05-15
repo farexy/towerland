@@ -49,7 +49,8 @@ namespace Towerland.Logic.Test
     }
 
     static void Main(string[] args)
-    {
+    {   
+      
       var f = new FieldFactoryStub().ClassicField;
       var ss = JsonConvert.SerializeObject(f);
       var f2 = JsonConvert.DeserializeObject<Field>(ss);
@@ -64,19 +65,40 @@ namespace Towerland.Logic.Test
       f.State.MonsterMoney = 10000;
       f.State.TowerMoney = 10000;
 
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(4, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 5)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = new Point(5, 0)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = new Point(9, 9)});
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Dragon);
 
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+
+      
       //var pts = f.
       var calc = new StateCalculator(statsStub, f);
 
       var ticks = calc.CalculateActionsByTicks();
       var resolver = new FieldStateActionResolver(f);
+      
       foreach (var actions in ticks)
       {
         foreach (var action in actions.Actions)

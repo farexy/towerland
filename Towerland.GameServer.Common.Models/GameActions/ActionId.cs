@@ -30,7 +30,7 @@
     
     UnitAppliesEffect_DarkMagic = 502,
     
-    UnitAppers = 801,
+    UnitAppears = 801,
     
     Other = 1000,
     MonsterPlayerRecievesMoney = 1001,

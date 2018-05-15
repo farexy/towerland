@@ -51,8 +51,8 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           _field[action.UnitId].Effect = SpecialEffect.Empty;
           break;
 
-        case ActionId.UnitAppers:
-          _field.AddGameObject((Unit)action.GameObject);
+        case ActionId.UnitAppears:
+          _field.AddGameObject(action.GoUnit);
           break;
       }
     }

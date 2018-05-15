@@ -50,13 +50,20 @@ namespace Towerland.GameServer.Common.Models.GameField
         {
             unchecked
             {
-                var id = _objects.Count + gameObj.GetHashCode() - _objects.LastOrDefault().Key;
-                gameObj.GameId = id;
+                var id = _objects.Count + gameObj.GetHashCode();
 
-                return AddGameObject(id, gameObj);
+                try
+                {
+                    return AddGameObject(id, gameObj);
+                }
+                catch (ArgumentException)
+                {
+                    id++;
+                    return AddGameObject(id, gameObj);
+                }
             }
         }
-        
+
         private int AddGameObject(int gameId, GameObject gameObj)
         {
             var type = gameObj.ResolveType();
