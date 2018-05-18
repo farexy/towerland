@@ -29,10 +29,5 @@ namespace Towerland.GameServer.Api.Helpers
         throw new ApiException("Access is denied due to invalid session key");
       }
     }
-
-    public static bool IsValid(string sessionHash)
-    {
-      return Guid.TryParse(sessionHash, out Guid _);
-    }
   }
 }

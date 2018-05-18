@@ -2,6 +2,7 @@
 using Towerland.GameServer.Api.Models;
 using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Models.State;
+using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Models;
 
 namespace Towerland.GameServer.Api
@@ -30,6 +31,8 @@ namespace Towerland.GameServer.Api
       cfg.CreateMap<StatsFactory, StatsResponseModel>()
         .ForMember(dest => dest.UnitStats, opt => opt.MapFrom(src => src.Units))
         .ForMember(dest => dest.TowerStats, opt => opt.MapFrom(src => src.Towers));
+      cfg.CreateMap<User, UserDetailsResponseModel>()
+        .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Nickname));
     }
   }
 }
