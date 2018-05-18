@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AutoMapper;
 using Towerland.GameServer.Api.Controllers.Base;
 using Towerland.GameServer.Api.Helpers;
 using Towerland.GameServer.Api.Models;
+using Towerland.GameServer.Core.Entities;
 using Towerland.GameServer.Domain.Interfaces;
 using Towerland.GameServer.Domain.Models;
 
@@ -12,10 +14,12 @@ namespace Towerland.GameServer.Api.Controllers
   [RoutePrefix("user")]
   public class UserController : BaseAuthorizeController
   {
+    private readonly IMapper _mapper;
     private readonly IUserService _userService;
 
-    public UserController(IUserService service)
+    public UserController(IUserService service, IMapper mapper)
     {
+      _mapper = mapper;
       _userService = service;
     }
 
@@ -33,6 +37,12 @@ namespace Towerland.GameServer.Api.Controllers
     {
       return await UserSessionHelper.GetSessionHashAsync(
         await _userService.SignUpAsync(requestModel.Email, requestModel.FullName, requestModel.Password, requestModel.Nickname));
+    }
+
+    [HttpGet, Route]
+    public async Task<UserDetailsResponseModel> GetDetails()
+    {
+      return _mapper.Map<UserDetailsResponseModel>(await _userService.GetUserAsync(await UserSessionIdAsync));
     }
 
     [HttpGet, Route("exp")]

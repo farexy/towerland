@@ -7,15 +7,21 @@ namespace Towerland.GameServer.Core.DataAccess
   public interface IUserRepository
   {
     Task<User> FindAsync(Guid id);
+    Task<User> FindEmailOrLoginAsync(string emailOrLogin);
     Task<User[]> GetAsync();
-    
+
     Task<Guid> CreateAsync(User obj);
     Task IncrementExperienceAsync(Guid id, int exp);
   }
-  
+
   public class FakeUserRepository : IUserRepository
   {
     public Task<User> FindAsync(Guid id)
+    {
+      return Task.FromResult(new User());
+    }
+
+    public Task<User> FindEmailOrLoginAsync(string emailOrLogin)
     {
       return Task.FromResult(new User());
     }

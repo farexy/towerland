@@ -21,9 +21,9 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _battleRepository = battleRepository;
     }
     
-    public async Task<Guid> CheckPasswordAsync(string email, string password)
+    public async Task<Guid> CheckPasswordAsync(string emailOrLogin, string password)
      {
-      var entity = (await _userRepository.GetAsync()).FirstOrDefault(u => u.Email == email);
+      var entity = await _userRepository.FindEmailOrLoginAsync(emailOrLogin);
       if (entity == null)
       {
         throw new LogicException("Email isn't exists");
@@ -43,6 +43,11 @@ namespace Towerland.GameServer.Domain.Infrastructure
         Nickname = nickname,
         Password = pwdHash
       });
+    }
+
+    public Task<User> GetUserAsync(Guid id)
+    {
+      return _userRepository.FindAsync(id);
     }
 
     public async Task<UserRating[]> GetUserRatingAsync()

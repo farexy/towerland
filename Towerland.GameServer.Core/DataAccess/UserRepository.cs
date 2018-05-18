@@ -15,7 +15,7 @@ namespace Towerland.GameServer.Core.DataAccess
     {
       _db = db;
     }
-    
+
     public async Task<User> FindAsync(Guid id)
     {
       using (var cx = _db.OpenDbConnection())
@@ -23,7 +23,15 @@ namespace Towerland.GameServer.Core.DataAccess
         return (await cx.SelectAsync<User>(u => u.Id == id)).SingleOrDefault();
       }
     }
-    
+
+    public async Task<User> FindEmailOrLoginAsync(string emailOrLogin)
+    {
+      using (var cx = _db.OpenDbConnection())
+      {
+        return (await cx.SelectAsync<User>(u => u.Email == emailOrLogin || u.Nickname == emailOrLogin)).SingleOrDefault();
+      }
+    }
+
     public async Task<User[]> GetAsync()
     {
       using (var cx = _db.OpenDbConnection())

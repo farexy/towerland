@@ -147,6 +147,7 @@
     <Compile Include="Models\SignUpRequestModel.cs" />
     <Compile Include="Models\StateChangeCommandRequestModel.cs" />
     <Compile Include="Models\StatsResponseModel.cs" />
+    <Compile Include="Models\UserDetailsResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
