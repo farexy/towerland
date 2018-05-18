@@ -57,7 +57,7 @@ namespace Towerland.GameServer.Api.Controllers
     {
       await _liveBattleService.TryEndBattleAsync(battle, await UserSessionIdAsync);
     }
-    
+
     [HttpPost]
     [Route("command")]
     public async Task PostCommand(StateChangeCommandRequestModel requestModel)

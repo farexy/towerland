@@ -90,7 +90,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 4,
         Cost = 500,
         Defence = UnitStats.DefenceType.Undefended,
-        SpecialEffects = new []{new SpecialEffect {Effect = EffectId.ReviveDeadUnitsAtThisTick}},
+        SpecialEffects = new []{new SpecialEffect {Effect = EffectId.ReviveDeadUnitsAtPreviousTick}},
         Priority = StrokePriority.TheLowest
       }
     };

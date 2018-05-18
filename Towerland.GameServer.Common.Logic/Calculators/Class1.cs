@@ -21,6 +21,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       private const int NotFound = -1;
       private static readonly Point NotFoundPoint = new Point(-1, -1);
 
+      private List<List<GameAction>> Ticks { set; get; }
+      
       public Field Field
       {
         get { return _field; }
@@ -43,7 +45,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
       public GameTick[] CalculateActionsByTicks()
       {
-        var ticks = new List<List<GameAction>>(40);
+        Ticks = new List<List<GameAction>>(40);
         while (_field.State.Castle.Health > 0
           && _field.State.Units.Any())
         {
@@ -52,23 +54,23 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           actions.AddRange(GetUnitActions());
           actions.AddRange(GetTowerActions());
 
-          ticks.Add(actions);
+          Ticks.Add(actions);
         }
         if (_field.State.Castle.Health <= 0)
         {
-          ticks.Add(new List<GameAction>
+          Ticks.Add(new List<GameAction>
           {
             new GameAction{ActionId = ActionId.MonsterPlayerWins}
           });
         }
 
-        var result = new GameTick[ticks.Count];
-        for (int i = 0; i < ticks.Count; i++)
+        var result = new GameTick[Ticks.Count];
+        for (int i = 0; i < Ticks.Count; i++)
         {
           result[i] = new GameTick
           {
             RelativeTime = i,
-            Actions = ticks[i]
+            Actions = Ticks[i]
           };
         }
         return result;
@@ -79,7 +81,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         var actions = new List<GameAction>();
         var unitsToRemove = new List<int>();
 
-        foreach (var unit in _field.State.Units)
+        foreach (var unit in _field.State.Units.ToArray())
         {
           if (unit.Health <= 0)
           {
@@ -299,7 +301,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         foreach (var effect in stats.SpecialEffects)
         {
           var effectLogic = _effectLogicFactory.GetEffectLogic(effect.Effect);
-          effectLogic.ApplyUnitMoveEffect(unit, new SpecialEffectLogicFactory.EffectLogicNeededData(_statsLib, _field), actions);
+          effectLogic.ApplyUnitMoveEffect(unit, new SpecialEffectLogicFactory.EffectLogicNeededData(_statsLib, _field, Ticks), actions);
         }
       }
       

@@ -10,6 +10,6 @@
     Unit10xDamage_10PercentProbability = 110,
 
     //Units effects
-    ReviveDeadUnitsAtThisTick = 501,
+    ReviveDeadUnitsAtPreviousTick = 501,
   }
 }

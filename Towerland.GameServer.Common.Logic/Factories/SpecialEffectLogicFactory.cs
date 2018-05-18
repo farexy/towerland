@@ -27,6 +27,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
       {
         ApplyTowerAttackEffect = (towerStats, unit, actions, duration) => {}
       },
+
+      //Tower Effects
       [EffectId.UnitFreezed] = new SpecialEffectLogic
       {
         AffectAppliedUnitEffect = (unit, actions) => { return false; },
@@ -53,18 +55,21 @@ namespace Towerland.GameServer.Common.Logic.Factories
           }
         }
       },
-      [EffectId.ReviveDeadUnitsAtThisTick] = new SpecialEffectLogic
+
+      //Unit Effects
+      [EffectId.ReviveDeadUnitsAtPreviousTick] = new SpecialEffectLogic
       {
         ApplyUnitMoveEffect = (unit, data, actions) =>
         {
-          var diedUnits = actions.Where(a => a.ActionId == ActionId.UnitDies);
-          if (!diedUnits.Any())
+          var diedUnitActions = default(IEnumerable<GameAction>);
+          //var diedUnitActions = data.CalculatedTicks.LastOrDefault()?.Where(a => a.ActionId == ActionId.UnitDies);
+          if (diedUnitActions == null || !diedUnitActions.Any())
           {
             return true;
           }
 
           var uFactory = new UnitFactory(data.StatsLibrary);
-          foreach (var deadUnitAction in diedUnits)
+          foreach (var deadUnitAction in diedUnitActions)
           {
             var possiblePath = data.Field.GetPossiblePathIds(deadUnitAction.Position).ToArray();
             var pathId = possiblePath[GameMath.Rand.Next(possiblePath.Length)];
@@ -101,12 +106,14 @@ namespace Towerland.GameServer.Common.Logic.Factories
 
     public class EffectLogicNeededData
     {
-      public EffectLogicNeededData(IStatsLibrary statsLibrary, Field field)
+      public EffectLogicNeededData(IStatsLibrary statsLibrary, Field field, List<List<GameAction>> calculatedTicks)
       {
         StatsLibrary = statsLibrary;
         Field = field;
+        CalculatedTicks = calculatedTicks;
       }
 
+      internal List<List<GameAction>> CalculatedTicks;
       internal IStatsLibrary StatsLibrary;
       internal Field Field;
     }
