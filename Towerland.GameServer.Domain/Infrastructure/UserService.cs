@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Core.DataAccess;
@@ -20,7 +21,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       _userRepository = userRepository;
       _battleRepository = battleRepository;
     }
-    
+
     public async Task<Guid> CheckPasswordAsync(string emailOrLogin, string password)
      {
       var entity = await _userRepository.FindEmailOrLoginAsync(emailOrLogin);
@@ -35,14 +36,17 @@ namespace Towerland.GameServer.Domain.Infrastructure
     {
       var id = Guid.NewGuid();
       var pwdHash = pwd.ToPwdHash();
-      return await _userRepository.CreateAsync(new User
+      var newUser = new User
       {
         Id = id,
         Email = email,
         FullName = name,
         Nickname = nickname,
         Password = pwdHash
-      });
+      };
+      await CheckUser(newUser);
+
+      return await _userRepository.CreateAsync(newUser);
     }
 
     public Task<User> GetUserAsync(Guid id)
@@ -64,7 +68,6 @@ namespace Towerland.GameServer.Domain.Infrastructure
         rating[i].Position = i + 1;
       }
 
-      GC.Collect();
       return rating;
     }
 
@@ -100,6 +103,36 @@ namespace Towerland.GameServer.Domain.Infrastructure
       };
     }
 
-   
+    #region Validations
+
+    private const string EmailPattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+
+    private async Task CheckUser(User user)
+    {
+      var emailRegex = new Regex(EmailPattern);
+      if (!emailRegex.IsMatch(user.Email))
+      {
+        throw new BussinessLogicException("Wrong email format");
+      }
+
+      if (emailRegex.IsMatch(user.Nickname))
+      {
+        throw new BussinessLogicException("Wrong nickname format");
+      }
+
+      var existingUser = await _userRepository.FindEmailOrLoginAsync(user.Email);
+      if (existingUser != null)
+      {
+        throw new BussinessLogicException("User with same email already exists");
+      }
+
+      existingUser = await _userRepository.FindEmailOrLoginAsync(user.Nickname);
+      if (existingUser != null)
+      {
+        throw new BussinessLogicException("User with same login already exists");
+      }
+    }
+
+    #endregion
   }
 }

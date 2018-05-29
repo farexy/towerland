@@ -62,6 +62,7 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Lockers\BattleLocker.cs" />
     <Compile Include="Lockers\KeyLocker.cs" />
+    <Compile Include="Models\BussinessLogicException.cs" />
     <Compile Include="Models\LiveBattleModel.cs" />
     <Compile Include="Models\StateChangeCommand.cs" />
     <Compile Include="Models\UserExperience.cs" />

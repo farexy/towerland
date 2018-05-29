@@ -25,7 +25,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
       var maxWeight = double.MinValue;
       var maxWeightIndex = 0;
-        
+
       for (int i = 0; i < numOfVariants; i++)
       {
         for (int j = 0; j < NumberOfCriterias; j++)
