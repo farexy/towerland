@@ -50,7 +50,7 @@ namespace Towerland.GameServer.Common.Models.GameField
         {
             unchecked
             {
-                var id = _objects.Count + gameObj.GetHashCode();
+                var id = _objects.Count * DateTime.Now.Millisecond - DateTime.Now.Second;
 
                 try
                 {
@@ -102,17 +102,16 @@ namespace Towerland.GameServer.Common.Models.GameField
             var gameObj = _objects[gameId];
             var type = gameObj.ResolveType();
 
-            if (GameObjectType.Castle == type)
+            switch (type)
             {
-                throw new ArgumentException("There can be only one castle");
-            }
-            if (type == GameObjectType.Unit)
-            {
-                State.Units.Remove(State.Units.First(u => u.GameId == gameId));
-            }
-            if (type == GameObjectType.Tower)
-            {
-                State.Towers.Remove(State.Towers.First(t => t.GameId == gameId));
+                case GameObjectType.Castle:
+                    throw new ArgumentException("There can be only one castle");
+                case GameObjectType.Unit:
+                    State.Units.Remove((Unit)gameObj);
+                    break;
+                case GameObjectType.Tower:
+                    State.Towers.Remove((Tower)gameObj);
+                    break;
             }
 
             _objects.Remove(gameId);

@@ -1,4 +1,5 @@
-﻿using Towerland.GameServer.Common.Logic.Interfaces;
+﻿using System;
+using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Exceptions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
@@ -50,7 +51,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       var unit = _unitsFactory.Create(type, opt);
       unit.Position = field.StaticData.Start;
 
-      field.AddGameObject(unit);
+      TryAddGameObject(field, unit);
       RecalcUnitPath(field, unit);
 
       field.State.MonsterMoney -= cost;
@@ -69,13 +70,29 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       }
 
       var tower = _towersFactory.Create(type, opt);
-      field.AddGameObject(tower);
+      TryAddGameObject(field, tower);
       foreach (Unit u in field.State.Units)
       {
         RecalcUnitPath(field, u);
       }
 
       field.State.TowerMoney -= cost;
+    }
+
+    private void TryAddGameObject(Field field, GameObject go, int retries = 0)
+    {
+      try
+      {
+        field.AddGameObject(go);
+      }
+      catch (ArgumentException)
+      {
+        if (retries < 10)
+        {
+          retries++;
+          TryAddGameObject(field, go, retries);
+        }
+      }
     }
 
     private void RecalcUnitPath(Field field, Unit unit)

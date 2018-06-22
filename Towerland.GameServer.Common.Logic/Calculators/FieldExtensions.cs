@@ -24,7 +24,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     {
       var gameCalc = new GameCalculator(stats);
       return field.FindGameObjects(obj =>
-          obj.ResolveType() == GameObjectType.Tower
+          obj.IsTower
           && gameCalc.IsTowerCanAttack(obj, position))
         .Select(obj => obj.GameId)
         .ToArray();
@@ -34,7 +34,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     {
       var gameCalc = new GameCalculator(stats);
       return field.FindGameObjects(obj =>
-          obj.ResolveType() == GameObjectType.Unit
+          obj.IsUnit
           && gameCalc.IsTowerCanAttack(tower, obj.Position))
         .Select(obj => obj.GameId)
         .ToArray();

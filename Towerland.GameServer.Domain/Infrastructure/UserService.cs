@@ -29,6 +29,8 @@ namespace Towerland.GameServer.Domain.Infrastructure
       {
         throw new LogicException("Email isn't exists");
       }
+
+      //return entity.Id;
       return entity.Password.SequenceEqual(password.ToPwdHash()) ? entity.Id : Guid.Empty;
     }
 

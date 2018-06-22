@@ -17,7 +17,11 @@ namespace Towerland.GameServer.Common.Models.GameObjects
     {
       Effect = SpecialEffect.Empty;
     }
-    
+
+    public bool IsTower => ResolveType() == GameObjectType.Tower;
+
+    public bool IsUnit => ResolveType() == GameObjectType.Unit;
+
     public GameObjectType ResolveType()
     {
       return ResolveType(Type);
@@ -76,7 +80,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
     {
       unchecked
       {
-        return base.GetHashCode();
+        return GameId;
       }
     }
 

@@ -48,18 +48,18 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     {
       var paths = field.StaticData.Path;
       var tableToAnalize = new double[paths.Length, _additiveConvolutionCalculator.NumberOfCriterias];
-      
+
       for (int i = 0; i < paths.Length; i++)
       {
         var towersOnPath = FindTowersThatCanAttackPath(field, i);
         var towers = towersOnPath.Select(t => field[t]).ToArray();
         var towersTypes = towers.Select(t => t.Type).ToArray();
-        
+
         tableToAnalize[i, 0] = 1 - (double)towersOnPath.Count / field.State.Towers.Count;
         tableToAnalize[i, 1] = GetTotalAttackDamage(towersTypes, unit);
         tableToAnalize[i, 2] = GetAvgTowersRemoteness(paths[i], towers);
         tableToAnalize[i, 3] = GetTowersWithSpecialEffectRate(towersTypes);
-      } 
+      }
       return _additiveConvolutionCalculator.FindOptimalVariantIndex(tableToAnalize);
     }
 
@@ -67,7 +67,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     {
       return 1 - (double)towerTypes.Sum(t => _gameCalculator.CalculateDamage(unit.Type, t)) / unit.Health;
     }
-    
+
     private double GetTowersWithSpecialEffectRate(ICollection<GameObjectType> towerTypes)
     {
       return 1 - (double)towerTypes.Count(t => _statsLib.GetTowerStats(t).SpecialEffects != null) / towerTypes.Count;
@@ -84,7 +84,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
       return remotenessSum / towers.Count;
     }
-    
+
     private static IEnumerable<Path> GetPossiblePath(IEnumerable<Path> path, Point position)
     {
       return path.Where(p => p.PointOnThePathPosition(position) != -1);
