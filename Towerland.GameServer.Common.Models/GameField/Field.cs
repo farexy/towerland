@@ -147,13 +147,15 @@ namespace Towerland.GameServer.Common.Models.GameField
                 StaticData = new FieldStaticData(StaticData.Cells, StaticData.Start, StaticData.Finish)
                 {
                     Path = StaticData.Path,
+                    StartTimeUtc = StaticData.StartTimeUtc,
                     EndTimeUtc = StaticData.EndTimeUtc
                 },
                 _objects = _objects.ToDictionary(item => item.Key, item => (GameObject)item.Value.Clone()),
                 _state = new FieldState(State.Towers, State.Units, State.Castle)
                 {
                     MonsterMoney = State.MonsterMoney,
-                    TowerMoney = State.TowerMoney
+                    TowerMoney = State.TowerMoney,
+                    TickOffset = State.TickOffset
                 },
             };
         }

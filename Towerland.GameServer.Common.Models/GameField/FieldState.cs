@@ -27,5 +27,6 @@ namespace Towerland.GameServer.Common.Models.GameField
 
     public int MonsterMoney { set; get; }
     public int TowerMoney { set; get; }
+    public int TickOffset { set; get; }
   }
 }

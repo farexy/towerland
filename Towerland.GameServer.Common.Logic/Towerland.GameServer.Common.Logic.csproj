@@ -70,6 +70,7 @@
     <Compile Include="SpecialAI\PathOptimisation.cs" />
     <Compile Include="SpecialAI\TargetFindingOptimisation.cs" />
     <Compile Include="StatsLibrary.cs" />
+    <Compile Include="TimeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Towerland.GameServer.Common.Models\Towerland.GameServer.Common.Models.csproj">

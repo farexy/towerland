@@ -11,7 +11,7 @@ namespace Towerland.GameServer.Domain.Interfaces
     bool CheckChanged(Guid battleId, int version);
     Field GetField(Guid battleId);
     LiveBattleModel GetActualBattleState(Guid battleId, out int revision);
-    Task RecalculateAsync(StateChangeCommand command, int curTick);
+    Task RecalculateAsync(StateChangeCommand command);
     Task TryEndBattleAsync(Guid battleId, Guid userId);
   }
 }

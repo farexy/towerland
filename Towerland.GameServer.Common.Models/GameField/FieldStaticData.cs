@@ -28,6 +28,7 @@ namespace Towerland.GameServer.Common.Models.GameField
       get { return Cells.GetLength(0); }
     }
 
+    [JsonProperty("s")] public DateTime StartTimeUtc { get; set; }
     public DateTime EndTimeUtc { get; set; }
   }
 } 

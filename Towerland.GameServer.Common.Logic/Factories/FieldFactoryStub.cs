@@ -92,7 +92,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
             {
                 if (_classicField != null)
                 {
-                    _classicField.StaticData.EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes);
+                    SetNextBattleTimes();
                     return _classicField;
                 }
 
@@ -124,7 +124,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
                     },
                     StaticData =
                     {
-                        EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes),
                         Path = new[]
                         {
                             new Path(Path1.Reverse().ToArray()), new Path(Path2.Reverse().ToArray()),
@@ -134,8 +133,15 @@ namespace Towerland.GameServer.Common.Logic.Factories
                     }
                 };
 
+                SetNextBattleTimes();
                 return _classicField;
             }
+        }
+
+        private static void SetNextBattleTimes()
+        {
+            _classicField.StaticData.StartTimeUtc = DateTime.UtcNow;
+            _classicField.StaticData.EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes);
         }
 
         public Field GenerateNewField(int width, int height, Point startPoint, Point endPoint)

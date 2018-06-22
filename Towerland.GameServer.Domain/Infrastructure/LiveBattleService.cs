@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Towerland.GameServer.Common.Logic;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
@@ -91,12 +92,15 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return id;
     }
 
-    public async Task RecalculateAsync(StateChangeCommand command, int curTick)
+    public async Task RecalculateAsync(StateChangeCommand command)
     {
       using (new BattleLocker(command.BattleId))
       {
         var fieldSerialized = _provider.Find(command.BattleId);
         var fieldState = fieldSerialized.State;
+
+        var curTick = TimeHelper.GetCurrentTickWithOffset(fieldState.StaticData.StartTimeUtc, fieldState.State.TickOffset);
+        fieldState.State.TickOffset += curTick;
         var ticks = fieldSerialized.Ticks.Take(curTick);
 
         await Task.Run(() => ResolveActions(fieldState, ticks, _statsLibrary));
