@@ -10,12 +10,12 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 {
   public class StateChangeRecalculator : IStateChangeRecalculator
   {
-    private readonly IPathOptimiser _pathOptimiser;
+    private readonly IPathChooser _pathOptimiser;
     private readonly IStatsLibrary _statsLib;
     private readonly IGameObjectFactory<Unit> _unitsFactory;
     private readonly IGameObjectFactory<Tower> _towersFactory;
 
-    public StateChangeRecalculator(IPathOptimiser pathOptimiser, IStatsLibrary stats, IGameObjectFactory<Unit> unitFactory, IGameObjectFactory<Tower> towerFactory)
+    public StateChangeRecalculator(IPathChooser pathOptimiser, IStatsLibrary stats, IGameObjectFactory<Unit> unitFactory, IGameObjectFactory<Tower> towerFactory)
     {
       _pathOptimiser = pathOptimiser;
       _statsLib = stats;

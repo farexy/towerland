@@ -27,7 +27,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       var entity = await _userRepository.FindEmailOrLoginAsync(emailOrLogin);
       if (entity == null)
       {
-        throw new LogicException("Email isn't exists");
+        throw new LogicException("Email or login isn't exists");
       }
 
       //return entity.Id;
@@ -114,24 +114,24 @@ namespace Towerland.GameServer.Domain.Infrastructure
       var emailRegex = new Regex(EmailPattern);
       if (!emailRegex.IsMatch(user.Email))
       {
-        throw new BussinessLogicException("Wrong email format");
+        throw new BusinessLogicException("Wrong email format");
       }
 
       if (emailRegex.IsMatch(user.Nickname))
       {
-        throw new BussinessLogicException("Wrong nickname format");
+        throw new BusinessLogicException("Wrong nickname format");
       }
 
       var existingUser = await _userRepository.FindEmailOrLoginAsync(user.Email);
       if (existingUser != null)
       {
-        throw new BussinessLogicException("User with same email already exists");
+        throw new BusinessLogicException("User with same email already exists");
       }
 
       existingUser = await _userRepository.FindEmailOrLoginAsync(user.Nickname);
       if (existingUser != null)
       {
-        throw new BussinessLogicException("User with same login already exists");
+        throw new BusinessLogicException("User with same login already exists");
       }
     }
 

@@ -2,9 +2,9 @@
 
 namespace Towerland.GameServer.Domain.Models
 {
-  public class BussinessLogicException : Exception
+  public class BusinessLogicException : Exception
   {
-    public BussinessLogicException(string msg) : base(msg)
+    public BusinessLogicException(string msg) : base(msg)
     {
     }
   }

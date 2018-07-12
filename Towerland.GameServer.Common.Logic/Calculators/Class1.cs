@@ -2,6 +2,7 @@
 using System.Linq;
 using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Logic.SpecialAI;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
@@ -17,10 +18,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       private readonly Field _field;
       private readonly MoneyProvider _moneyProvider;
       private readonly GameCalculator _gameCalculator;
+      private readonly TargetFinder _targetFinder;
       
-      private const int NotFound = -1;
-      private static readonly Point NotFoundPoint = new Point(-1, -1);
-
       private List<List<GameAction>> Ticks { set; get; }
       
       public Field Field
@@ -36,6 +35,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         _effectLogicFactory = new SpecialEffectLogicFactory();
         _moneyProvider = new MoneyProvider(statsLibrary);
         _gameCalculator = new GameCalculator(statsLibrary);
+        _targetFinder = new TargetFinder(statsLibrary);
       }
 
       public void SetState(FieldState fieldState)
@@ -56,13 +56,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
           Ticks.Add(actions);
         }
-        if (_field.State.Castle.Health <= 0)
-        {
-          Ticks.Add(new List<GameAction>
-          {
-            new GameAction{ActionId = ActionId.MonsterPlayerWins}
-          });
-        }
+        GetActionsAfterCalculation();
 
         var result = new GameTick[Ticks.Count];
         for (int i = 0; i < Ticks.Count; i++)
@@ -161,10 +155,10 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           {
             case TowerStats.AttackType.Usual:
             case TowerStats.AttackType.Magic:
-              var targetId = FindTarget(_field, tower, stats);
-              if (targetId != NotFound)
+              var targetId = _targetFinder.FindTarget(_field, tower);
+              if (targetId.HasValue)
               {
-                var unit = (Unit) _field[targetId];
+                var unit = (Unit) _field[targetId.Value];
                 var damage = _gameCalculator.CalculateDamage(unit.Type, stats);
                 tower.WaitTicks = stats.AttackSpeed;
 
@@ -172,13 +166,13 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                 {
                   ActionId = ActionId.TowerAttacks,
                   TowerId = tower.GameId,
-                  UnitId = targetId,
+                  UnitId = targetId.Value,
                   WaitTicks = stats.AttackSpeed
                 });
                 actions.Add(new GameAction
                 {
                   ActionId = ActionId.UnitRecievesDamage,
-                  UnitId = targetId,
+                  UnitId = targetId.Value,
                   Damage = damage
                 });
 
@@ -187,8 +181,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                 if (unit.Health <= 0)
                 {
                   var unitTrue = _field.State.Units.First(u => u.GameId == targetId);
-                  var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId, TowerId = tower.GameId, Position = unitTrue.Position};
-                  var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId, Position = unitTrue.Position};
+                  var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId.Value, TowerId = tower.GameId, Position = unitTrue.Position};
+                  var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = tower.GameId, UnitId = targetId.Value, Position = unitTrue.Position};
 
                   actions.Add(dieAction);
                   actions.Add(killAction);
@@ -202,14 +196,14 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                   actions.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
                   actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
 
-                  _field.RemoveGameObject(targetId);
+                  _field.RemoveGameObject(targetId.Value);
                 }
               }
               break;
 
             case TowerStats.AttackType.Burst:
-              var targetPoint = FindBurstTarget(_field, tower, stats);
-              if (targetPoint != NotFoundPoint)
+              var targetPoint = _targetFinder.FindBurstTarget(_field, tower);
+              if (targetPoint.HasValue)
               {
                 tower.WaitTicks = stats.AttackSpeed;
 
@@ -217,11 +211,11 @@ namespace Towerland.GameServer.Common.Logic.Calculators
                 {
                   ActionId = ActionId.TowerAttacksPosition,
                   TowerId = tower.GameId,
-                  Position = targetPoint,
+                  Position = targetPoint.Value,
                   Damage = stats.Damage,
                   WaitTicks = stats.AttackSpeed
                 });
-                var units = _field.FindUnitsAt(targetPoint);
+                var units = _field.FindUnitsAt(targetPoint.Value);
 //                foreach (var point in _field.GetNeighbourPoints(targetPoint, 1, FieldObject.Road))
 //                {
 //                  units = units.Union(_field.FindUnitsAt(point));
@@ -271,6 +265,17 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         return actions;
       }
 
+      private void GetActionsAfterCalculation()
+      {
+        if (_field.State.Castle.Health <= 0)
+        {
+          Ticks.Add(new List<GameAction>
+          {
+            new GameAction{ActionId = ActionId.MonsterPlayerWins}
+          });
+        }
+      }
+
       #region Logic
 
       private static int GetContextSpeedCoeff(Unit unit)
@@ -305,93 +310,9 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         }
       }
       
-      private static int FindTarget(Field field, GameObject tower, TowerStats stats)
-      {
-        var x = tower.Position.X;
-        var y = tower.Position.Y;
-        for (int range = 1; range <= stats.Range; range++)
-        {
-          var units = new List<Unit>(field.FindUnitsAt(new Point(x + range, y)));
-          
-          var p = new Point(x, y + range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
 
-          p = new Point(x, y - range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-          
-          p = new Point(x + range, y - range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-          
-          p = new Point(x + range, y);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-          
-          p = new Point(x + range, y + range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-
-          p = new Point(x - range, y + range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-          
-          p = new Point(x - range, y);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-          
-          p = new Point(x - range, y - range);
-          units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
-            
-          if (units.Any())
-          {
-            return units[GameMath.Rand.Next(units.Count)].GameId;
-          }
-        }
-
-        return NotFound;
-      }
       
-      private static Point FindBurstTarget(Field field, GameObject tower, TowerStats stats)
-      {
-        return FindPointWithManyTargets(field, tower.Position, stats.Range);
-      }
       
-      private static Point FindPointWithManyTargets(Field field, Point center, int radius)
-      {
-        var x = center.X;
-        var y = center.Y;
-        
-        var maxPoint = NotFoundPoint;
-        var maxCount = 0;
-        
-        for (int rng = 1; rng <= radius; rng++)
-        {          
-          var p = new Point(x, y + rng);
-          UpdMaxUnitsPoint(field, p, ref maxPoint, ref maxCount);
-
-          p = new Point(x + rng, y + rng);
-          UpdMaxUnitsPoint(field, p, ref maxPoint, ref maxCount);
-
-          p = new Point(x - rng, y);
-          UpdMaxUnitsPoint(field, p, ref maxPoint, ref maxCount);
-          
-          p = new Point(x, y - rng);
-          UpdMaxUnitsPoint(field, p, ref maxPoint, ref maxCount);
-
-          p = new Point(x - rng, y - rng);
-          UpdMaxUnitsPoint(field, p, ref maxPoint, ref maxCount);
-        }
-
-        return maxPoint;
-      }
-
-      private static void UpdMaxUnitsPoint(Field field, Point p, ref Point maxPoint, ref int maxCount)
-      {
-        if (p != field.StaticData.Finish)
-        {
-          var countUnits = field.FindUnitsAt(p).Count();
-          if (countUnits > maxCount)
-          {
-            maxCount = countUnits;
-            maxPoint = p;
-          }
-        }
-      }
 
       #endregion
     }

@@ -8,7 +8,7 @@ using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
-  public class PathOptimisation : IPathOptimiser
+  public class PathChooser : IPathChooser
   {
     private readonly IStatsLibrary _statsLib;
     private readonly AdditiveConvolutionCalculator _additiveConvolutionCalculator;
@@ -21,8 +21,8 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       0.3, // third criteria - remoteness of towers from beginning (length of the possible path)
       0.1, // fourth criteria - ratio of towers with special coef
     };
-    
-    public PathOptimisation(IStatsLibrary statsLibrary)
+
+    public PathChooser(IStatsLibrary statsLibrary)
     {
       _gameCalculator = new GameCalculator(statsLibrary);
       _additiveConvolutionCalculator = new AdditiveConvolutionCalculator(OptimalPathCriteriaWeights);

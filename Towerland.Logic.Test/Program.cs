@@ -49,17 +49,16 @@ namespace Towerland.Logic.Test
     }
 
     static void Main(string[] args)
-    {   
-      
+    {
       var f = new FieldFactoryStub().ClassicField;
       var ss = JsonConvert.SerializeObject(f);
       var f2 = JsonConvert.DeserializeObject<Field>(ss);
       f = f2;
       
-      var statsStub = new StatsLibrary();
+      var statsStub = new StatsLibrary(new StatsFactory());
       var uFactory = new UnitFactory(statsStub);
       var tFactory = new TowerFactory(statsStub);
-      var pathOpt = new PathOptimisation(statsStub);
+      var pathOpt = new PathChooser(statsStub);
       var stateChang = new StateChangeRecalculator(pathOpt, statsStub, uFactory, tFactory);
 
       f.State.MonsterMoney = 10000;

@@ -3,8 +3,9 @@ using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Logic.Interfaces
 {
-  public interface ITargetFindingOptimizer
+  public interface IPathChooser
   {
-    int GetOptimalTarget(Field field, Tower tower);
+    int GetFastestPath(Path[] paths, Unit unit);
+    int GetOptimalPath(Field field, Unit unit);
   }
 }

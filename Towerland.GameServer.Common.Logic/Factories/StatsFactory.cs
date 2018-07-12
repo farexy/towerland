@@ -1,12 +1,13 @@
-﻿﻿using Towerland.GameServer.Common.Models.Effects;
+﻿﻿using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Models.Stats;
 
 namespace Towerland.GameServer.Common.Logic.Factories
 {
-  public class StatsFactory
+  public class StatsFactory : IStatsProvider
   {
-    public UnitStats[] Units =
+    private UnitStats[] _units =
     {
       new UnitStats
       {
@@ -95,7 +96,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
       }
     };
 
-    public TowerStats[] Towers =
+    private TowerStats[] _towers =
     {
       new TowerStats
       {
@@ -156,7 +157,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
       }
     };
 
-    public DefenceCoeff[] DefenceCoeffs =
+    private DefenceCoeff[] _defenceCoeffs =
     {
       new DefenceCoeff
       {
@@ -213,5 +214,9 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Coeff = 0.6
       },
     };
+
+    public UnitStats[] Units => _units;
+    public TowerStats[] Towers => _towers;
+    public DefenceCoeff[] DefenceCoeffs => _defenceCoeffs;
   }
 }

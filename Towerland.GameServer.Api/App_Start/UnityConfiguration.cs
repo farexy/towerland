@@ -41,9 +41,10 @@ namespace Towerland.GameServer.Api
       container.RegisterType<ILiveBattleService, LiveBattleService>();
 
       container.RegisterType<ICheatCommandManager, CheatCommandManager>();
-      container.RegisterType<IStatsLibrary, StatsLibrary>();
+      container.RegisterType<IStatsProvider, StatsFactory>();
+      container.RegisterType<IStatsLibrary, StatsLibrary>(new ContainerControlledLifetimeManager());
       container.RegisterType<IFieldFactory, FieldFactoryStub>();
-      container.RegisterType<IPathOptimiser, PathOptimisation>();
+      container.RegisterType<IPathChooser, PathChooser>();
       container.RegisterType<IStateChangeRecalculator, StateChangeRecalculator>();
       container.RegisterType<IGameObjectFactory<Unit>, UnitFactory>();
       container.RegisterType<IGameObjectFactory<Tower>, TowerFactory>();

@@ -56,10 +56,10 @@
     <Compile Include="Factories\UnitFactory.cs" />
     <Compile Include="Interfaces\IFieldFactory.cs" />
     <Compile Include="Interfaces\IGameObjectFactory.cs" />
-    <Compile Include="Interfaces\IPathOptimiser.cs" />
+    <Compile Include="Interfaces\IPathChooser.cs" />
     <Compile Include="Interfaces\IStateChangeRecalculator.cs" />
     <Compile Include="Interfaces\ICheatCommandManager.cs" />
-    <Compile Include="Interfaces\ITargetFindingOptimizer.cs" />
+    <Compile Include="Interfaces\IStatsProvider.cs" />
     <Compile Include="SpecialAI\ComputerEnemyAI.cs" />
     <Compile Include="ActionResolver\FieldStateActionResolver.cs" />
     <Compile Include="Interfaces\IActionResolver.cs" />
@@ -67,8 +67,8 @@
     <Compile Include="Interfaces\IStatsLibrary.cs" />
     <Compile Include="SpecialAI\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecialAI\PathOptimisation.cs" />
-    <Compile Include="SpecialAI\TargetFindingOptimisation.cs" />
+    <Compile Include="SpecialAI\PathChooser.cs" />
+    <Compile Include="SpecialAI\TargetFinder.cs" />
     <Compile Include="StatsLibrary.cs" />
   </ItemGroup>
   <ItemGroup>

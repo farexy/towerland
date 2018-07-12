@@ -9,27 +9,25 @@ namespace Towerland.GameServer.Common.Logic
 {
   public class StatsLibrary : IStatsLibrary
   {
-    private readonly Dictionary<GameObjectType, IStats> _objects;
+    private readonly Dictionary<GameObjectType, TowerStats> _towers;
+    private readonly Dictionary<GameObjectType, UnitStats> _units;
     private readonly IEnumerable<DefenceCoeff> _deffCoeffs;
-      
-    public StatsLibrary()
+
+    public StatsLibrary(IStatsProvider provider)
     {
-      var factory = new StatsFactory();
-      _objects = factory.Towers
-        .Cast<IStats>()
-        .Union(factory.Units.Cast<IStats>())
-        .ToDictionary(el => el.Type, el => el);
-      _deffCoeffs = factory.DefenceCoeffs;
+      _towers = provider.Towers.ToDictionary(el => el.Type);
+      _units = provider.Units.ToDictionary(el => el.Type);
+      _deffCoeffs = provider.DefenceCoeffs;
     }
-    
+
     public UnitStats GetUnitStats(GameObjectType type)
     {
-      return (UnitStats) _objects[type];
+      return _units[type];
     }
 
     public TowerStats GetTowerStats(GameObjectType type)
     {
-      return (TowerStats) _objects[type];
+      return _towers[type];
     }
 
     public double GetDefenceCoeff(UnitStats.DefenceType defType, TowerStats.AttackType attackType)

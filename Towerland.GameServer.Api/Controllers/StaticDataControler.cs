@@ -2,7 +2,7 @@
 using AutoMapper;
 using Towerland.GameServer.Api.Controllers.Base;
 using Towerland.GameServer.Api.Models;
-using Towerland.GameServer.Common.Logic.Factories;
+using Towerland.GameServer.Common.Logic.Interfaces;
 
 namespace Towerland.GameServer.Api.Controllers
 {
@@ -10,18 +10,18 @@ namespace Towerland.GameServer.Api.Controllers
     public class StaticDataController : BaseAuthorizeController
     {
         private readonly IMapper _mapper;
-        
-        private readonly StatsFactory _fatory = new StatsFactory();
+        private readonly IStatsProvider _statsProvider;
 
-        public StaticDataController(IMapper mapper)
+        public StaticDataController(IStatsProvider statsProvider, IMapper mapper)
         {
+            _statsProvider = statsProvider;
             _mapper = mapper;
         }
-        
+
         [HttpGet, Route("stats")]
         public StatsResponseModel GetStats()
         {
-            return _mapper.Map<StatsResponseModel>(_fatory);
+            return _mapper.Map<StatsResponseModel>(_statsProvider);
         }
     }
 }
