@@ -42,18 +42,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResolver\BaseLogicActionResolver.cs" />
+    <Compile Include="Behaviour\IBehaviour.cs" />
+    <Compile Include="Behaviour\Towers\BaseTowerBehaviour.cs" />
+    <Compile Include="Behaviour\Towers\BurstTowerBehaviour.cs" />
+    <Compile Include="Behaviour\Towers\ExtraDamageTowerBehaviour.cs" />
+    <Compile Include="Behaviour\Towers\FreezingTowerBehaviour.cs" />
+    <Compile Include="Behaviour\Units\BaseUnitBehaviour.cs" />
+    <Compile Include="Behaviour\Units\FreezedUnitBehaviour.cs" />
+    <Compile Include="Behaviour\Units\NecromancerBehaviour.cs" />
     <Compile Include="Calculators\AdditiveConvolutionCalculator.cs" />
-    <Compile Include="Calculators\Class1.cs" />
+    <Compile Include="Calculators\StateCalculator.cs" />
     <Compile Include="Calculators\FieldExtensions.cs" />
     <Compile Include="Calculators\GameCalculator.cs" />
     <Compile Include="Calculators\MoneyProvider.cs" />
     <Compile Include="Calculators\StateChangeRecalculator.cs" />
     <Compile Include="CheatCommandManager.cs" />
+    <Compile Include="Factories\BehaviourFactory.cs" />
     <Compile Include="Factories\FieldFactoryStub.cs" />
-    <Compile Include="Factories\SpecialEffectLogicFactory.cs" />
     <Compile Include="Factories\StatsFactory.cs" />
     <Compile Include="Factories\TowerFactory.cs" />
     <Compile Include="Factories\UnitFactory.cs" />
+    <Compile Include="FieldContext.cs" />
     <Compile Include="Interfaces\IFieldFactory.cs" />
     <Compile Include="Interfaces\IGameObjectFactory.cs" />
     <Compile Include="Interfaces\IPathChooser.cs" />

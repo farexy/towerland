@@ -48,7 +48,7 @@ namespace Towerland.GameServer.Api.Controllers
     [HttpGet, Route("exp")]
     public async Task<UserExperience> GetExpAsync()
     {
-      return await _userService.GetUserExpirienceAsync(await UserSessionIdAsync);
+      return await _userService.GetUserExperienceAsync(await UserSessionIdAsync);
     }
 
     [HttpGet, Route("rating")]

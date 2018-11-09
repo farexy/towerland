@@ -7,7 +7,7 @@ using Towerland.GameServer.Common.Models.Stats;
 
 namespace Towerland.GameServer.Common.Logic.Calculators
 {
-  public class MoneyProvider
+  public class MoneyCalculator
   {
     private const double HealthCoeff = 0.5;
     private const double DamageCoeff = 0.2;
@@ -15,7 +15,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
     private readonly IStatsLibrary _statsLibrary;
 
-    public MoneyProvider(IStatsLibrary stats)
+    public MoneyCalculator(IStatsLibrary stats)
     {
       _statsLibrary = stats;
     }
@@ -38,8 +38,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         var unit = (Unit)field[action.UnitId];
         var unitStats = _statsLibrary.GetUnitStats(unit.Type);
-        var path = unit.PathId.HasValue 
-          ? field.StaticData.Path[unit.PathId.Value] 
+        var path = unit.PathId.HasValue
+          ? field.StaticData.Path[unit.PathId.Value]
           : new Path(new Point[0]);
 
         return GetUnitReward(path, action.Position, unitStats);
@@ -48,8 +48,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         var unit = (Unit)field[action.UnitId];
         var unitStats = _statsLibrary.GetUnitStats(unit.Type);
-        var path = unit.PathId.HasValue 
-          ? field.StaticData.Path[unit.PathId.Value] 
+        var path = unit.PathId.HasValue
+          ? field.StaticData.Path[unit.PathId.Value]
           : new Path(new Point[0]);
 
         return GetUnitReward(path, path.End, unitStats);

@@ -70,7 +70,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
     private double GetTowersWithSpecialEffectRate(ICollection<GameObjectType> towerTypes)
     {
-      return 1 - (double)towerTypes.Count(t => _statsLib.GetTowerStats(t).SpecialEffects != null) / towerTypes.Count;
+      return 1 - (double)towerTypes.Count(t => _statsLib.GetTowerStats(t).SpecialEffect != null) / towerTypes.Count;
     }
 
     private double GetAvgTowersRemoteness(Path path, ICollection<GameObject> towers)

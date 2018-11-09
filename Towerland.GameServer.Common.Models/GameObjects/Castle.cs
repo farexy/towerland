@@ -20,7 +20,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
         Position = Position,
         Type = Type,
         WaitTicks = WaitTicks,
-        Effect = new SpecialEffect{Effect = Effect.Effect, Duration = Effect.Duration},
+        Effect = new SpecialEffect{Id = Effect.Id, Duration = Effect.Duration},
         Health = Health
       };
     }

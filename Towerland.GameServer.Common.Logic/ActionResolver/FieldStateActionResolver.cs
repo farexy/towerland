@@ -23,7 +23,6 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
       switch (action.ActionId)
       {
         case ActionId.UnitMoves:
-        case ActionId.UnitMovesFreezed:
           if (_field[action.UnitId] != null)
           {
             _field.MoveUnit(action.UnitId, action.Position, action.WaitTicks);
@@ -40,7 +39,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           break;
 
         case ActionId.UnitFreezes:
-          _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Effect = EffectId.UnitFreezed};
+          _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Id = EffectId.UnitFreezed};
           break;
 
         case ActionId.UnitDies:

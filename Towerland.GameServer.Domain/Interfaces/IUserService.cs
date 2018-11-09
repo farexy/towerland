@@ -11,7 +11,7 @@ namespace Towerland.GameServer.Domain.Interfaces
     Task<Guid> SignUpAsync(string email, string name, string pwd, string nickname);
     
     Task<UserRating[]> GetUserRatingAsync();
-    Task<UserExperience> GetUserExpirienceAsync(Guid id);
+    Task<UserExperience> GetUserExperienceAsync(Guid id);
     Task<User> GetUserAsync(Guid id);
   }
 }

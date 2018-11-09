@@ -4,11 +4,9 @@ namespace Towerland.GameServer.Common.Models.Effects
 {
   public class SpecialEffect
   {
-    public const int FreezedSlowCoeff = 2;
-
-    [JsonProperty("i")] public EffectId Effect { set; get; }
+    [JsonProperty("i")] public EffectId Id { set; get; }
     [JsonProperty("d")] public int Duration { set; get; }
 
-    public static SpecialEffect Empty { get; } = new SpecialEffect{Effect = EffectId.None, Duration = 0};
+    public static SpecialEffect Empty { get; } = new SpecialEffect{Id = EffectId.None, Duration = 0};
   }
 }

@@ -73,7 +73,7 @@ namespace Towerland.GameServer.Domain.Infrastructure
       return rating;
     }
 
-    public async Task<UserExperience> GetUserExpirienceAsync(Guid id)
+    public async Task<UserExperience> GetUserExperienceAsync(Guid id)
     {
       var exp = (await _userRepository.FindAsync(id)).Experience;
       return new UserExperience

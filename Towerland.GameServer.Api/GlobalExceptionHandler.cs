@@ -25,7 +25,7 @@ namespace Towerland.GameServer.Api
       if (ex is LogicException)
       {
         statusCode = HttpStatusCode.BadRequest;
-        Log.WarnFormat(CultureInfo.InvariantCulture, "BusinessLogicException occured: {0}", ex.Message);
+        Log.WarnFormat(CultureInfo.InvariantCulture, "LogicException occured: {0}", ex.Message);
       }
       else if (ex is ApiException)
       {

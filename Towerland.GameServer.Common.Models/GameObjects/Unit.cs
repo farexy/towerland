@@ -12,7 +12,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
 
     [JsonProperty("h")] public int Health { set; get; }
     [JsonProperty("z")] public int? PathId { set; get; }
-    
+
     public override object Clone()
     {
       return new Unit
@@ -21,7 +21,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
         Position = Position,
         Type = Type,
         WaitTicks = WaitTicks,
-        Effect = new SpecialEffect{Effect = Effect.Effect, Duration = Effect.Duration},
+        Effect = new SpecialEffect{Id = Effect.Id, Duration = Effect.Duration},
         Health = Health,
         PathId = PathId
       };
