@@ -215,8 +215,10 @@ namespace Towerland.GameServer.Common.Logic.Factories
       },
     };
 
-    public UnitStats[] Units => _units;
-    public TowerStats[] Towers => _towers;
-    public DefenceCoeff[] DefenceCoeffs => _defenceCoeffs;
+    public UnitStats[] GetUnitStats() => _units;
+
+    public TowerStats[] GetTowerStats() => _towers;
+
+    public DefenceCoeff[] GetDefenceCoeffs() => _defenceCoeffs;
   }
 }

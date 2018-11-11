@@ -21,7 +21,12 @@ namespace Towerland.GameServer.Api.Controllers
         [HttpGet, Route("stats")]
         public StatsResponseModel GetStats()
         {
-            return _mapper.Map<StatsResponseModel>(_statsProvider);
+            return new StatsResponseModel
+            {
+                UnitStats = _statsProvider.GetUnitStats(),
+                TowerStats = _statsProvider.GetTowerStats(),
+                DefenceCoeffs = _statsProvider.GetDefenceCoeffs()
+            };
         }
     }
 }

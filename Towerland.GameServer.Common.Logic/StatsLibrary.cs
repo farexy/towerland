@@ -15,9 +15,9 @@ namespace Towerland.GameServer.Common.Logic
 
     public StatsLibrary(IStatsProvider provider)
     {
-      _towers = provider.Towers.ToDictionary(el => el.Type);
-      _units = provider.Units.ToDictionary(el => el.Type);
-      _deffCoeffs = provider.DefenceCoeffs;
+      _towers = provider.GetTowerStats().ToDictionary(el => el.Type);
+      _units = provider.GetUnitStats().ToDictionary(el => el.Type);
+      _deffCoeffs = provider.GetDefenceCoeffs();
     }
 
     public UnitStats GetUnitStats(GameObjectType type)

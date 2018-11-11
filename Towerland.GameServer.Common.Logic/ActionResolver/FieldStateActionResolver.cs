@@ -77,6 +77,10 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
         case ActionId.TowerPlayerRecievesMoney:
           _field.State.TowerMoney += action.Money;
           break;
+        case ActionId.PlayersRecievesMoney:
+          _field.State.TowerMoney += action.Money;
+          _field.State.MonsterMoney += action.Money;
+          break;
       }
     }
   }

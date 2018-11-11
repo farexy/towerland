@@ -4,8 +4,8 @@ namespace Towerland.GameServer.Common.Logic.Interfaces
 {
   public interface IStatsProvider
   {
-    UnitStats[] Units { get; }
-    TowerStats[] Towers { get; }
-    DefenceCoeff[] DefenceCoeffs { get; }
+    UnitStats[] GetUnitStats();
+    TowerStats[] GetTowerStats();
+    DefenceCoeff[] GetDefenceCoeffs();
   }
 }
