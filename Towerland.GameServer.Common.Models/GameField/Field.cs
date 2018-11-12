@@ -69,6 +69,7 @@ namespace Towerland.GameServer.Common.Models.GameField
             var type = gameObj.ResolveType();
             gameObj.GameId = gameId;
 
+            _objects.Add(gameId, gameObj);
             switch (type)
             {
                 case GameObjectType.Castle:
@@ -83,8 +84,6 @@ namespace Towerland.GameServer.Common.Models.GameField
                     State.Towers.Add((Tower)gameObj);
                     break;
             }
-
-            _objects.Add(gameId, gameObj);
 
             return gameId;
         }

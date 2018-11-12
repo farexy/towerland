@@ -25,6 +25,19 @@ namespace Towerland.Logic.Test
 
   class Program
   {
+    private static Point FindPosForTower(Field f)
+    {
+      var rnd = new Random();
+      var pos = f.StaticData.Cells
+        .OfType<FieldCell>()
+        .Where(c => c.Object == FieldObject.Ground)
+        .Where(c => f.State.Towers.All(t => t.Position != c.Position))
+        .Select(c => c.Position)
+        .ToArray();
+
+      return pos[rnd.Next(pos.Length)];
+    }
+
     private static void Show(Field f)
     {
       Console.Clear();
@@ -61,15 +74,47 @@ namespace Towerland.Logic.Test
       var pathOpt = new PathChooser(statsStub);
       var stateChang = new StateChangeRecalculator(pathOpt, statsStub, uFactory, tFactory);
 
-      f.State.MonsterMoney = 10000;
-      f.State.TowerMoney = 10000;
+      f.State.MonsterMoney = 100000;
+      f.State.TowerMoney = 100000;
 
       stateChang.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(4, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
       stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = new Point(0, 5)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = new Point(5, 0)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = new Point(9, 9)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_FortressWatchtower, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
 
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Goblin);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Dragon);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
@@ -81,9 +126,27 @@ namespace Towerland.Logic.Test
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Goblin);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Golem);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
@@ -91,8 +154,6 @@ namespace Towerland.Logic.Test
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
 
-      
-      //var pts = f.
       var calc = new StateCalculator(statsStub, f);
 
       var ticks = calc.CalculateActionsByTicks();

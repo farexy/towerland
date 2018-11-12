@@ -12,11 +12,18 @@ namespace Towerland.GameServer.Common.Logic
       Ticks = new List<List<GameAction>>(40);
       CurrentTick = new List<GameAction>();
       UnitsToRemove = new List<int>();
+      RevivedUnits = (new HashSet<int>(), new HashSet<int>());
     }
 
     public Field Field { get; }
     public List<List<GameAction>> Ticks { get; }
     public List<GameAction> CurrentTick { get; }
+
+    #region Help
+
     public List<int> UnitsToRemove { get; }
+    public (HashSet<int> OldIds, HashSet<int> NewIds) RevivedUnits { get; }
+
+    #endregion
   }
 }

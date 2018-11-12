@@ -68,6 +68,10 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         throw new LogicException("Tower can't be placed on the path");
       }
+      if (opt != null && field.FindTowerAt(opt.Value.Position) != null)
+      {
+        throw new LogicException("Cell is already busy by tower");
+      }
 
       var tower = _towersFactory.Create(type, opt);
       TryAddGameObject(field, tower);

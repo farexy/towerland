@@ -20,14 +20,14 @@
     UnitDies = 201,
     UnitRecievesDamage = 202,
     UnitFreezes = 210,
+    UnitEffectCanseled = 290,
 
     UnitAttacksCastle = 301,
 
-    UnitEffectCanseled = 401,
-    
     UnitAppliesEffect_DarkMagic = 502,
     
     UnitAppears = 801,
+    UnitRevives = 810,
     
     Other = 1000,
     MonsterPlayerRecievesMoney = 1001,

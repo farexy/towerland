@@ -9,6 +9,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 {
   public class MoneyCalculator
   {
+    private const int GuaranteedMoneyBase = 10;
+    private const int TowerCoeff = 2;
     private const double HealthCoeff = 0.5;
     private const double DamageCoeff = 0.2;
     private const double SpeedCoeff = 0.3;
@@ -56,6 +58,11 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       }
 
       return 0;
+    }
+
+    public int GetGuaranteedMoneyByTimer(Field field)
+    {
+      return GuaranteedMoneyBase + field.State.Towers.Count * TowerCoeff;
     }
 
     private static int GetTowerReward(TowerStats tower, UnitStats unit)

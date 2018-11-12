@@ -78,7 +78,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
     public int GetOptimalTarget(Field field, Tower tower)
     {
-      var possibleTargets = field.FindePossibleTargetsForTower(tower, _statsLibrary);
+      var possibleTargets = field.FindPossibleTargetsForTower(tower, _statsLibrary);
       var tableToAnalize = new double[possibleTargets.Length, _additiveConvolutionCalculator.NumberOfCriterias];
       var towerStats = _statsLibrary.GetTowerStats(tower.Type);
 

@@ -53,6 +53,10 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
         case ActionId.UnitAppears:
           _field.AddGameObject(action.GoUnit);
           break;
+
+        case ActionId.UnitAppliesEffect_DarkMagic:
+          _field[action.UnitId].WaitTicks += action.WaitTicks;
+          break;;
       }
     }
 

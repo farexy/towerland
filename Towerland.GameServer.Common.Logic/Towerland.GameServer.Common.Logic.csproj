@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Towerland.GameServer.Common.Logic</RootNamespace>
     <AssemblyName>Towerland.GameServer.Common.Logic</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <LangVersion>7.1</LangVersion>
@@ -62,7 +62,7 @@
     <Compile Include="Factories\StatsFactory.cs" />
     <Compile Include="Factories\TowerFactory.cs" />
     <Compile Include="Factories\UnitFactory.cs" />
-    <Compile Include="FieldContext.cs" />
+    <Compile Include="BattleContext.cs" />
     <Compile Include="Interfaces\IFieldFactory.cs" />
     <Compile Include="Interfaces\IGameObjectFactory.cs" />
     <Compile Include="Interfaces\IPathChooser.cs" />

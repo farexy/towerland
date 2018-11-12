@@ -15,6 +15,11 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       unit.WaitTicks = wait;
     }
 
+    public static Tower FindTowerAt(this Field field, Point position)
+    {
+      return field.State.Towers.FirstOrDefault(t => t.Position == position);
+    }
+
     public static IEnumerable<Unit> FindUnitsAt(this Field field, Point position)
     {
       return field.State.Units.Where(u => u.Position == position);
@@ -30,7 +35,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
         .ToArray();
     }
 
-    public static int[] FindePossibleTargetsForTower(this Field field, Tower tower, IStatsLibrary stats)
+    public static int[] FindPossibleTargetsForTower(this Field field, Tower tower, IStatsLibrary stats)
     {
       var gameCalc = new GameCalculator(stats);
       return field.FindGameObjects(obj =>

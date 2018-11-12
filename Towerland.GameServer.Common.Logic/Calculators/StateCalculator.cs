@@ -11,20 +11,33 @@ namespace Towerland.GameServer.Common.Logic.Calculators
     {
       private readonly BattleContext _battleContext;
       private readonly BehaviourFactory _behaviourFactory;
+      private readonly MoneyCalculator _moneyCalculator;
 
       private List<List<GameAction>> Ticks => _battleContext.Ticks;
-
       public Field Field => _battleContext.Field;
 
       public StateCalculator(IStatsLibrary statsLibrary, Field fieldState)
       {
         _battleContext = new BattleContext((Field)fieldState.Clone());
         _behaviourFactory = new BehaviourFactory(_battleContext, statsLibrary);
+        _moneyCalculator = new MoneyCalculator(statsLibrary);
       }
 
       public void SetState(FieldState fieldState)
       {
         Field.SetState(fieldState);
+      }
+
+      public GameTick[] GetIdleTicks()
+      {
+        for (int i = 0; i < 500; i++)
+        {
+          if (i % 5 == 0)
+          {
+            AddMoneyByTimer();
+          }
+        }
+        return new GameTick[0];
       }
 
       public GameTick[] CalculateActionsByTicks()
@@ -36,6 +49,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
           GetUnitActions();
           GetTowerActions();
+          AddMoneyByTimer();
 
           Ticks.Add(_battleContext.CurrentTick.ToList());
         }
@@ -94,6 +108,15 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
           behaviour.DoAction();
           behaviour.ApplyPostActionEffect();
+        }
+      }
+
+      private void AddMoneyByTimer()
+      {
+        if (Ticks.Count % 5 == 0)
+        {
+          var moneyAmount = _moneyCalculator.GetGuaranteedMoneyByTimer(Field);
+          _battleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.PlayersRecievesMoney, Money = moneyAmount});
         }
       }
 
