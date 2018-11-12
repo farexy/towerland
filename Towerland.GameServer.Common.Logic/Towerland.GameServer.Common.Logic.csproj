@@ -47,8 +47,8 @@
     <Compile Include="Behaviour\Towers\BurstTowerBehaviour.cs" />
     <Compile Include="Behaviour\Towers\ExtraDamageTowerBehaviour.cs" />
     <Compile Include="Behaviour\Towers\FreezingTowerBehaviour.cs" />
+    <Compile Include="Behaviour\Towers\PoisoningTowerBehaviour.cs" />
     <Compile Include="Behaviour\Units\BaseUnitBehaviour.cs" />
-    <Compile Include="Behaviour\Units\FreezedUnitBehaviour.cs" />
     <Compile Include="Behaviour\Units\NecromancerBehaviour.cs" />
     <Compile Include="Calculators\AdditiveConvolutionCalculator.cs" />
     <Compile Include="Calculators\StateCalculator.cs" />

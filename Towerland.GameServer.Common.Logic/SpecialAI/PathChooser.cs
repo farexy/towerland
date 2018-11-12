@@ -5,6 +5,7 @@ using Towerland.GameServer.Common.Logic.Calculators;
 using Towerland.GameServer.Common.Models.GameField;
 using Towerland.GameServer.Common.Models.GameObjects;
 using Towerland.GameServer.Common.Logic.Interfaces;
+using Towerland.GameServer.Common.Models.Effects;
 
 namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
@@ -70,7 +71,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 
     private double GetTowersWithSpecialEffectRate(ICollection<GameObjectType> towerTypes)
     {
-      return 1 - (double)towerTypes.Count(t => _statsLib.GetTowerStats(t).SpecialEffect != null) / towerTypes.Count;
+      return 1 - (double)towerTypes.Count(t => _statsLib.GetTowerStats(t).Ability != AbilityId.None) / towerTypes.Count;
     }
 
     private double GetAvgTowersRemoteness(Path path, ICollection<GameObject> towers)

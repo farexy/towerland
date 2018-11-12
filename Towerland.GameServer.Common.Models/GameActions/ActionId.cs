@@ -20,6 +20,7 @@
     UnitDies = 201,
     UnitRecievesDamage = 202,
     UnitFreezes = 210,
+    UnitPoisoned = 215,
     UnitEffectCanseled = 290,
 
     UnitAttacksCastle = 301,

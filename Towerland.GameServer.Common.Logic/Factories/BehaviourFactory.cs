@@ -23,17 +23,11 @@ namespace Towerland.GameServer.Common.Logic.Factories
     public IBehaviour CreateUnitBehaviour(Unit unit)
     {
       var stats = _statsLibrary.GetUnitStats(unit.Type);
-      var effectId = unit.Effect == null || unit.Effect.Id == EffectId.None
-        ? stats.SpecialEffect?.Id ?? EffectId.None
-        : unit.Effect.Id;
-
-      switch (effectId)
+      switch (stats.Ability)
       {
-        case EffectId.None:
+        case AbilityId.None:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
-        case EffectId.UnitFreezed:
-          return new FreezedUnitBehaviour(unit, _battleContext, _statsLibrary);
-        case EffectId.ReviveDeadUnitsAtPreviousTick:
+        case AbilityId.Unit_RevivesDeadUnit:
           return new NecromancerBehaviour(unit, _battleContext, _statsLibrary);
         default:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
@@ -43,9 +37,9 @@ namespace Towerland.GameServer.Common.Logic.Factories
     public IBehaviour CreateTowerBehaviour(Tower tower)
     {
       var stats = _statsLibrary.GetTowerStats(tower.Type);
-      switch (stats.SpecialEffect?.Id ?? EffectId.None)
+      switch (stats.Ability)
       {
-        case EffectId.None:
+        case AbilityId.None:
           switch (stats.Attack)
           {
             case TowerStats.AttackType.Usual:
@@ -56,9 +50,9 @@ namespace Towerland.GameServer.Common.Logic.Factories
             default:
               return null;
           }
-        case EffectId.UnitFreezed:
+        case AbilityId.Tower_FreezesUnit:
           return new FreezingTowerBehaviour(tower, _battleContext, _statsLibrary);
-        case EffectId.Unit10xDamage_10PercentProbability:
+        case AbilityId.Tower_10xDamage_10PercentProbability:
           return new ExtraDamageTowerBehaviour(tower, _battleContext, _statsLibrary);
         default:
           return new BaseTowerBehaviour(tower, _battleContext, _statsLibrary);

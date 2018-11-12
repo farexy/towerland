@@ -72,14 +72,15 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
     protected virtual void Move(Path path)
     {
       var nextPoint = path.GetNext(Unit.Position);
+      var speed = CalculateSpeed();
       Unit.Position = nextPoint;
-      Unit.WaitTicks = Stats.Speed;
+      Unit.WaitTicks = speed;
       BattleContext.CurrentTick.Add(new GameAction
       {
         ActionId = ActionId.UnitMoves,
         Position = nextPoint,
         UnitId = Unit.GameId,
-        WaitTicks = Stats.Speed
+        WaitTicks = speed
       });
     }
 
@@ -102,8 +103,29 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
       BattleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
     }
 
+    protected virtual int CalculateSpeed()
+    {
+      return Unit.Effect.Id == EffectId.UnitFreezed
+        ? Stats.Speed * (int)SpecialEffect.EffectDebuffValue[EffectId.UnitFreezed]
+        : Stats.Speed;
+    }
+
     public virtual void ApplyPostActionEffect()
     {
+      if (Unit.Effect.Id == EffectId.UnitPoisoned)
+      {
+        var damage = Unit.Health * SpecialEffect.EffectDebuffValue[EffectId.UnitPoisoned];
+        if (Unit.Health - damage <= 0)
+        {
+          damage = Unit.Health - 1;
+        }
+
+        Unit.Health -= (int)damage;
+        BattleContext.CurrentTick.Add(new GameAction
+        {
+          ActionId = ActionId.UnitRecievesDamage,UnitId = Unit.GameId, Damage = (int)damage
+        });
+      }
     }
   }
 }

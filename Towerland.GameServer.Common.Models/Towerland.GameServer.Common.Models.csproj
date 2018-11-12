@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Towerland.GameServer.Common.Models</RootNamespace>
     <AssemblyName>GameServer.Common.Models</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <LangVersion>6</LangVersion>
@@ -40,6 +40,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\AbilityId.cs" />
     <Compile Include="Effects\EffectId.cs" />
     <Compile Include="Effects\SpecialEffect.cs" />
     <Compile Include="Exceptions\LogicException.cs" />

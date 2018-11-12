@@ -15,9 +15,9 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Towers
     {
       bool isApplicable;
       int damageMultiplier;
-      switch (Stats.SpecialEffect.Id)
+      switch (Stats.Ability)
       {
-        case EffectId.Unit10xDamage_10PercentProbability:
+        case AbilityId.Tower_10xDamage_10PercentProbability:
           isApplicable = GameMath.CalcProbableEvent(10);
           damageMultiplier = 10;
           break;

@@ -91,7 +91,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 4,
         Cost = 500,
         Defence = UnitStats.DefenceType.Undefended,
-        SpecialEffect = new SpecialEffect {Id = EffectId.ReviveDeadUnitsAtPreviousTick},
+        Ability= AbilityId.Unit_RevivesDeadUnit,
         Priority = StrokePriority.TheLowest
       }
     };
@@ -118,7 +118,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 35,
         Range = 4,
         Cost = 120,
-        SpecialEffect = new SpecialEffect {Id = EffectId.UnitFreezed, Duration = 16},
+        Ability = AbilityId.Tower_FreezesUnit,
         Priority = StrokePriority.Usual
       },
       new TowerStats
@@ -152,7 +152,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 70,
         Range = 6,
         Cost = 600,
-        SpecialEffect = new SpecialEffect {Id = EffectId.Unit10xDamage_10PercentProbability},
+        Ability = AbilityId.Tower_10xDamage_10PercentProbability,
         Priority = StrokePriority.Usual
       }
     };

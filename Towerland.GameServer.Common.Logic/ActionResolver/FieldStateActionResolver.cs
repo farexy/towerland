@@ -42,6 +42,10 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Id = EffectId.UnitFreezed};
           break;
 
+        case ActionId.UnitPoisoned:
+          _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Id = EffectId.UnitPoisoned};
+          break;
+
         case ActionId.UnitDies:
             _field.RemoveGameObject(action.UnitId);
           break;
