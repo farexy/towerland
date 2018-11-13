@@ -28,8 +28,9 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
       _gameCalculator = new GameCalculator(statsLibrary);
     }
 
-    public int? FindTarget(Field field, GameObject tower)
+    public int? FindTarget(BattleContext battleContext, GameObject tower)
     {
+      var field = battleContext.Field;
       var x = tower.Position.X;
       var y = tower.Position.Y;
       var stats = _statsLibrary.GetTowerStats(tower.Type);
@@ -61,9 +62,10 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
         p = new Point(x - range, y - range);
         units.AddRange(p != field.StaticData.Finish ? field.FindUnitsAt(p) : Enumerable.Empty<Unit>());
 
-        if (units.Any())
+        var foundUnits = units.Where(u => !battleContext.UnitsToRemove.Contains(u.GameId));
+        if (foundUnits.Any())
         {
-          return units[GameMath.Rand.Next(units.Count)].GameId;
+          return foundUnits.ElementAt(GameMath.Rand.Next(foundUnits.Count())).GameId;
         }
         units.Clear();
       }

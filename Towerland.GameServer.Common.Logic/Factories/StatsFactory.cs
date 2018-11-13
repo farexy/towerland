@@ -93,6 +93,19 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Defence = UnitStats.DefenceType.Undefended,
         Ability= AbilityId.Unit_RevivesDeadUnit,
         Priority = StrokePriority.TheLowest
+      },
+      new UnitStats
+      {
+        Type = GameObjectType.Unit_Barbarian,
+        Damage = 15,
+        Health = 550,
+        IsAir = false,
+        MovementPriority = UnitStats.MovementPriorityType.Random,
+        Speed = 4,
+        Cost = 750,
+        Defence = UnitStats.DefenceType.LightArmor,
+        Ability= AbilityId.Unit_DestroysTowerOnDeath,
+        Priority = StrokePriority.TheLowest
       }
     };
 
@@ -124,7 +137,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
       new TowerStats
       {
         Type = GameObjectType.Tower_Cannon,
-        TargetPriority = TowerStats.AttackPriority.Random,
+        TargetPriority = TowerStats.AttackPriority.Burst,
         Attack = TowerStats.AttackType.Burst,
         AttackSpeed = 12,
         Damage = 70,
@@ -153,6 +166,18 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Range = 6,
         Cost = 600,
         Ability = AbilityId.Tower_10xDamage_10PercentProbability,
+        Priority = StrokePriority.Usual
+      },
+      new TowerStats
+      {
+        Type = GameObjectType.Tower_Poisoning,
+        TargetPriority = TowerStats.AttackPriority.Random,
+        Attack = TowerStats.AttackType.Magic,
+        AttackSpeed = 5,
+        Damage = 40,
+        Range = 3,
+        Cost = 500,
+        Ability = AbilityId.Tower_PoisonsUnit,
         Priority = StrokePriority.Usual
       }
     };

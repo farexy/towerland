@@ -26,7 +26,8 @@ namespace Towerland.GameServer.Common.Models.Stats
     public enum AttackPriority
     {
       Random,
-      Optimal
+      Optimal,
+      Burst,
     }
   }
 }

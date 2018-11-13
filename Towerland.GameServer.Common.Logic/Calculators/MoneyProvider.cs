@@ -24,7 +24,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
     public int GetTowerReward(Field field, GameAction action)
     {
-      if (action.ActionId == ActionId.UnitDies)
+      if (action.ActionId == ActionId.TowerKills)
       {
         var towerStats = _statsLibrary.GetTowerStats(field[action.TowerId].Type);
         var unitStats = _statsLibrary.GetUnitStats(field[action.UnitId].Type);

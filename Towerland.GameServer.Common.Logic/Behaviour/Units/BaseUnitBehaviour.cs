@@ -27,11 +27,6 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
 
     public bool CanDoAction()
     {
-      if (Unit.Health <= 0)
-      {
-        BattleContext.UnitsToRemove.Add(Unit.GameId);
-        return false;
-      }
       if (Unit.WaitTicks != 0)
       {
         Unit.WaitTicks -= 1;
@@ -125,6 +120,14 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
         {
           ActionId = ActionId.UnitRecievesDamage,UnitId = Unit.GameId, Damage = (int)damage
         });
+      }
+    }
+
+    public virtual void TickEndAction()
+    {
+      if (Unit.Health <= 0)
+      {
+        BattleContext.UnitsToRemove.Add(Unit.GameId);
       }
     }
   }

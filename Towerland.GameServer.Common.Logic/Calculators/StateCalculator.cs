@@ -4,6 +4,7 @@ using Towerland.GameServer.Common.Logic.Factories;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Logic.Calculators
 {
@@ -46,10 +47,19 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           && Field.State.Units.Any())
         {
           _battleContext.CurrentTick.Clear();
+          _battleContext.UnitsToRemove.Clear();
+          _battleContext.UnitsToAdd.Clear();
+          _battleContext.TowersToRemove.Clear();
+          _battleContext.TowersToAdd.Clear();
 
           GetUnitActions();
           GetTowerActions();
+          GetTickEndActions();
           AddMoneyByTimer();
+
+          Field.AddMany(_battleContext.UnitsToAdd);
+          Field.AddMany(_battleContext.TowersToAdd);
+          RemoveGameObjects();
 
           Ticks.Add(_battleContext.CurrentTick.ToList());
         }
@@ -69,10 +79,9 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
       private void GetUnitActions()
       {
-        _battleContext.UnitsToRemove.Clear();
-
-        foreach (var unit in Field.State.Units.ToArray())
+        foreach (var u in Field.State.Units)
         {
+          var unit = (Unit)Field[u.GameId];
           var behaviour = _behaviourFactory.CreateUnitBehaviour(unit);
           if (!behaviour.CanDoAction())
           {
@@ -87,14 +96,13 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           behaviour.DoAction();
           behaviour.ApplyPostActionEffect();
         }
-
-        Field.RemoveMany(_battleContext.UnitsToRemove);
       }
 
       private void GetTowerActions()
       {
-        foreach (var tower in Field.State.Towers)
+        foreach (var t in Field.State.Towers)
         {
+          var tower = (Tower) Field[t.GameId];
           var behaviour = _behaviourFactory.CreateTowerBehaviour(tower);
           if (!behaviour.CanDoAction())
           {
@@ -109,6 +117,35 @@ namespace Towerland.GameServer.Common.Logic.Calculators
           behaviour.DoAction();
           behaviour.ApplyPostActionEffect();
         }
+      }
+
+      private void GetTickEndActions()
+      {
+        foreach (var unit in Field.State.Units)
+        {
+          _behaviourFactory.CreateUnitBehaviour(unit).TickEndAction();
+        }
+        foreach (var tower in Field.State.Towers)
+        {
+          _behaviourFactory.CreateTowerBehaviour(tower).TickEndAction();
+        }
+      }
+
+      private void RemoveGameObjects()
+      {
+        _battleContext.CurrentTick.AddRange(_battleContext.UnitsToRemove.Select(unitId =>
+          new GameAction
+          {
+            ActionId = ActionId.UnitDisappears, UnitId = unitId, Position = Field[unitId].Position
+          }));
+        _battleContext.CurrentTick.AddRange(_battleContext.TowersToRemove.Select(towerId =>
+          new GameAction
+          {
+            ActionId = ActionId.TowerCollapses, TowerId = towerId, Position = Field[towerId].Position
+          }));
+
+        Field.RemoveMany(_battleContext.UnitsToRemove);
+        Field.RemoveMany(_battleContext.TowersToRemove);
       }
 
       private void AddMoneyByTimer()

@@ -17,6 +17,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
     {
       return new Unit
       {
+        GameId = options?.GameId ?? default,
         Type = type,
         PathId = options?.PathId,
         Health = _statsLib.GetUnitStats(type).Health,

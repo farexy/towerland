@@ -6,5 +6,6 @@ namespace Towerland.GameServer.Common.Logic.Behaviour
     bool ApplyPreActionEffect();
     void DoAction();
     void ApplyPostActionEffect();
+    void TickEndAction();
   }
 }

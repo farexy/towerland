@@ -1,4 +1,3 @@
-using System;
 using Towerland.GameServer.Common.Logic.Behaviour;
 using Towerland.GameServer.Common.Logic.Behaviour.Towers;
 using Towerland.GameServer.Common.Logic.Behaviour.Units;
@@ -29,6 +28,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
         case AbilityId.Unit_RevivesDeadUnit:
           return new NecromancerBehaviour(unit, _battleContext, _statsLibrary);
+        case AbilityId.Unit_DestroysTowerOnDeath:
+          return new BarbarianBehaviour(unit, _battleContext, _statsLibrary);
         default:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
       }
@@ -52,6 +53,8 @@ namespace Towerland.GameServer.Common.Logic.Factories
           }
         case AbilityId.Tower_FreezesUnit:
           return new FreezingTowerBehaviour(tower, _battleContext, _statsLibrary);
+        case AbilityId.Tower_PoisonsUnit:
+          return new PoisoningTowerBehaviour(tower, _battleContext, _statsLibrary);
         case AbilityId.Tower_10xDamage_10PercentProbability:
           return new ExtraDamageTowerBehaviour(tower, _battleContext, _statsLibrary);
         default:

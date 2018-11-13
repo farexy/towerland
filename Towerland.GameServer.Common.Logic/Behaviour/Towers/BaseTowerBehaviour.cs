@@ -1,4 +1,3 @@
-using System.Linq;
 using Towerland.GameServer.Common.Logic.Calculators;
 using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Logic.SpecialAI;
@@ -46,7 +45,7 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Towers
     {
       var targetFinder = new TargetFinder(StatsLibrary);
 
-      var targetId = targetFinder.FindTarget(Field, Tower);
+      var targetId = targetFinder.FindTarget(BattleContext, Tower);
       if (targetId.HasValue)
       {
         var unit = (Unit) Field[targetId.Value];
@@ -60,6 +59,9 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Towers
           UnitId = targetId.Value,
           WaitTicks = Stats.AttackSpeed
         });
+
+        ApplyEffectOnAttack(unit);
+
         BattleContext.CurrentTick.Add(new GameAction
         {
           ActionId = ActionId.UnitRecievesDamage,
@@ -67,18 +69,14 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Towers
           Damage = damage
         });
 
-        ApplyEffectOnAttack(unit);
         unit.Health -= damage;
         if (unit.Health <= 0)
         {
-          var dieAction = new GameAction {ActionId = ActionId.UnitDies, UnitId = targetId.Value, TowerId = Tower.GameId, Position = unit.Position};
           var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = Tower.GameId, UnitId = targetId.Value, Position = unit.Position};
-
-          BattleContext.CurrentTick.Add(dieAction);
           BattleContext.CurrentTick.Add(killAction);
 
           var moneyCalc = new MoneyCalculator(StatsLibrary);
-          var towerReward = moneyCalc.GetTowerReward(Field, dieAction);
+          var towerReward = moneyCalc.GetTowerReward(Field, killAction);
           var unitReward = moneyCalc.GetUnitReward(Field, killAction);
 
           Field.State.MonsterMoney += unitReward;
@@ -87,7 +85,7 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Towers
           BattleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
           BattleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
 
-          Field.RemoveGameObject(targetId.Value);
+          BattleContext.UnitsToRemove.Add(targetId.Value);
         }
       }
     }
@@ -103,6 +101,10 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Towers
     }
 
     public virtual void ApplyPostActionEffect()
+    {
+    }
+
+    public virtual void TickEndAction()
     {
     }
   }

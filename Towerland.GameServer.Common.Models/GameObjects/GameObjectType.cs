@@ -6,6 +6,8 @@
     Undefined = 0,
     Reserved = 1,
 
+    GeneratedId = 2,
+
     Castle = 10,
     Castle_Usual = 11,
 
@@ -20,6 +22,7 @@
     Tower_Cannon = 103,
     Tower_FortressWatchtower = 104,
     Tower_Magic = 105,
+    Tower_Poisoning = 106,
 
     Unit = 1000,
     Unit_Skeleton = 1001,
@@ -29,6 +32,7 @@
     Unit_Dragon = 1005,
     Unit_Golem = 1006,
     Unit_Necromancer = 1007,
+    Unit_Barbarian = 1008,
 
     // ReSharper restore InconsistentNaming
   }

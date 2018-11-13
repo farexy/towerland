@@ -5,6 +5,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
 {
   public struct CreationOptions
   {
+    [JsonProperty("g")] public int? GameId;
     [JsonProperty("p")] public Point Position;
     [JsonProperty("i")] public int? PathId;
   }

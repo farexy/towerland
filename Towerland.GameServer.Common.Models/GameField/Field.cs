@@ -48,20 +48,10 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public int AddGameObject(GameObject gameObj)
         {
-            unchecked
-            {
-                var id = _objects.Count * DateTime.Now.Millisecond - DateTime.Now.Second;
-
-                try
-                {
-                    return AddGameObject(id, gameObj);
-                }
-                catch (ArgumentException)
-                {
-                    id++;
-                    return AddGameObject(id, gameObj);
-                }
-            }
+            var id = gameObj.GameId == default(int)
+                ? GenerateId()
+                : gameObj.GameId;
+            return AddGameObject(id, gameObj);
         }
 
         private int AddGameObject(int gameId, GameObject gameObj)
@@ -69,7 +59,12 @@ namespace Towerland.GameServer.Common.Models.GameField
             var type = gameObj.ResolveType();
             gameObj.GameId = gameId;
 
+            if (this[gameId]?.Type == GameObjectType.GeneratedId)
+            {
+                _objects[gameId] = gameObj;
+            }
             _objects.Add(gameId, gameObj);
+
             switch (type)
             {
                 case GameObjectType.Castle:
@@ -93,10 +88,31 @@ namespace Towerland.GameServer.Common.Models.GameField
             return objects.Select(AddGameObject);
         }
 
+        public int GenerateGameObjectId()
+        {
+            var newId = GenerateId();
+            AddGameObject(new GeneratedId(newId));
+            return newId;
+        }
+
+        private int GenerateId()
+        {
+            unchecked
+            {
+                var id = _objects.Count * DateTime.Now.Millisecond - DateTime.Now.Second;
+                while (_objects.ContainsKey(id))
+                {
+                    id++;
+                }
+
+                return id;
+            }
+        }
+
         public void RemoveGameObject(int gameId)
         {
             if (!_objects.ContainsKey(gameId))
-                throw new ArgumentException("There is no object with spisified GameId on the field");
+                throw new ArgumentException("There is no object with specified GameId on the field");
 
             var gameObj = _objects[gameId];
             var type = gameObj.ResolveType();

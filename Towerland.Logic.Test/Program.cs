@@ -65,9 +65,7 @@ namespace Towerland.Logic.Test
     {
       var f = new FieldFactoryStub().ClassicField;
       var ss = JsonConvert.SerializeObject(f);
-      var f2 = JsonConvert.DeserializeObject<Field>(ss);
-      f = f2;
-      
+
       var statsStub = new StatsLibrary(new StatsFactory());
       var uFactory = new UnitFactory(statsStub);
       var tFactory = new TowerFactory(statsStub);
@@ -105,10 +103,17 @@ namespace Towerland.Logic.Test
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Magic, new CreationOptions{Position = FindPosForTower(f)});
-      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
-      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
-      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
-      stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
+      stateChang.AddNewTower(f, GameObjectType.Tower_Poisoning, new CreationOptions{Position = FindPosForTower(f)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
       stateChang.AddNewTower(f, GameObjectType.Tower_Frost, new CreationOptions{Position = FindPosForTower(f)});
@@ -129,23 +134,23 @@ namespace Towerland.Logic.Test
       stateChang.AddNewUnit(f, GameObjectType.Unit_Goblin);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Golem);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
@@ -154,39 +159,28 @@ namespace Towerland.Logic.Test
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
 
+      //var f2 = (Field)f.Clone();
+      var f2 = f;
       var calc = new StateCalculator(statsStub, f);
 
       var ticks = calc.CalculateActionsByTicks();
-      var resolver = new FieldStateActionResolver(f);
+      var resolver = new FieldStateActionResolver(f2);
       
-      foreach (var actions in ticks)
+      foreach (var tick in ticks)
       {
-        foreach (var action in actions.Actions)
+        foreach (var action in tick.Actions)
         {
           resolver.Resolve(action);
-          Show(f);
-          Thread.Sleep(200);
+          Show(f2);
+          Thread.Sleep(20);
         }
-        if (actions.Actions.Any() && actions.Actions.First().Position == new Point(2, 7))
+        if (tick.Actions.Any() && tick.Actions.First().Position == new Point(2, 7))
         {
          // break;
         }
       }
 
-      f.SetState(calc.Field.State);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      
-      calc.SetState(f.State);
-      ticks = calc.CalculateActionsByTicks();
-      foreach (var actions in ticks)
-      {
-        foreach (var action in actions.Actions)
-        {
-          resolver.Resolve(action);
-          Show(f);
-          Thread.Sleep(100);
-        }
-      }
+      Console.WriteLine("end");
     }
 
   }

@@ -13,7 +13,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
     [JsonProperty("e")] public SpecialEffect Effect { set; get; }
     [JsonProperty("t")] public GameObjectType Type { set; get; }
 
-    protected GameObject()
+    public GameObject()
     {
       Effect = SpecialEffect.Empty;
     }
@@ -78,10 +78,7 @@ namespace Towerland.GameServer.Common.Models.GameObjects
 
     public override int GetHashCode()
     {
-      unchecked
-      {
-        return GameId;
-      }
+      return GameId;
     }
 
     #endregion

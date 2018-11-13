@@ -58,6 +58,7 @@
     <Compile Include="GameObjects\CreationOptions.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectType.cs" />
+    <Compile Include="GameObjects\GeneratedId.cs" />
     <Compile Include="GameObjects\Tower.cs" />
     <Compile Include="GameObjects\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

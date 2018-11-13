@@ -6,9 +6,11 @@ namespace Towerland.GameServer.Common.Models.Effects
 
     // Tower abilities
     Tower_FreezesUnit = 101,
-    Tower_10xDamage_10PercentProbability = 110,
+    Tower_PoisonsUnit = 110,
+    Tower_10xDamage_10PercentProbability = 201,
 
     //Unit abilities
     Unit_RevivesDeadUnit = 501,
+    Unit_DestroysTowerOnDeath = 550,
   }
 }

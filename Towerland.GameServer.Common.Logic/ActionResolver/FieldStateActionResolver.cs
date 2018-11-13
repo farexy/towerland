@@ -1,6 +1,4 @@
 using Towerland.GameServer.Common.Logic.Calculators;
-using Towerland.GameServer.Common.Logic.Factories;
-using Towerland.GameServer.Common.Logic.Interfaces;
 using Towerland.GameServer.Common.Models.Effects;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
@@ -30,7 +28,6 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           break;
 
         case ActionId.UnitAttacksCastle:
-          _field.RemoveGameObject(action.UnitId);
           _field.State.Castle.Health -= action.Damage;
           break;
 
@@ -46,7 +43,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
           _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Id = EffectId.UnitPoisoned};
           break;
 
-        case ActionId.UnitDies:
+        case ActionId.UnitDisappears:
             _field.RemoveGameObject(action.UnitId);
           break;
 
@@ -60,7 +57,7 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
 
         case ActionId.UnitAppliesEffect_DarkMagic:
           _field[action.UnitId].WaitTicks += action.WaitTicks;
-          break;;
+          break;
       }
     }
 
@@ -71,6 +68,10 @@ namespace Towerland.GameServer.Common.Logic.ActionResolver
         case ActionId.TowerAttacks:
         case ActionId.TowerAttacksPosition:
           _field[action.TowerId].WaitTicks = action.WaitTicks;
+          break;
+
+        case ActionId.TowerCollapses:
+          _field.RemoveGameObject(action.TowerId);
           break;
       }
     }

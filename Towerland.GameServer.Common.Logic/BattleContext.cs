@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Towerland.GameServer.Common.Models.GameActions;
 using Towerland.GameServer.Common.Models.GameField;
+using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Logic
 {
@@ -11,7 +12,10 @@ namespace Towerland.GameServer.Common.Logic
       Field = field;
       Ticks = new List<List<GameAction>>(40);
       CurrentTick = new List<GameAction>();
-      UnitsToRemove = new List<int>();
+      UnitsToRemove = new HashSet<int>();
+      UnitsToAdd = new List<Unit>();
+      TowersToRemove = new HashSet<int>();
+      TowersToAdd = new List<Tower>();
       RevivedUnits = (new HashSet<int>(), new HashSet<int>());
     }
 
@@ -21,7 +25,10 @@ namespace Towerland.GameServer.Common.Logic
 
     #region Help
 
-    public List<int> UnitsToRemove { get; }
+    public HashSet<int> UnitsToRemove { get; }
+    public List<Unit> UnitsToAdd { get; }
+    public HashSet<int> TowersToRemove { get; }
+    public List<Tower> TowersToAdd { get; }
     public (HashSet<int> OldIds, HashSet<int> NewIds) RevivedUnits { get; }
 
     #endregion

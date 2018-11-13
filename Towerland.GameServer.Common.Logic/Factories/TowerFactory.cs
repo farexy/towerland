@@ -17,8 +17,9 @@ namespace Towerland.GameServer.Common.Logic.Factories
     {
       return new Tower
       {
+        GameId = options?.GameId ?? default,
         Type = type,
-        Position = options.HasValue ? options.Value.Position : default(Point),
+        Position = options?.Position ?? default,
       };
     }
   }

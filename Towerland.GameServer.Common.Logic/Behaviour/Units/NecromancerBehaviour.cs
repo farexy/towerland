@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Towerland.GameServer.Common.Logic.Calculators;
 using Towerland.GameServer.Common.Logic.Factories;
@@ -19,16 +18,9 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
     public override bool ApplyPreActionEffect()
     {
       base.ApplyPreActionEffect();
+      var deadUnitAction = FindDeadUnitAction();
 
-      var lastTicks = BattleContext.Ticks.Skip(BattleContext.Ticks.Count - Stats.Speed).ToArray();
-
-      bool DeadUnitPredicate(GameAction act) =>
-        act.ActionId == ActionId.UnitDies && !BattleContext.RevivedUnits.OldIds.Contains(act.UnitId) && !BattleContext.RevivedUnits.NewIds.Contains(act.UnitId);
-      var deadUnitAction = lastTicks
-        .FirstOrDefault(t => t.Any(DeadUnitPredicate))
-        ?.FirstOrDefault(DeadUnitPredicate);
-
-      if (!deadUnitAction.HasValue || deadUnitAction.Value.ActionId == default)
+      if (!deadUnitAction.HasValue)
       {
         return true;
       }
@@ -37,10 +29,11 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
 
       var possiblePath = Field.GetPossiblePathIds(action.Position).ToArray();
       var pathId = possiblePath[GameMath.Rand.Next(possiblePath.Length)];
+      var newUnitId = Field.GenerateGameObjectId();
       var skeleton = uFactory.Create(GameObjectType.Unit_Skeleton,
-        new CreationOptions {Position = action.Position, PathId = pathId});
-      var newUnitId = Field.AddGameObject(skeleton);
+        new CreationOptions {GameId = newUnitId, Position = action.Position, PathId = pathId});
 
+      BattleContext.UnitsToAdd.Add(skeleton);
       BattleContext.RevivedUnits.OldIds.Add(action.UnitId);
       BattleContext.RevivedUnits.NewIds.Add(newUnitId);
 
@@ -66,6 +59,25 @@ namespace Towerland.GameServer.Common.Logic.Behaviour.Units
       Unit.WaitTicks += AbilityWaitTicks;
 
       return false;
+    }
+
+    private GameAction? FindDeadUnitAction()
+    {
+      var len = BattleContext.Ticks.Count;
+      for (int i = len - 1; i >= 0 && i >= len - Stats.Speed; i--)
+      {
+        foreach (var action in BattleContext.Ticks[i])
+        {
+          if (action.ActionId == ActionId.TowerKills
+              && !BattleContext.RevivedUnits.OldIds.Contains(action.UnitId)
+              && !BattleContext.RevivedUnits.NewIds.Contains(action.UnitId))
+          {
+            return action;
+          }
+        }
+      }
+
+      return null;
     }
   }
 }
