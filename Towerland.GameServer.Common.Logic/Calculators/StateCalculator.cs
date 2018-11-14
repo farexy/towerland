@@ -79,9 +79,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
       private void GetUnitActions()
       {
-        foreach (var u in Field.State.Units)
+        foreach (var unit in Field.State.Units)
         {
-          var unit = (Unit)Field[u.GameId];
           var behaviour = _behaviourFactory.CreateUnitBehaviour(unit);
           if (!behaviour.CanDoAction())
           {
@@ -100,9 +99,8 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 
       private void GetTowerActions()
       {
-        foreach (var t in Field.State.Towers)
+        foreach (var tower in Field.State.Towers)
         {
-          var tower = (Tower) Field[t.GameId];
           var behaviour = _behaviourFactory.CreateTowerBehaviour(tower);
           if (!behaviour.CanDoAction())
           {

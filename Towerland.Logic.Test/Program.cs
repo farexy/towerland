@@ -172,7 +172,7 @@ namespace Towerland.Logic.Test
         {
           resolver.Resolve(action);
           Show(f2);
-          Thread.Sleep(20);
+          Thread.Sleep(100);
         }
         if (tick.Actions.Any() && tick.Actions.First().Position == new Point(2, 7))
         {

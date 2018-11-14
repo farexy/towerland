@@ -14,23 +14,14 @@ namespace Towerland.GameServer.Common.Models.GameField
         public FieldStaticData StaticData { private set; get; }
 
         [JsonProperty("state")]
-        private FieldState _state;
-        [JsonIgnore]
-        public FieldState State
-        {
-            get
-            {
-                _state.Objects = _objects;
-                return _state;
-            }
-        }
+        public FieldState State { private set; get; }
 
         private Dictionary<int, GameObject> _objects;
 
         public Field()
         {
             _objects = new Dictionary<int, GameObject>();
-            _state = new FieldState();
+            State = new FieldState();
         }
 
         public Field(FieldStaticData staticData) : this()
@@ -147,16 +138,17 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public void SetState(FieldState state)
         {
-            this._state = new FieldState(state.Towers, state.Units, state.Castle)
+            _objects = state.Objects.ToDictionary(item => item.Key, item => (GameObject) item.Value.Clone());
+            this.State = new FieldState(_objects, state.Castle)
             {
                 MonsterMoney = state.MonsterMoney,
                 TowerMoney = state.TowerMoney
             };
-            this._objects = SetObjects(_state.Towers, _state.Units);
         }
 
         public object Clone()
         {
+            var clonedObjects = _objects.ToDictionary(item => item.Key, item => (GameObject) item.Value.Clone());
             return new Field
             {
                 StaticData = new FieldStaticData(StaticData.Cells, StaticData.Start, StaticData.Finish)
@@ -164,27 +156,13 @@ namespace Towerland.GameServer.Common.Models.GameField
                     Path = StaticData.Path,
                     EndTimeUtc = StaticData.EndTimeUtc
                 },
-                _objects = _objects.ToDictionary(item => item.Key, item => (GameObject)item.Value.Clone()),
-                _state = new FieldState(State.Towers, State.Units, State.Castle)
+                _objects = clonedObjects,
+                State = new FieldState(clonedObjects, State.Castle)
                 {
                     MonsterMoney = State.MonsterMoney,
                     TowerMoney = State.TowerMoney
                 },
             };
-        }
-        
-        private static Dictionary<int, GameObject> SetObjects(List<Tower> objects, List<Unit> objects1)
-        {
-            var res = new Dictionary<int, GameObject>();
-            foreach (var o in objects)
-            {
-                res.Add(o.GameId, o);
-            }
-            foreach (var o1 in objects1)
-            {
-                res.Add(o1.GameId, o1);
-            }
-            return res;
         }
     }
 }

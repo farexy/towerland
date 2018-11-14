@@ -13,14 +13,15 @@ namespace Towerland.GameServer.Common.Models.GameField
       Units = new List<Unit>();
     }
 
-    public FieldState(IEnumerable<Tower> towers, IEnumerable<Unit> units, Castle castle)
+    public FieldState(Dictionary<int, GameObject> objects, Castle castle)
     {
+      Objects = objects;
       Castle = (Castle)castle.Clone();
-      Towers = towers.Select(t => (Tower)t.Clone()).ToList();
-      Units = units.Select(u => (Unit)u.Clone()).ToList();
+      Towers = objects.Where(o => o.Value.IsTower).Select(o => o.Value).Cast<Tower>().ToList();
+      Units = objects.Where(o => o.Value.IsUnit).Select(o => o.Value).Cast<Unit>().ToList();
     }
-    
-    public Dictionary<int, GameObject> Objects { set; get; }
+
+    public Dictionary<int, GameObject> Objects { private set; get; }
     public List<Tower> Towers { private set; get; }
     public List<Unit> Units { private set; get; }
     public Castle Castle { set; get; }
