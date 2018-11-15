@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using Towerland.GameServer.Common.Models.GameObjects;
 
 namespace Towerland.GameServer.Common.Models.GameField
@@ -22,9 +22,9 @@ namespace Towerland.GameServer.Common.Models.GameField
     }
 
     public Dictionary<int, GameObject> Objects { private set; get; }
-    public List<Tower> Towers { private set; get; }
-    public List<Unit> Units { private set; get; }
     public Castle Castle { set; get; }
+    [JsonIgnore] public List<Tower> Towers { private set; get; }
+    [JsonIgnore] public List<Unit> Units { private set; get; }
 
     public int MonsterMoney { set; get; }
     public int TowerMoney { set; get; }

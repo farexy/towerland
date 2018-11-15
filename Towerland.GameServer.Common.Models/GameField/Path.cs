@@ -58,7 +58,7 @@ namespace Towerland.GameServer.Common.Models.GameField
     {
       get { return _way.Length; }
     }
-    
+
     public IEnumerator<Point> GetEnumerator()
     {
       return _pts.GetEnumerator();

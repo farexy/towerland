@@ -8,7 +8,7 @@ namespace Towerland.GameServer.Common.Models.GameField
 {
     public class Field : ICloneable
     {
-        public GameObject this[int gameId] => !_objects.ContainsKey(gameId) ? null : _objects[gameId];
+        [JsonProperty("id")] private int _objectId;
 
         [JsonProperty("sd")]
         public FieldStaticData StaticData { private set; get; }
@@ -20,6 +20,7 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public Field()
         {
+            _objectId = 1;
             _objects = new Dictionary<int, GameObject>();
             State = new FieldState();
         }
@@ -37,10 +38,16 @@ namespace Towerland.GameServer.Common.Models.GameField
             );
         }
 
+        public GameObject this[int gameId]
+        {
+            get { return !_objects.ContainsKey(gameId) ? null : _objects[gameId]; }
+        }
+
+
         public int AddGameObject(GameObject gameObj)
         {
             var id = gameObj.GameId == default(int)
-                ? GenerateId()
+                ? GenerateGameObjectId()
                 : gameObj.GameId;
             return AddGameObject(id, gameObj);
         }
@@ -50,10 +57,6 @@ namespace Towerland.GameServer.Common.Models.GameField
             var type = gameObj.ResolveType();
             gameObj.GameId = gameId;
 
-            if (this[gameId]?.Type == GameObjectType.GeneratedId)
-            {
-                _objects[gameId] = gameObj;
-            }
             _objects.Add(gameId, gameObj);
 
             switch (type)
@@ -81,22 +84,9 @@ namespace Towerland.GameServer.Common.Models.GameField
 
         public int GenerateGameObjectId()
         {
-            var newId = GenerateId();
-            AddGameObject(new GeneratedId(newId));
-            return newId;
-        }
-
-        private int GenerateId()
-        {
             unchecked
             {
-                var id = _objects.Count * DateTime.Now.Millisecond - DateTime.Now.Second;
-                while (_objects.ContainsKey(id))
-                {
-                    id++;
-                }
-
-                return id;
+                return _objectId++;
             }
         }
 

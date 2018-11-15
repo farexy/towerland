@@ -10,14 +10,14 @@ namespace Towerland.GameServer.Common.Logic.Calculators
 {
   public class StateChangeRecalculator : IStateChangeRecalculator
   {
-    private readonly IPathChooser _pathOptimiser;
+    private readonly IPathChooser _pathChooser;
     private readonly IStatsLibrary _statsLib;
     private readonly IGameObjectFactory<Unit> _unitsFactory;
     private readonly IGameObjectFactory<Tower> _towersFactory;
 
-    public StateChangeRecalculator(IPathChooser pathOptimiser, IStatsLibrary stats, IGameObjectFactory<Unit> unitFactory, IGameObjectFactory<Tower> towerFactory)
+    public StateChangeRecalculator(IPathChooser pathChooser, IStatsLibrary stats, IGameObjectFactory<Unit> unitFactory, IGameObjectFactory<Tower> towerFactory)
     {
-      _pathOptimiser = pathOptimiser;
+      _pathChooser = pathChooser;
       _statsLib = stats;
       _unitsFactory = unitFactory;
       _towersFactory = towerFactory;
@@ -52,7 +52,7 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       unit.Position = field.StaticData.Start;
 
       TryAddGameObject(field, unit);
-      RecalcUnitPath(field, unit);
+      RecalculateUnitPath(field, unit);
 
       field.State.MonsterMoney -= cost;
     }
@@ -64,20 +64,15 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       {
         throw new LogicException("Not enough money");
       }
-      if (opt != null && field.StaticData.Cells[opt.Value.Position.X, opt.Value.Position.Y].Object != FieldObject.Ground)
+      if (opt == null)
       {
-        throw new LogicException("Tower can't be placed on the path");
+        throw new LogicException("Creation options for tower must have position");
       }
-      if (opt != null && field.FindTowerAt(opt.Value.Position) != null)
-      {
-        throw new LogicException("Cell is already busy by tower");
-      }
+      PlaceTowerOnField(field, type, opt.Value);
 
-      var tower = _towersFactory.Create(type, opt);
-      TryAddGameObject(field, tower);
       foreach (Unit u in field.State.Units)
       {
-        RecalcUnitPath(field, u);
+        RecalculateUnitPath(field, u);
       }
 
       field.State.TowerMoney -= cost;
@@ -99,14 +94,32 @@ namespace Towerland.GameServer.Common.Logic.Calculators
       }
     }
 
-    private void RecalcUnitPath(Field field, Unit unit)
+    private void PlaceTowerOnField(Field field, GameObjectType type, CreationOptions opt)
+    {
+      var cellObject = field.StaticData.Cells[opt.Position.X, opt.Position.Y].Object;
+      switch (_statsLib.GetTowerStats(type).SpawnType)
+      {
+        case TowerStats.TowerSpawnType.Ground when cellObject != FieldObject.Ground:
+          throw new LogicException("Tower must be placed on free place on ground");
+        case TowerStats.TowerSpawnType.Tree when cellObject != FieldObject.Tree:
+          throw new LogicException("Tower must be placed on tree");
+      }
+      if (field.FindTowerAt(opt.Position) != null)
+      {
+        throw new LogicException("Cell is already busy by tower");
+      }
+      var tower = _towersFactory.Create(type, opt);
+      TryAddGameObject(field, tower);
+    }
+
+    private void RecalculateUnitPath(Field field, Unit unit)
     {
       var stats = _statsLib.GetUnitStats(unit.Type);
       if (!unit.PathId.HasValue)
       {
-        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathOptimiser.GetOptimalPath(field, unit)
-          : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathOptimiser.GetFastestPath(field.StaticData.Path, unit)
-            : GameMath.Rand.Next(field.StaticData.Path.Length);
+        unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathChooser.GetOptimalPath(field, unit)
+          : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathChooser.GetFastestPath(field.StaticData.Path, unit)
+          : GameMath.Rand.Next(field.StaticData.Path.Length);
       }
     }
   }

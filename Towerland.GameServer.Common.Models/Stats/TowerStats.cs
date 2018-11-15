@@ -14,7 +14,7 @@ namespace Towerland.GameServer.Common.Models.Stats
     [JsonProperty("tp")] public AttackPriority TargetPriority { set; get; }
     [JsonProperty("e")] public AbilityId Ability { set; get; }
     [JsonProperty("c")] public int Cost { set; get; }
-    [JsonProperty("p")] public StrokePriority Priority { set; get; }
+    [JsonProperty("p")] public TowerSpawnType SpawnType { set; get; }
 
     public enum AttackType
     {
@@ -27,7 +27,13 @@ namespace Towerland.GameServer.Common.Models.Stats
     {
       Random,
       Optimal,
-      Burst,
+      UnitsAtPosition,
+    }
+
+    public enum TowerSpawnType
+    {
+      Ground = 1,
+      Tree = 2
     }
   }
 }

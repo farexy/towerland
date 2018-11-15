@@ -58,7 +58,6 @@
     <Compile Include="GameObjects\CreationOptions.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameObjectType.cs" />
-    <Compile Include="GameObjects\GeneratedId.cs" />
     <Compile Include="GameObjects\Tower.cs" />
     <Compile Include="GameObjects\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="State\UnitCreationOption.cs" />
     <Compile Include="Stats\DefenceCoeff.cs" />
     <Compile Include="Stats\IStats.cs" />
-    <Compile Include="Stats\StrokePriority.cs" />
     <Compile Include="Stats\TowerStats.cs" />
     <Compile Include="Stats\UnitStats.cs" />
   </ItemGroup>

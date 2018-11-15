@@ -6,8 +6,6 @@
     Undefined = 0,
     Reserved = 1,
 
-    GeneratedId = 2,
-
     Castle = 10,
     Castle_Usual = 11,
 

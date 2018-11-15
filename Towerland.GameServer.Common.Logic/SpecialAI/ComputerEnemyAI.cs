@@ -7,7 +7,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
 {
   public class ComputerEnemyAI
   {
-    private const int MinRequiredRecources = 50;
+    private const int MinRequiredResources = 50;
     private readonly PlayerSide _side;
 
     public ComputerEnemyAI(PlayerSide side)
@@ -18,7 +18,7 @@ namespace Towerland.GameServer.Common.Logic.SpecialAI
     public IEnumerable<StateChangeCommand> AnalizePossibleAction(Field field)
     {
       var resources = _side == PlayerSide.Monsters ? field.State.MonsterMoney : field.State.TowerMoney;
-      if (resources < MinRequiredRecources)
+      if (resources < MinRequiredResources)
       {
         return EmptyCommand;
       }

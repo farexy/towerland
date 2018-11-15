@@ -19,7 +19,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 2,
         Cost = 50,
         Defence = UnitStats.DefenceType.LightArmor,
-        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -31,7 +30,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 4,
         Cost = 120,
         Defence = UnitStats.DefenceType.LightArmor,
-        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -43,7 +41,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 6,
         Cost = 200,
         Defence = UnitStats.DefenceType.HeavyArmor,
-        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -55,7 +52,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 3,
         Cost = 250,
         Defence = UnitStats.DefenceType.LightArmor,
-        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -67,7 +63,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 3,
         Cost = 500,
         Defence = UnitStats.DefenceType.Undefended,
-        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -79,7 +74,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Speed = 5,
         Cost = 750,
         Defence = UnitStats.DefenceType.HeavyArmor,
-        Priority = StrokePriority.Usual
       },
       new UnitStats
       {
@@ -92,7 +86,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Cost = 500,
         Defence = UnitStats.DefenceType.Undefended,
         Ability= AbilityId.Unit_RevivesDeadUnit,
-        Priority = StrokePriority.TheLowest
       },
       new UnitStats
       {
@@ -105,7 +98,6 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Cost = 750,
         Defence = UnitStats.DefenceType.LightArmor,
         Ability= AbilityId.Unit_DestroysTowerOnDeath,
-        Priority = StrokePriority.TheLowest
       }
     };
 
@@ -120,7 +112,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 60,
         Range = 3,
         Cost = 50,
-        Priority = StrokePriority.Usual
+        SpawnType = TowerStats.TowerSpawnType.Ground,
       },
       new TowerStats
       {
@@ -132,18 +124,18 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Range = 4,
         Cost = 120,
         Ability = AbilityId.Tower_FreezesUnit,
-        Priority = StrokePriority.Usual
+        SpawnType = TowerStats.TowerSpawnType.Ground,
       },
       new TowerStats
       {
         Type = GameObjectType.Tower_Cannon,
-        TargetPriority = TowerStats.AttackPriority.Burst,
+        TargetPriority = TowerStats.AttackPriority.UnitsAtPosition,
         Attack = TowerStats.AttackType.Burst,
         AttackSpeed = 12,
         Damage = 70,
         Range = 4,
         Cost = 200,
-        Priority = StrokePriority.Usual
+        SpawnType = TowerStats.TowerSpawnType.Ground,
       },
       new TowerStats
       {
@@ -154,7 +146,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Damage = 100,
         Range = 5,
         Cost = 400,
-        Priority = StrokePriority.Usual
+        SpawnType = TowerStats.TowerSpawnType.Ground,
       },
       new TowerStats
       {
@@ -166,7 +158,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Range = 6,
         Cost = 600,
         Ability = AbilityId.Tower_10xDamage_10PercentProbability,
-        Priority = StrokePriority.Usual
+        SpawnType = TowerStats.TowerSpawnType.Ground,
       },
       new TowerStats
       {
@@ -178,7 +170,7 @@ namespace Towerland.GameServer.Common.Logic.Factories
         Range = 3,
         Cost = 500,
         Ability = AbilityId.Tower_PoisonsUnit,
-        Priority = StrokePriority.Usual
+        SpawnType = TowerStats.TowerSpawnType.Ground,
       }
     };
 
