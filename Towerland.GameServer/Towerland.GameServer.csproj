@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper">
+          <Version>6.1.1</Version>
+        </PackageReference>
+        <PackageReference Include="log4net">
+          <Version>2.0.8</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Towerland.GameServer.BusinessLogic\Towerland.GameServer.BusinessLogic.csproj" />
+    </ItemGroup>
+
+</Project>

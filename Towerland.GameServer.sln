@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Api", "Towerland.GameServer.Api\Towerland.GameServer.Api.csproj", "{E3467774-83E6-442A-B621-C58B6AFAF38A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Common.Models", "Towerland.GameServer.Common.Models\Towerland.GameServer.Common.Models.csproj", "{5150D21C-932F-4CCC-84E6-10C3398FAF8B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Common.Logic", "Towerland.GameServer.Common.Logic\Towerland.GameServer.Common.Logic.csproj", "{593962FA-635E-4834-B239-24F77C33A46A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.Logic.Test", "Towerland.Logic.Test\Towerland.Logic.Test.csproj", "{5C899389-16F5-43DC-8B8B-FF5B36A041BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Domain", "Towerland.GameServer.Domain\Towerland.GameServer.Domain.csproj", "{688431BA-2E21-47A0-865A-3B4AA01FC714}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Models", "Towerland.GameServer.Models\Towerland.GameServer.Models.csproj", "{AAF57422-BEFE-4DD8-9673-84639994ED45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Core", "Towerland.GameServer.Core\Towerland.GameServer.Core.csproj", "{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Logic", "Towerland.GameServer.Logic\Towerland.GameServer.Logic.csproj", "{23721929-BED9-4542-9B15-6E4A3EAEEC6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.BusinessLogic", "Towerland.GameServer.BusinessLogic\Towerland.GameServer.BusinessLogic.csproj", "{78B66856-793B-4288-9BCC-C940537B5D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Data", "Towerland.GameServer.Data\Towerland.GameServer.Data.csproj", "{F15BFAA7-42AC-4532-94D7-3C4DBD98C373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer", "Towerland.GameServer\Towerland.GameServer.csproj", "{7B2AB357-56B3-4EBC-8AEE-1A3769D90749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,30 +21,30 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3467774-83E6-442A-B621-C58B6AFAF38A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5150D21C-932F-4CCC-84E6-10C3398FAF8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{593962FA-635E-4834-B239-24F77C33A46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{593962FA-635E-4834-B239-24F77C33A46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{593962FA-635E-4834-B239-24F77C33A46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{593962FA-635E-4834-B239-24F77C33A46A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{688431BA-2E21-47A0-865A-3B4AA01FC714}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D3280A8-E878-4A44-9C4D-4CD6E9012B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23721929-BED9-4542-9B15-6E4A3EAEEC6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23721929-BED9-4542-9B15-6E4A3EAEEC6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23721929-BED9-4542-9B15-6E4A3EAEEC6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23721929-BED9-4542-9B15-6E4A3EAEEC6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B66856-793B-4288-9BCC-C940537B5D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B66856-793B-4288-9BCC-C940537B5D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B66856-793B-4288-9BCC-C940537B5D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B66856-793B-4288-9BCC-C940537B5D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15BFAA7-42AC-4532-94D7-3C4DBD98C373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15BFAA7-42AC-4532-94D7-3C4DBD98C373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15BFAA7-42AC-4532-94D7-3C4DBD98C373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15BFAA7-42AC-4532-94D7-3C4DBD98C373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B2AB357-56B3-4EBC-8AEE-1A3769D90749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B2AB357-56B3-4EBC-8AEE-1A3769D90749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B2AB357-56B3-4EBC-8AEE-1A3769D90749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B2AB357-56B3-4EBC-8AEE-1A3769D90749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

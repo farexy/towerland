@@ -1,8 +1,0 @@
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\bin\Debug\GameServer.Common.Models.dll
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\bin\Debug\GameServer.Common.Models.pdb
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\bin\Debug\Newtonsoft.Json.dll
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\bin\Debug\Newtonsoft.Json.xml
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\obj\Debug\GameServer.Common.Models.dll
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\obj\Debug\GameServer.Common.Models.pdb
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\obj\Debug\Towerland.GameServer.Common.Models.csprojResolveAssemblyReference.cache
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.GameServer.Common.Models\obj\Debug\Towerland.GameServer.Common.Models.csproj.CoreCompileInputs.cache

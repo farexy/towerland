@@ -62,6 +62,14 @@
       <Project>{5150D21C-932F-4CCC-84E6-10C3398FAF8B}</Project>
       <Name>Towerland.GameServer.Common.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Towerland.GameServer.Logic\Towerland.GameServer.Logic.csproj">
+      <Project>{23721929-bed9-4542-9b15-6e4a3eaeec6c}</Project>
+      <Name>Towerland.GameServer.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Towerland.GameServer.Models\Towerland.GameServer.Models.csproj">
+      <Project>{aaf57422-befe-4dd8-9673-84639994ed45}</Project>
+      <Name>Towerland.GameServer.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
