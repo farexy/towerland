@@ -25,7 +25,8 @@ CREATE TABLE Battle(
   Towers_UserId CHAR(36) NOT NULL,
   WinnerId CHAR(36),
   StartTime DATETIME,
-  EndTime DATETIME
+  EndTime DATETIME,
+  MultiBattleInfo JSON
 ) Engine InnoDB CHARSET=utf8;
 
 CREATE TABLE LiveBattleState(

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using ServiceStack;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Lockers;
 using Towerland.GameServer.BusinessLogic.Models;
@@ -90,6 +91,35 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       return id;
     }
 
+    public async Task<Guid> InitNewMultiBattleAsync(Guid monstersPlayer, Guid towersPlayer)
+    {
+      var id = Guid.NewGuid();
+      while (!_battles.TryAdd(id, 0)) ;
+      await CreateMultiBattleAsync(id, monstersPlayer, towersPlayer);
+      return id;
+    }
+
+    public PlayerSide AddToMultiBattle(Guid battleId, Guid player, out bool isAcceptNewPlayers)
+    {
+      var battle = _provider.Find(battleId);
+      var mbInfo = battle.MultiBattleInfo;
+      PlayerSide side;
+      if (mbInfo.TowerPlayers.Count > mbInfo.MonsterPlayers.Count)
+      {
+        mbInfo.MonsterPlayers.Add(player);
+        side = PlayerSide.Monsters;
+      }
+      else
+      {
+        mbInfo.TowerPlayers.Add(player);
+        side = PlayerSide.Towers;
+      }
+      _battleRepository.UpdateMultiBattle(battleId, mbInfo);
+
+      isAcceptNewPlayers = mbInfo.TowerPlayers.Count == MultiBattleInfo.MaxUserOnSide;
+      return side;
+    }
+
     public async Task RecalculateAsync(StateChangeCommand command, int curTick)
     {
       using (new BattleLocker(command.BattleId))
@@ -144,8 +174,29 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         PlayerSide winSide;
         if (battle.State.StaticData.EndTimeUtc > DateTime.UtcNow)
         {
-          winSide = entity.Monsters_UserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
-          left = userId;
+          if (battle.MultiBattleInfo != null)
+          {
+            var mbInfo = battle.MultiBattleInfo;
+            mbInfo.TowerPlayers.Remove(userId);
+            mbInfo.MonsterPlayers.Remove(userId);
+            if (mbInfo.TowerPlayers.Count == 0)
+            {
+              winSide = PlayerSide.Monsters;
+            }
+            else if (mbInfo.MonsterPlayers.Count == 0)
+            {
+              winSide = PlayerSide.Monsters;
+            }
+            else
+            {
+              return;
+            }
+          }
+          else
+          {
+            winSide = entity.Monsters_UserId == userId ? PlayerSide.Towers : PlayerSide.Monsters;
+            left = userId;
+          }
         }
         else
         {
@@ -198,6 +249,31 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         StartTime = DateTime.UtcNow,
         Monsters_UserId = monstersPlayer,
         Towers_UserId = towersPlayer
+      });
+    }
+
+    private async Task CreateMultiBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)
+    {
+      var mbInfo = new MultiBattleInfo
+      {
+        MonsterPlayers = new List<Guid> {monstersPlayer},
+        TowerPlayers = new List<Guid> {towersPlayer},
+      };
+      var newBattle = new LiveBattleModel
+      {
+        Id = battleId,
+        State = (Field) _fieldFactory.ClassicField.Clone(),
+        Ticks = Enumerable.Empty<GameTick>(),
+        MultiBattleInfo = mbInfo
+      };
+      _provider.Create(newBattle);
+      await _battleRepository.CreateAsync(new Battle
+      {
+        Id = battleId,
+        StartTime = DateTime.UtcNow,
+        Monsters_UserId = monstersPlayer,
+        Towers_UserId = towersPlayer,
+        MultiBattleInfo = mbInfo
       });
     }
 

@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.Models;
+using Towerland.GameServer.Models.State;
 
 namespace Towerland.GameServer.Controllers
 {
@@ -21,14 +23,20 @@ namespace Towerland.GameServer.Controllers
       await _battleSearchService.AddToQueueAsync(await UserSessionIdAsync);
     }
 
+    [HttpGet("multibattle")]
+    public async Task SearchMultiBattle()
+    {
+      await _battleSearchService.AddToMultiBattleQueueAsync(await UserSessionIdAsync);
+    }
+
     [HttpGet("check")]
     public async Task<BattleSearchCheckResponseModel> Check()
     {
       return new BattleSearchCheckResponseModel
       {
-        Found = _battleSearchService.TryGetBattle(await UserSessionIdAsync, out var battleId, out var side),
-        BattleId = battleId,
-        Side = side
+        Found = _battleSearchService.TryGetBattle(await UserSessionIdAsync, out (Guid battleId, PlayerSide side) playerSettings),
+        BattleId = playerSettings.battleId,
+        Side = playerSettings.side
       };
     }
   }

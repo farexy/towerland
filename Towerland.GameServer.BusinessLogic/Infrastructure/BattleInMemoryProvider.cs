@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
 using Towerland.GameServer.Models.Exceptions;
@@ -8,9 +9,9 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
 {
   public class BattleInMemoryProvider : IProvider<LiveBattleModel>
   {
-    private static readonly ConcurrentDictionary<Guid, LiveBattleModel> _battles;
+    private readonly ConcurrentDictionary<Guid, LiveBattleModel> _battles;
 
-    static BattleInMemoryProvider()
+    public BattleInMemoryProvider()
     {
       _battles = new ConcurrentDictionary<Guid, LiveBattleModel>();
     }

@@ -11,5 +11,6 @@ namespace Towerland.GameServer.Data.Entities
     public Guid WinnerId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
+    public MultiBattleInfo MultiBattleInfo { get; set; }
   }
 }

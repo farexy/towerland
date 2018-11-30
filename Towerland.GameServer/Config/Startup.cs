@@ -36,7 +36,7 @@ namespace Towerland.GameServer.Config
       services.AddSingleton(AutoMapperConfiguration.Configure());
 
       services.AddSingleton<IDbConnectionFactory>(new OrmLiteConnectionFactory(Configuration.GetConnectionString("Towerland"), MySqlDialect.Provider));
-      services.AddScoped<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
+      services.AddSingleton<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
 
       services.AddScoped<IBattleRepository, BattleRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
