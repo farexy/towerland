@@ -8,7 +8,7 @@ namespace Towerland.GameServer.Models.GameField
 {
     public class Field : ICloneable
     {
-        [JsonProperty("id")] private int _objectId;
+        [JsonProperty("_id")] private int _objectId;
 
         [JsonProperty("sd")]
         public FieldStaticData StaticData { private set; get; }
@@ -128,14 +128,15 @@ namespace Towerland.GameServer.Models.GameField
 
         public void SetState(FieldState state)
         {
-            _objects = state.Objects.ToDictionary(item => item.Key, item => (GameObject) item.Value.Clone());
-            this.State = new FieldState(_objects, state.Castle)
-            {
-                MonsterMoney = state.MonsterMoney,
-                TowerMoney = state.TowerMoney
-            };
+            _objects = state.Units.Cast<GameObject>().Union(state.Towers).ToDictionary(o => o.GameId);
+            this.State = new FieldState(_objects, state.Castle, state.TowerMoney, state.MonsterMoney);
         }
 
+        public bool HasObject(int id)
+        {
+            return _objects.ContainsKey(id);
+        }
+        
         public object Clone()
         {
             var clonedObjects = _objects.ToDictionary(item => item.Key, item => (GameObject) item.Value.Clone());
@@ -147,11 +148,7 @@ namespace Towerland.GameServer.Models.GameField
                     EndTimeUtc = StaticData.EndTimeUtc
                 },
                 _objects = clonedObjects,
-                State = new FieldState(clonedObjects, State.Castle)
-                {
-                    MonsterMoney = State.MonsterMoney,
-                    TowerMoney = State.TowerMoney
-                },
+                State = new FieldState(clonedObjects, State.Castle, State.TowerMoney, State.MonsterMoney)
             };
         }
     }

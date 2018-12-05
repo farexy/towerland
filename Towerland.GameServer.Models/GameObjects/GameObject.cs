@@ -18,9 +18,9 @@ namespace Towerland.GameServer.Models.GameObjects
       Effect = SpecialEffect.Empty;
     }
 
-    public bool IsTower => ResolveType() == GameObjectType.Tower;
+    [JsonIgnore] public bool IsTower => ResolveType() == GameObjectType.Tower;
 
-    public bool IsUnit => ResolveType() == GameObjectType.Unit;
+    [JsonIgnore] public bool IsUnit => ResolveType() == GameObjectType.Unit;
 
     public GameObjectType ResolveType()
     {
