@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Towerland.GameServer.Logic.Factories;
 using Towerland.GameServer.Logic.Interfaces;
@@ -21,11 +22,6 @@ namespace Towerland.GameServer.Logic.Calculators
         _battleContext = new BattleContext((Field)fieldState.Clone());
         _behaviourFactory = new BehaviourFactory(_battleContext, statsLibrary);
         _moneyCalculator = new MoneyCalculator(statsLibrary);
-      }
-
-      public void SetState(FieldState fieldState)
-      {
-        Field.SetState(fieldState);
       }
 
       public GameTick[] GetIdleTicks()

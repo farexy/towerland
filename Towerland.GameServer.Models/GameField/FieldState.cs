@@ -11,15 +11,17 @@ namespace Towerland.GameServer.Models.GameField
     {
       Towers = new List<Tower>();
       Units = new List<Unit>();
+      RevivedUnits = (new HashSet<int>(), new HashSet<int>());
     }
 
-    public FieldState(Dictionary<int, GameObject> objects, Castle castle, int towerMoney, int monsterMoney)
+    public FieldState(Dictionary<int, GameObject> objects, FieldState prevState)
     {
-      Castle = (Castle)castle.Clone();
+      Castle = (Castle)prevState.Castle.Clone();
       Towers = objects.Where(o => o.Value.IsTower).Select(o => o.Value).Cast<Tower>().ToList();
       Units = objects.Where(o => o.Value.IsUnit).Select(o => o.Value).Cast<Unit>().ToList();
-      TowerMoney = towerMoney;
-      MonsterMoney = monsterMoney;
+      TowerMoney = prevState.TowerMoney;
+      MonsterMoney = prevState.MonsterMoney;
+      RevivedUnits = (new HashSet<int>(prevState.RevivedUnits.OldIds), new HashSet<int>(prevState.RevivedUnits.NewIds));
     }
 
     public Castle Castle { set; get; }
@@ -28,5 +30,8 @@ namespace Towerland.GameServer.Models.GameField
 
     public int MonsterMoney { set; get; }
     public int TowerMoney { set; get; }
+
+    [JsonIgnore] public (HashSet<int> OldIds, HashSet<int> NewIds) RevivedUnits { get; }
+
   }
 }

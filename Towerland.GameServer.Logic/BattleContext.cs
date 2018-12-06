@@ -16,7 +16,6 @@ namespace Towerland.GameServer.Logic
       UnitsToAdd = new List<Unit>();
       TowersToRemove = new HashSet<int>();
       TowersToAdd = new List<Tower>();
-      RevivedUnits = (new HashSet<int>(), new HashSet<int>());
     }
 
     public Field Field { get; }
@@ -29,7 +28,6 @@ namespace Towerland.GameServer.Logic
     public List<Unit> UnitsToAdd { get; }
     public HashSet<int> TowersToRemove { get; }
     public List<Tower> TowersToAdd { get; }
-    public (HashSet<int> OldIds, HashSet<int> NewIds) RevivedUnits { get; }
 
     #endregion
   }

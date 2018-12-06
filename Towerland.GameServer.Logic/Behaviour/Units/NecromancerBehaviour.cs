@@ -34,8 +34,8 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         new CreationOptions {GameId = newUnitId, Position = action.Position, PathId = pathId});
 
       BattleContext.UnitsToAdd.Add(skeleton);
-      BattleContext.RevivedUnits.OldIds.Add(action.UnitId);
-      BattleContext.RevivedUnits.NewIds.Add(newUnitId);
+      Field.State.RevivedUnits.OldIds.Add(action.UnitId);
+      Field.State.RevivedUnits.NewIds.Add(newUnitId);
 
       BattleContext.CurrentTick.Add(new GameAction
       {
@@ -69,8 +69,8 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         foreach (var action in BattleContext.Ticks[i])
         {
           if (action.ActionId == ActionId.TowerKills
-              && !BattleContext.RevivedUnits.OldIds.Contains(action.UnitId)
-              && !BattleContext.RevivedUnits.NewIds.Contains(action.UnitId))
+              && !Field.State.RevivedUnits.OldIds.Contains(action.UnitId)
+              && !Field.State.RevivedUnits.NewIds.Contains(action.UnitId))
           {
             return action;
           }

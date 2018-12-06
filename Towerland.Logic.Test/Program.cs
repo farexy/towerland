@@ -142,15 +142,7 @@ namespace Towerland.Logic.Test
       stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
-      stateChang.AddNewUnit(f, GameObjectType.Unit_Barbarian);
+      stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);
       stateChang.AddNewUnit(f, GameObjectType.Unit_Necromancer);

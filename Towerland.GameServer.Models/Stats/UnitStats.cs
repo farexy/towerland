@@ -21,6 +21,7 @@ namespace Towerland.GameServer.Models.Stats
       Fastest,
       Optimal,
       Random,
+      ByUser,
     }
 
     public enum DefenceType

@@ -20,7 +20,6 @@ namespace Towerland.GameServer.Models.GameField
 
         public Field()
         {
-            _objectId = 1;
             _objects = new Dictionary<int, GameObject>();
             State = new FieldState();
         }
@@ -48,11 +47,12 @@ namespace Towerland.GameServer.Models.GameField
         {
             var id = gameObj.GameId == default(int)
                 ? GenerateGameObjectId()
-                : gameObj.GameId;
-            return AddGameObject(id, gameObj);
+                : SetCustomId(gameObj.GameId);
+            AddGameObject(id, gameObj);
+            return id;
         }
 
-        private int AddGameObject(int gameId, GameObject gameObj)
+        private void AddGameObject(int gameId, GameObject gameObj)
         {
             var type = gameObj.ResolveType();
             gameObj.GameId = gameId;
@@ -73,20 +73,28 @@ namespace Towerland.GameServer.Models.GameField
                     State.Towers.Add((Tower)gameObj);
                     break;
             }
-
-            return gameId;
         }
 
-        public IEnumerable<int> AddMany(IEnumerable<GameObject> objects)
+        public int[] AddMany(IEnumerable<GameObject> objects)
         {
-            return objects.Select(AddGameObject);
+            return objects.Select(AddGameObject).ToArray();
+        }
+
+        private int SetCustomId(int customGameId)
+        {
+            if (_objectId < customGameId)
+            {
+                _objectId = customGameId;
+            }
+
+            return customGameId;
         }
 
         public int GenerateGameObjectId()
         {
             unchecked
             {
-                return _objectId++;
+                return ++_objectId;
             }
         }
 
@@ -129,26 +137,27 @@ namespace Towerland.GameServer.Models.GameField
         public void SetState(FieldState state)
         {
             _objects = state.Units.Cast<GameObject>().Union(state.Towers).ToDictionary(o => o.GameId);
-            this.State = new FieldState(_objects, state.Castle, state.TowerMoney, state.MonsterMoney);
+            this.State = new FieldState(_objects, state);
         }
 
         public bool HasObject(int id)
         {
             return _objects.ContainsKey(id);
         }
-        
+
         public object Clone()
         {
             var clonedObjects = _objects.ToDictionary(item => item.Key, item => (GameObject) item.Value.Clone());
             return new Field
             {
+                _objectId = _objectId,
                 StaticData = new FieldStaticData(StaticData.Cells, StaticData.Start, StaticData.Finish)
                 {
                     Path = StaticData.Path,
                     EndTimeUtc = StaticData.EndTimeUtc
                 },
                 _objects = clonedObjects,
-                State = new FieldState(clonedObjects, State.Castle, State.TowerMoney, State.MonsterMoney)
+                State = new FieldState(clonedObjects, State)
             };
         }
     }

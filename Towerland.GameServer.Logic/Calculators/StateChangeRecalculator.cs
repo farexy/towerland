@@ -52,7 +52,7 @@ namespace Towerland.GameServer.Logic.Calculators
       unit.Position = field.StaticData.Start;
 
       TryAddGameObject(field, unit);
-      RecalculateUnitPath(field, unit);
+      CalculateUnitPath(field, unit, opt);
 
       field.State.MonsterMoney -= cost;
     }
@@ -69,11 +69,6 @@ namespace Towerland.GameServer.Logic.Calculators
         throw new LogicException("Creation options for tower must have position");
       }
       PlaceTowerOnField(field, type, opt.Value);
-
-      foreach (Unit u in field.State.Units)
-      {
-        RecalculateUnitPath(field, u);
-      }
 
       field.State.TowerMoney -= cost;
     }
@@ -112,13 +107,14 @@ namespace Towerland.GameServer.Logic.Calculators
       TryAddGameObject(field, tower);
     }
 
-    private void RecalculateUnitPath(Field field, Unit unit)
+    private void CalculateUnitPath(Field field, Unit unit, CreationOptions? opt)
     {
       var stats = _statsLib.GetUnitStats(unit.Type);
       if (!unit.PathId.HasValue)
       {
         unit.PathId = stats.MovementPriority == UnitStats.MovementPriorityType.Optimal ? _pathChooser.GetOptimalPath(field, unit)
           : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest ? _pathChooser.GetFastestPath(field.StaticData.Path, unit)
+          : stats.MovementPriority == UnitStats.MovementPriorityType.ByUser && opt?.PathId != null ? opt.Value.PathId
           : GameMath.Rand.Next(field.StaticData.Path.Length);
       }
     }

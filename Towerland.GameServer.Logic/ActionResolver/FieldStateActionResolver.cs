@@ -53,6 +53,11 @@ namespace Towerland.GameServer.Logic.ActionResolver
 
         case ActionId.UnitAppears:
           _field.AddGameObject(action.GoUnit);
+          _field.State.RevivedUnits.NewIds.Add(action.UnitId);
+          break;
+
+        case ActionId.UnitRevives:
+          _field.State.RevivedUnits.OldIds.Add(action.UnitId);
           break;
 
         case ActionId.UnitAppliesEffect_DarkMagic:
