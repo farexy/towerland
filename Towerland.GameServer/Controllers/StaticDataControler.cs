@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models;
 
@@ -14,14 +15,18 @@ namespace Towerland.GameServer.Controllers
             _statsProvider = statsProvider;
         }
 
-        [HttpGet("stats")]
-        public StatsResponseModel GetStats()
+        [HttpGet("static")]
+        public StaticDataResponseModel GetStats()
         {
-            return new StatsResponseModel
+            return new StaticDataResponseModel
             {
-                UnitStats = _statsProvider.GetUnitStats(),
-                TowerStats = _statsProvider.GetTowerStats(),
-                DefenceCoeffs = _statsProvider.GetDefenceCoeffs()
+                Stats = new StatsResponseModel
+                {
+                    UnitStats = _statsProvider.GetUnitStats(),
+                    TowerStats = _statsProvider.GetTowerStats(),
+                    DefenceCoeffs = _statsProvider.GetDefenceCoeffs()
+                },
+                ServerTime = DateTime.UtcNow
             };
         }
     }
