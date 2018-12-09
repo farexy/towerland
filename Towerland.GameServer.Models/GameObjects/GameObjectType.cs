@@ -13,6 +13,7 @@
     Whizzbang_Usual = 21,
     Whizzbang_Frost = 22,
     Whizzbang_Magic = 23,
+    Whizzbang_Poison = 24,
 
     Tower = 100,
     Tower_Usual = 101,
@@ -30,7 +31,7 @@
     Unit_Dragon = 1005,
     Unit_Golem = 1006,
     Unit_Necromancer = 1007,
-    Unit_Barbarian = 1008,
+    Unit_BarbarianMage = 1008,
 
     // ReSharper restore InconsistentNaming
   }

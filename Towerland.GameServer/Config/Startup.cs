@@ -38,10 +38,10 @@ namespace Towerland.GameServer.Config
       services.AddSingleton<IDbConnectionFactory>(new OrmLiteConnectionFactory(Configuration.GetConnectionString("Towerland"), MySqlDialect.Provider));
       services.AddSingleton<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
 
-//      services.AddScoped<IBattleRepository, BattleRepository>();
-//      services.AddScoped<IUserRepository, UserRepository>();
-      services.AddScoped<IBattleRepository, FakeBattleRepository>();
-      services.AddScoped<IUserRepository, FakeUserRepository>();
+      services.AddScoped<IBattleRepository, BattleRepository>();
+      services.AddScoped<IUserRepository, UserRepository>();
+//      services.AddScoped<IBattleRepository, FakeBattleRepository>();
+//      services.AddScoped<IUserRepository, FakeUserRepository>();
 
       services.AddScoped<IUserService, UserService>();
 
