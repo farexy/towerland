@@ -6,5 +6,6 @@ namespace Towerland.GameServer.Models
   {
     public StatsResponseModel Stats { get; set; }
     public DateTime ServerTime { get; set; }
+    public string ComputerPlayerSessionKey { get; set; }
   }
 }

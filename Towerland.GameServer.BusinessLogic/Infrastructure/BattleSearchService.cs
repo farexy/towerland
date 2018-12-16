@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+using Towerland.GameServer.BusinessLogic.Helpers;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.Models.State;
 
@@ -118,7 +119,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         if (_sessionQueueMultiBattle.TryDequeue(out var enemySession))
         {
           Guid monstersUser, towersUser;
-          if (Rnd.Next() % 2 == 0)
+          if (sessionId.IsComputerPlayer())
           {
             monstersUser = sessionId;
             towersUser = enemySession.SessionId;

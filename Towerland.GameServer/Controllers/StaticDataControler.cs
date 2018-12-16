@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Towerland.GameServer.BusinessLogic.Helpers;
+using Towerland.GameServer.Helpers;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models;
 
@@ -16,7 +19,7 @@ namespace Towerland.GameServer.Controllers
         }
 
         [HttpGet("static")]
-        public StaticDataResponseModel GetStats()
+        public async Task<StaticDataResponseModel> GetStats()
         {
             return new StaticDataResponseModel
             {
@@ -26,7 +29,8 @@ namespace Towerland.GameServer.Controllers
                     TowerStats = _statsProvider.GetTowerStats(),
                     DefenceCoeffs = _statsProvider.GetDefenceCoeffs()
                 },
-                ServerTime = DateTime.UtcNow
+                ServerTime = DateTime.UtcNow,
+                ComputerPlayerSessionKey = await UserSessionHelper.GetSessionHashAsync(ComputerPlayer.Id)
             };
         }
     }

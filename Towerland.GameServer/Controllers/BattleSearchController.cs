@@ -17,7 +17,7 @@ namespace Towerland.GameServer.Controllers
       _battleSearchService = battleSearchService;
     }
 
-    [HttpGet("search")]
+    [HttpGet("")]
     public async Task Search()
     {
       await _battleSearchService.AddToQueueAsync(await UserSessionIdAsync);

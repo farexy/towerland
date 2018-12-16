@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using ServiceStack;
+using Towerland.GameServer.BusinessLogic.Helpers;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Lockers;
 using Towerland.GameServer.BusinessLogic.Models;
@@ -212,8 +212,8 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         entity.EndTime = DateTime.UtcNow;
 
         await Task.WhenAll(_battleRepository.UpdateAsync(entity),
-          _userRepository.IncrementExperienceAsync(entity.Monsters_UserId, expCalc.CalcUserExp(entity, entity.Monsters_UserId, left)),
-          _userRepository.IncrementExperienceAsync(entity.Towers_UserId, expCalc.CalcUserExp(entity, entity.Towers_UserId, left)));
+          IncrementUserXp(entity.Monsters_UserId, expCalc.CalcUserExp(entity, entity.Monsters_UserId, left)),
+          IncrementUserXp(entity.Towers_UserId, expCalc.CalcUserExp(entity, entity.Towers_UserId, left)));
 
         battle.Ticks = CreateBattleEndTick(winSide);
 
@@ -294,6 +294,14 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       };
     }
 
+    private async Task IncrementUserXp(Guid userId, int xp)
+    {
+      if (!userId.IsComputerPlayer())
+      {
+        await _userRepository.IncrementExperienceAsync(userId, xp);
+      }
+    }
+    
     private async Task DisposeBattleAsync(Guid battleId)
     {
       await Task.Delay(20000);
