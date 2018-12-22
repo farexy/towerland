@@ -52,7 +52,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       });
       BattleContext.CurrentTick.Add(new GameAction
       {
-        ActionId = ActionId.UnitAppliesEffect_DarkMagic,
+        ActionId = ActionId.UnitAppliesSkill,
         UnitId = Unit.GameId,
         WaitTicks = AbilityWaitTicks
       });

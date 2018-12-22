@@ -17,13 +17,13 @@ namespace Towerland.GameServer.Controllers
       _battleSearchService = battleSearchService;
     }
 
-    [HttpGet("")]
+    [HttpPost("")]
     public async Task Search()
     {
       await _battleSearchService.AddToQueueAsync(await UserSessionIdAsync);
     }
 
-    [HttpGet("multibattle")]
+    [HttpPost("multibattle")]
     public async Task SearchMultiBattle()
     {
       await _battleSearchService.AddToMultiBattleQueueAsync(await UserSessionIdAsync);

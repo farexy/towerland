@@ -60,7 +60,7 @@ namespace Towerland.GameServer.Logic.ActionResolver
           _field.State.RevivedUnits.OldIds.Add(action.UnitId);
           break;
 
-        case ActionId.UnitAppliesEffect_DarkMagic:
+        case ActionId.UnitAppliesSkill:
           _field[action.UnitId].WaitTicks += action.WaitTicks;
           break;
       }

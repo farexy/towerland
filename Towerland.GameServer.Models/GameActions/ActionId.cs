@@ -29,7 +29,7 @@
     UnitAttacksCastle = 301,
     UnitDestroysTower = 310,
 
-    UnitAppliesEffect_DarkMagic = 502,
+    UnitAppliesSkill = 502,
 
     UnitAppears = 801,
     UnitRevives = 810,

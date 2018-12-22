@@ -14,6 +14,8 @@
     Whizzbang_Frost = 22,
     Whizzbang_Magic = 23,
     Whizzbang_Poison = 24,
+    
+    Explosion = 30,
 
     Tower = 100,
     Tower_Usual = 101,

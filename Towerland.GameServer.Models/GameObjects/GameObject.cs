@@ -35,8 +35,11 @@ namespace Towerland.GameServer.Models.GameObjects
       if (type >= GameObjectType.Castle && type < GameObjectType.Whizzbang)
         return GameObjectType.Castle;
 
-      if (type >= GameObjectType.Whizzbang && type < GameObjectType.Tower)
+      if (type >= GameObjectType.Whizzbang && type < GameObjectType.Explosion)
         return GameObjectType.Whizzbang;
+      
+      if (type >= GameObjectType.Explosion && type < GameObjectType.Tower)
+        return GameObjectType.Explosion;
 
       if (type >= GameObjectType.Tower && type < GameObjectType.Unit)
         return GameObjectType.Tower;

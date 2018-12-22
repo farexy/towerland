@@ -158,8 +158,6 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
 
         IncrementBattleVersion(command.BattleId);
       }
-
-      GC.Collect();
     }
 
     public async Task TryEndBattleAsync(Guid battleId, Guid userId)
