@@ -31,7 +31,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
           Damage = Stats.Damage,
           WaitTicks = Stats.AttackSpeed
         });
-        var units = Field.FindUnitsAt(targetPoint.Value).Where(u => BattleContext.UnitsToRemove.Contains(u.GameId));
+        var units = Field.FindUnitsAt(targetPoint.Value).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
 //                foreach (var point in _field.GetNeighbourPoints(targetPoint, 1, FieldObject.Road))
 //                {
 //                  units = units.Union(_field.FindUnitsAt(point));

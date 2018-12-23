@@ -118,7 +118,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         Unit.Health -= (int)damage;
         BattleContext.CurrentTick.Add(new GameAction
         {
-          ActionId = ActionId.UnitRecievesDamage,UnitId = Unit.GameId, Damage = (int)damage
+          ActionId = ActionId.UnitRecievesDamage, UnitId = Unit.GameId, Damage = (int)damage
         });
       }
     }
