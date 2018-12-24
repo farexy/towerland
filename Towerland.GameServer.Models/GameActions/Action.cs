@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Towerland.GameServer.Models.Effects;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
 
@@ -13,7 +14,8 @@ namespace Towerland.GameServer.Models.GameActions
     [JsonProperty("d")] public int Damage;
     [JsonProperty("w")] public int WaitTicks;
     [JsonProperty("m")] public int Money;
-    [JsonProperty("e")] public double EffectValue;
+    [JsonProperty("e")] public EffectId EffectId;
+    [JsonProperty("ev")] public double EffectValue;
     [JsonProperty("gu")] public Unit GoUnit;
     [JsonProperty("gt")] public Tower GoTower;
   }

@@ -242,7 +242,6 @@ namespace Towerland.GameServer.Logic.Factories
         Id = SkillId.FreezesUnit,
         GameObjectType = GameObjectType.Tower_Frost,
         EffectId = EffectId.UnitFreezed,
-        ActionId = ActionId.UnitFreezes,
         Duration = 16,
         DebuffValue = 2
       },
@@ -251,7 +250,6 @@ namespace Towerland.GameServer.Logic.Factories
         Id = SkillId.PoisonsUnit,
         GameObjectType = GameObjectType.Tower_Poisoning,
         EffectId = EffectId.UnitPoisoned,
-        ActionId = ActionId.UnitPoisoned,
         Duration = 20,
         DebuffValue = 0.05,
       },
@@ -281,6 +279,21 @@ namespace Towerland.GameServer.Logic.Factories
         BuffValue = 10,
         DebuffValue = 10,
         WaitTicks = 3,
+      },
+      new Skill
+      {
+        Id = SkillId.BlocksUnitSkills,
+        GameObjectType = GameObjectType.Tower_Magic, // TODO
+        EffectId = EffectId.SkillsDisabled,
+        Duration = 6,
+      },
+      new Skill
+      {
+        Id = SkillId.BlocksTowerSkillsInRange,
+        GameObjectType = GameObjectType.Unit_Golem, // TODO
+        EffectId = EffectId.SkillsDisabled,
+        Duration = 6,
+        Range = 4
       },
     };
 

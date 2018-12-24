@@ -1,6 +1,7 @@
 using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Logic.SpecialAI;
+using Towerland.GameServer.Models.Effects;
 using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
@@ -38,6 +39,16 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
 
     public virtual bool ApplyPreActionEffect()
     {
+      if (Tower.Effect.Id != EffectId.None)
+      {
+        Tower.Effect.Duration -= 1;
+        if (Tower.Effect.Duration == 0)
+        {
+          Tower.Effect = SpecialEffect.Empty;
+          BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.TowerEffectCanceled, TowerId = Tower.GameId});
+        }
+      }
+
       return true;
     }
 

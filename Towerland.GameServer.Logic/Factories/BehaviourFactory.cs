@@ -21,8 +21,10 @@ namespace Towerland.GameServer.Logic.Factories
 
     public IBehaviour CreateUnitBehaviour(Unit unit)
     {
-      var stats = _statsLibrary.GetUnitStats(unit.Type);
-      switch (stats.Skill)
+      var skill = unit.Effect.Id == EffectId.SkillsDisabled
+        ? SkillId.None
+        : _statsLibrary.GetUnitStats(unit.Type).Skill;
+      switch (skill)
       {
         case SkillId.None:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
@@ -32,6 +34,8 @@ namespace Towerland.GameServer.Logic.Factories
           return new BarbarianBehaviour(unit, _battleContext, _statsLibrary);
         case SkillId.StealsTowerMoney:
           return new GoblinBehaviour(unit, _battleContext, _statsLibrary);
+        case SkillId.BlocksUnitSkills:
+          return new TowerSkillBlockingBehaviour(unit, _battleContext, _statsLibrary);
         default:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
       }
@@ -40,7 +44,8 @@ namespace Towerland.GameServer.Logic.Factories
     public IBehaviour CreateTowerBehaviour(Tower tower)
     {
       var stats = _statsLibrary.GetTowerStats(tower.Type);
-      switch (stats.Skill)
+      var skill = tower.Effect.Id == EffectId.SkillsDisabled ? SkillId.None : stats.Skill;
+      switch (skill)
       {
         case SkillId.None:
           switch (stats.Attack)
@@ -55,6 +60,7 @@ namespace Towerland.GameServer.Logic.Factories
           }
         case SkillId.FreezesUnit:
         case SkillId.PoisonsUnit:
+        case SkillId.BlocksUnitSkills:
           return new DebuffTowerBehaviour(tower, _battleContext, _statsLibrary);
         case SkillId.ExtraDamageUnit:
           return new ExtraDamageTowerBehaviour(tower, _battleContext, _statsLibrary);

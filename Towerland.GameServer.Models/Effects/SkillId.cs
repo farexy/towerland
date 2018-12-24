@@ -8,10 +8,14 @@ namespace Towerland.GameServer.Models.Effects
     FreezesUnit = 101,
     PoisonsUnit = 110,
     ExtraDamageUnit = 201,
+    BlocksUnitSkills = 301,
+    BlocksUnitSkillsInRange = 302,
 
     //Unit abilities
     RevivesDeadUnit = 501,
     StealsTowerMoney = 510,
     DestroysTowerOnDeath = 550,
+    BlocksTowerSkills = 601,
+    BlocksTowerSkillsInRange = 602,
   }
 }

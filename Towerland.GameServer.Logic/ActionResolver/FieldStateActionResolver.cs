@@ -35,20 +35,16 @@ namespace Towerland.GameServer.Logic.ActionResolver
           ((Unit)_field[action.UnitId]).Health -= action.Damage;
           break;
 
-        case ActionId.UnitFreezes:
-          _field[action.UnitId].Effect = new SpecialEffect{Id = EffectId.UnitFreezed, Duration = action.WaitTicks, EffectValue = action.EffectValue};
-          break;
-
-        case ActionId.UnitPoisoned:
-          _field[action.UnitId].Effect = new SpecialEffect{Id = EffectId.UnitPoisoned, Duration = action.WaitTicks, EffectValue = action.EffectValue};
-          break;
-
-        case ActionId.UnitDisappears:
-            _field.RemoveGameObject(action.UnitId);
+        case ActionId.UnitGetsEffect:
+          _field[action.UnitId].Effect = new SpecialEffect{Id = action.EffectId, Duration = action.WaitTicks, EffectValue = action.EffectValue};
           break;
 
         case ActionId.UnitEffectCanceled:
           _field[action.UnitId].Effect = SpecialEffect.Empty;
+          break;
+
+        case ActionId.UnitDisappears:
+            _field.RemoveGameObject(action.UnitId);
           break;
 
         case ActionId.UnitAppears:
@@ -75,6 +71,14 @@ namespace Towerland.GameServer.Logic.ActionResolver
           _field[action.TowerId].WaitTicks = action.WaitTicks;
           break;
 
+        case ActionId.TowerGetsEffect:
+          _field[action.TowerId].Effect = new SpecialEffect{Id = action.EffectId, Duration = action.WaitTicks, EffectValue = action.EffectValue};
+          break;
+
+        case ActionId.TowerEffectCanceled:
+          _field[action.TowerId].Effect = SpecialEffect.Empty;
+          break;
+
         case ActionId.TowerCollapses:
           _field.RemoveGameObject(action.TowerId);
           break;
@@ -97,6 +101,9 @@ namespace Towerland.GameServer.Logic.ActionResolver
           break;
         case ActionId.TowerPlayerLosesMoney:
           _field.State.TowerMoney -= action.Money;
+          break;
+        case ActionId.MonsterPlayerLosesMoney:
+          _field.State.MonsterMoney -= action.Money;
           break;
       }
     }

@@ -27,7 +27,8 @@ namespace Towerland.GameServer.Controllers
                 {
                     UnitStats = _statsProvider.GetUnitStats(),
                     TowerStats = _statsProvider.GetTowerStats(),
-                    DefenceCoeffs = _statsProvider.GetDefenceCoeffs()
+                    DefenceCoeffs = _statsProvider.GetDefenceCoeffs(),
+                    Skills = _statsProvider.GetSkills()
                 },
                 ServerTime = DateTime.UtcNow,
                 ComputerPlayerSessionKey = await UserSessionHelper.GetSessionHashAsync(ComputerPlayer.Id)

@@ -38,7 +38,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
 
     public virtual bool ApplyPreActionEffect()
     {
-      if (Unit.Effect != null && Unit.Effect.Id != EffectId.None)
+      if (Unit.Effect.Id != EffectId.None)
       {
         Unit.Effect.Duration -= 1;
         if (Unit.Effect.Duration == 0)
