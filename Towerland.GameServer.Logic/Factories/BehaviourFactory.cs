@@ -22,14 +22,16 @@ namespace Towerland.GameServer.Logic.Factories
     public IBehaviour CreateUnitBehaviour(Unit unit)
     {
       var stats = _statsLibrary.GetUnitStats(unit.Type);
-      switch (stats.Ability)
+      switch (stats.Skill)
       {
-        case AbilityId.None:
+        case SkillId.None:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
-        case AbilityId.Unit_RevivesDeadUnit:
+        case SkillId.RevivesDeadUnit:
           return new NecromancerBehaviour(unit, _battleContext, _statsLibrary);
-        case AbilityId.Unit_DestroysTowerOnDeath:
+        case SkillId.DestroysTowerOnDeath:
           return new BarbarianBehaviour(unit, _battleContext, _statsLibrary);
+        case SkillId.StealsTowerMoney:
+          return new GoblinBehaviour(unit, _battleContext, _statsLibrary);
         default:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);
       }
@@ -38,9 +40,9 @@ namespace Towerland.GameServer.Logic.Factories
     public IBehaviour CreateTowerBehaviour(Tower tower)
     {
       var stats = _statsLibrary.GetTowerStats(tower.Type);
-      switch (stats.Ability)
+      switch (stats.Skill)
       {
-        case AbilityId.None:
+        case SkillId.None:
           switch (stats.Attack)
           {
             case TowerStats.AttackType.Usual:
@@ -51,11 +53,10 @@ namespace Towerland.GameServer.Logic.Factories
             default:
               return null;
           }
-        case AbilityId.Tower_FreezesUnit:
-          return new FreezingTowerBehaviour(tower, _battleContext, _statsLibrary);
-        case AbilityId.Tower_PoisonsUnit:
-          return new PoisoningTowerBehaviour(tower, _battleContext, _statsLibrary);
-        case AbilityId.Tower_10xDamage_10PercentProbability:
+        case SkillId.FreezesUnit:
+        case SkillId.PoisonsUnit:
+          return new DebuffTowerBehaviour(tower, _battleContext, _statsLibrary);
+        case SkillId.ExtraDamageUnit:
           return new ExtraDamageTowerBehaviour(tower, _battleContext, _statsLibrary);
         default:
           return new BaseTowerBehaviour(tower, _battleContext, _statsLibrary);

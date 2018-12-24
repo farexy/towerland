@@ -8,6 +8,5 @@ namespace Towerland.GameServer.BusinessLogic.Interfaces
   {
     Task AddToQueueAsync(Guid sessionId);
     Task AddToMultiBattleQueueAsync(Guid sessionId);
-    bool TryGetBattle(Guid sessionId, out (Guid battleId, PlayerSide side) playerSetting);
-  }
+    bool TryGetBattle(Guid sessionId, out (Guid battleId, PlayerSide side) playerSetting);  }
 }

@@ -31,23 +31,23 @@ namespace Towerland.GameServer.Logic.ActionResolver
           _field.State.Castle.Health -= action.Damage;
           break;
 
-        case ActionId.UnitRecievesDamage:
+        case ActionId.UnitReceivesDamage:
           ((Unit)_field[action.UnitId]).Health -= action.Damage;
           break;
 
         case ActionId.UnitFreezes:
-          _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Id = EffectId.UnitFreezed};
+          _field[action.UnitId].Effect = new SpecialEffect{Id = EffectId.UnitFreezed, Duration = action.WaitTicks, EffectValue = action.EffectValue};
           break;
 
         case ActionId.UnitPoisoned:
-          _field[action.UnitId].Effect = new SpecialEffect{Duration = action.WaitTicks, Id = EffectId.UnitPoisoned};
+          _field[action.UnitId].Effect = new SpecialEffect{Id = EffectId.UnitPoisoned, Duration = action.WaitTicks, EffectValue = action.EffectValue};
           break;
 
         case ActionId.UnitDisappears:
             _field.RemoveGameObject(action.UnitId);
           break;
 
-        case ActionId.UnitEffectCanseled:
+        case ActionId.UnitEffectCanceled:
           _field[action.UnitId].Effect = SpecialEffect.Empty;
           break;
 
@@ -85,15 +85,18 @@ namespace Towerland.GameServer.Logic.ActionResolver
     {
       switch (action.ActionId)
       {
-        case ActionId.MonsterPlayerRecievesMoney:
+        case ActionId.MonsterPlayerReceivesMoney:
           _field.State.MonsterMoney += action.Money;
           break;
-        case ActionId.TowerPlayerRecievesMoney:
+        case ActionId.TowerPlayerReceivesMoney:
           _field.State.TowerMoney += action.Money;
           break;
-        case ActionId.PlayersRecievesMoney:
+        case ActionId.PlayersReceivesMoney:
           _field.State.TowerMoney += action.Money;
           _field.State.MonsterMoney += action.Money;
+          break;
+        case ActionId.TowerPlayerLosesMoney:
+          _field.State.TowerMoney -= action.Money;
           break;
       }
     }

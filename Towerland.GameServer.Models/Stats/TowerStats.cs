@@ -12,7 +12,7 @@ namespace Towerland.GameServer.Models.Stats
     [JsonProperty("s")] public int AttackSpeed { set; get; }
     [JsonProperty("a")] public AttackType Attack { set; get; }
     [JsonProperty("tp")] public AttackPriority TargetPriority { set; get; }
-    [JsonProperty("e")] public AbilityId Ability { set; get; }
+    [JsonProperty("e")] public SkillId Skill { set; get; }
     [JsonProperty("c")] public int Cost { set; get; }
     [JsonProperty("p")] public TowerSpawnType SpawnType { set; get; }
 

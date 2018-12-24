@@ -44,7 +44,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         if (Unit.Effect.Duration == 0)
         {
           Unit.Effect = SpecialEffect.Empty;
-          BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.UnitEffectCanseled, UnitId = Unit.GameId});
+          BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.UnitEffectCanceled, UnitId = Unit.GameId});
         }
       }
 
@@ -95,13 +95,13 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       var unitReward = moneyCalc.GetUnitReward(Field, attackAction);
       Field.State.MonsterMoney += unitReward;
 
-      BattleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
+      BattleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
     }
 
     protected virtual int CalculateSpeed()
     {
       return Unit.Effect.Id == EffectId.UnitFreezed
-        ? Stats.Speed * (int)SpecialEffect.EffectDebuffValue[EffectId.UnitFreezed]
+        ? (int)(Stats.Speed * Unit.Effect.EffectValue)
         : Stats.Speed;
     }
 
@@ -109,7 +109,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
     {
       if (Unit.Effect.Id == EffectId.UnitPoisoned)
       {
-        var damage = Unit.Health * SpecialEffect.EffectDebuffValue[EffectId.UnitPoisoned];
+        var damage = Unit.Health * Unit.Effect.EffectValue;
         if (Unit.Health - damage <= 0)
         {
           damage = Unit.Health - 1;
@@ -118,7 +118,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         Unit.Health -= (int)damage;
         BattleContext.CurrentTick.Add(new GameAction
         {
-          ActionId = ActionId.UnitRecievesDamage, UnitId = Unit.GameId, Damage = (int)damage
+          ActionId = ActionId.UnitReceivesDamage, UnitId = Unit.GameId, Damage = (int)damage
         });
       }
     }

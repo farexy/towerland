@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
+using Towerland.GameServer.BusinessLogic.BackgroundServices;
 using Towerland.GameServer.BusinessLogic.Infrastructure;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
@@ -34,6 +35,7 @@ namespace Towerland.GameServer.Config
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
       services.AddSingleton(AutoMapperConfiguration.Configure());
+      services.AddHostedService<AiService>();
 
       services.AddSingleton<IDbConnectionFactory>(new OrmLiteConnectionFactory(Configuration.GetConnectionString("Towerland"), MySqlDialect.Provider));
       services.AddSingleton<IProvider<LiveBattleModel>, BattleInMemoryProvider>();

@@ -146,7 +146,7 @@ namespace Towerland.GameServer.Logic.Calculators
         if (Ticks.Count % 5 == 0)
         {
           var moneyAmount = _moneyCalculator.GetGuaranteedMoneyByTimer(Field);
-          _battleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.PlayersRecievesMoney, Money = moneyAmount});
+          _battleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.PlayersReceivesMoney, Money = moneyAmount});
         }
       }
 

@@ -47,7 +47,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
 
           BattleContext.CurrentTick.Add(new GameAction
           {
-            ActionId = ActionId.UnitRecievesDamage,
+            ActionId = ActionId.UnitReceivesDamage,
             UnitId = unit.GameId,
             Damage = damage
           });
@@ -65,8 +65,8 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
             Field.State.MonsterMoney += unitReward;
             Field.State.TowerMoney += towerReward;
 
-            BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.TowerPlayerRecievesMoney, Money = towerReward});
-            BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.MonsterPlayerRecievesMoney, Money = unitReward});
+            BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.TowerPlayerReceivesMoney, Money = towerReward});
+            BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
 
             BattleContext.UnitsToRemove.Add(unit.GameId);
           }

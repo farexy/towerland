@@ -1,5 +1,7 @@
-﻿using Towerland.GameServer.Logic.Interfaces;
+﻿using System;
+using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.Effects;
+using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameObjects;
 using Towerland.GameServer.Models.Stats;
 
@@ -18,7 +20,7 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Fastest,
         Speed = 2,
         Cost = 50,
-        Defence = UnitStats.DefenceType.LightArmor,
+        Defence = UnitStats.DefenceType.LightArmor
       },
       new UnitStats
       {
@@ -29,7 +31,7 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 120,
-        Defence = UnitStats.DefenceType.LightArmor,
+        Defence = UnitStats.DefenceType.LightArmor
       },
       new UnitStats
       {
@@ -40,7 +42,7 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
         Cost = 200,
-        Defence = UnitStats.DefenceType.HeavyArmor,
+        Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats
       {
@@ -52,6 +54,7 @@ namespace Towerland.GameServer.Logic.Factories
         Speed = 3,
         Cost = 250,
         Defence = UnitStats.DefenceType.LightArmor,
+        Skill = SkillId.StealsTowerMoney
       },
       new UnitStats
       {
@@ -62,7 +65,7 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 500,
-        Defence = UnitStats.DefenceType.Undefended,
+        Defence = UnitStats.DefenceType.Undefended
       },
       new UnitStats
       {
@@ -73,7 +76,7 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
         Cost = 750,
-        Defence = UnitStats.DefenceType.HeavyArmor,
+        Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats
       {
@@ -85,7 +88,7 @@ namespace Towerland.GameServer.Logic.Factories
         Speed = 4,
         Cost = 500,
         Defence = UnitStats.DefenceType.Undefended,
-        Ability= AbilityId.Unit_RevivesDeadUnit,
+        Skill = SkillId.RevivesDeadUnit
       },
       new UnitStats
       {
@@ -97,7 +100,7 @@ namespace Towerland.GameServer.Logic.Factories
         Speed = 4,
         Cost = 750,
         Defence = UnitStats.DefenceType.LightArmor,
-        Ability= AbilityId.Unit_DestroysTowerOnDeath,
+        Skill= SkillId.DestroysTowerOnDeath
       }
     };
 
@@ -112,7 +115,7 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 60,
         Range = 3,
         Cost = 50,
-        SpawnType = TowerStats.TowerSpawnType.Ground,
+        SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
       {
@@ -123,8 +126,8 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 35,
         Range = 4,
         Cost = 120,
-        Ability = AbilityId.Tower_FreezesUnit,
-        SpawnType = TowerStats.TowerSpawnType.Ground,
+        Skill = SkillId.FreezesUnit,
+        SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
       {
@@ -135,7 +138,7 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 70,
         Range = 4,
         Cost = 200,
-        SpawnType = TowerStats.TowerSpawnType.Ground,
+        SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
       {
@@ -146,7 +149,7 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 100,
         Range = 5,
         Cost = 400,
-        SpawnType = TowerStats.TowerSpawnType.Ground,
+        SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
       {
@@ -157,8 +160,8 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 70,
         Range = 6,
         Cost = 600,
-        Ability = AbilityId.Tower_10xDamage_10PercentProbability,
-        SpawnType = TowerStats.TowerSpawnType.Ground,
+        Skill = SkillId.ExtraDamageUnit,
+        SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
       {
@@ -169,8 +172,8 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 40,
         Range = 3,
         Cost = 500,
-        Ability = AbilityId.Tower_PoisonsUnit,
-        SpawnType = TowerStats.TowerSpawnType.Ground,
+        Skill = SkillId.PoisonsUnit,
+        SpawnType = TowerStats.TowerSpawnType.Ground
       }
     };
 
@@ -229,6 +232,55 @@ namespace Towerland.GameServer.Logic.Factories
         Defence = UnitStats.DefenceType.HeavyArmor,
         Attack = TowerStats.AttackType.Magic,
         Coeff = 0.6
+      }
+    };
+
+    private Skill[] _skills =
+    {
+      new Skill
+      {
+        Id = SkillId.FreezesUnit,
+        GameObjectType = GameObjectType.Tower_Frost,
+        EffectId = EffectId.UnitFreezed,
+        ActionId = ActionId.UnitFreezes,
+        Duration = 16,
+        DebuffValue = 2
+      },
+      new Skill
+      {
+        Id = SkillId.PoisonsUnit,
+        GameObjectType = GameObjectType.Tower_Poisoning,
+        EffectId = EffectId.UnitPoisoned,
+        ActionId = ActionId.UnitPoisoned,
+        Duration = 20,
+        DebuffValue = 0.05,
+      },
+      new Skill
+      {
+        Id = SkillId.ExtraDamageUnit,
+        GameObjectType = GameObjectType.Tower_Magic,
+        ProbabilityPercent = 10,
+        BuffValue = 10
+      },
+      new Skill
+      {
+        Id = SkillId.RevivesDeadUnit,
+        GameObjectType = GameObjectType.Unit_Necromancer,
+        WaitTicks = 1
+      },
+      new Skill
+      {
+        Id = SkillId.DestroysTowerOnDeath,
+        GameObjectType = GameObjectType.Unit_BarbarianMage,
+      },
+      new Skill
+      {
+        Id = SkillId.StealsTowerMoney,
+        GameObjectType = GameObjectType.Unit_Goblin,
+        ProbabilityPercent = 25,
+        BuffValue = 10,
+        DebuffValue = 10,
+        WaitTicks = 3,
       },
     };
 
@@ -237,5 +289,7 @@ namespace Towerland.GameServer.Logic.Factories
     public TowerStats[] GetTowerStats() => _towers;
 
     public DefenceCoeff[] GetDefenceCoeffs() => _defenceCoeffs;
+
+    public Skill[] GetSkills() => _skills;
   }
 }

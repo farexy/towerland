@@ -7,5 +7,6 @@ namespace Towerland.GameServer.Logic.Interfaces
     UnitStats[] GetUnitStats();
     TowerStats[] GetTowerStats();
     DefenceCoeff[] GetDefenceCoeffs();
+    Skill[] GetSkills();
   }
 }

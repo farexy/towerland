@@ -9,8 +9,6 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
 {
   public class NecromancerBehaviour : BaseUnitBehaviour
   {
-    private const int AbilityWaitTicks = 1;
-
     public NecromancerBehaviour(Unit unit, BattleContext battleContext, IStatsLibrary statsLibrary) : base(unit, battleContext, statsLibrary)
     {
     }
@@ -26,6 +24,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       }
       var action = deadUnitAction.Value;
       var uFactory = new UnitFactory(StatsLibrary);
+      var skill = StatsLibrary.GetSkill(Stats.Skill, Stats.Type);
 
       var possiblePath = Field.GetPossiblePathIds(action.Position).ToArray();
       var pathId = possiblePath[GameMath.Rand.Next(possiblePath.Length)];
@@ -54,9 +53,9 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       {
         ActionId = ActionId.UnitAppliesSkill,
         UnitId = Unit.GameId,
-        WaitTicks = AbilityWaitTicks
+        WaitTicks = skill.WaitTicks
       });
-      Unit.WaitTicks += AbilityWaitTicks;
+      Unit.WaitTicks += skill.WaitTicks;
 
       return false;
     }

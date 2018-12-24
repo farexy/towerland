@@ -13,21 +13,18 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
 
     protected override int CalculateDamage(Unit unit)
     {
-      bool isApplicable;
-      int damageMultiplier;
-      switch (Stats.Ability)
+      bool isApplicable = false;
+      var skill = StatsLibrary.GetSkill(Stats.Skill, Stats.Type);
+
+      if (skill.ProbabilityPercent > 0)
       {
-        case AbilityId.Tower_10xDamage_10PercentProbability:
-          isApplicable = GameMath.CalcProbableEvent(10);
-          damageMultiplier = 10;
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
+        isApplicable = GameMath.CalcProbableEvent(skill.ProbabilityPercent);
       }
+
       var damage = base.CalculateDamage(unit);
 
       return isApplicable
-        ? damage * damageMultiplier
+        ? (int)(damage * skill.BuffValue)
         : damage;
     }
   }
