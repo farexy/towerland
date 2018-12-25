@@ -18,7 +18,11 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       unit.Effect = new SpecialEffect{Id = skill.EffectId, Duration = skill.Duration, EffectValue = skill.DebuffValue};
       BattleContext.CurrentTick.Add(new GameAction
       {
-        ActionId = ActionId.UnitGetsEffect, UnitId = unit.GameId, WaitTicks = skill.Duration, EffectValue = skill.DebuffValue
+        ActionId = ActionId.UnitGetsEffect, 
+        UnitId = unit.GameId,
+        WaitTicks = skill.Duration,
+        EffectId = skill.EffectId,
+        EffectValue = skill.DebuffValue
       });
     }
   }

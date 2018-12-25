@@ -70,27 +70,19 @@ namespace Towerland.GameServer.BusinessLogic.Helpers
       encryptor.Key = key;
       encryptor.IV = iv;
 
-      MemoryStream memoryStream = new MemoryStream();
       ICryptoTransform aesDecryptor = encryptor.CreateDecryptor();
 
-      CryptoStream cryptoStream = new CryptoStream(memoryStream, aesDecryptor, CryptoStreamMode.Write);
-
-      string text = String.Empty;
-
-      try {
+      using (MemoryStream memoryStream = new MemoryStream())
+      using (CryptoStream cryptoStream = new CryptoStream(memoryStream, aesDecryptor, CryptoStreamMode.Write))
+      {
         byte[] cipherBytes = Convert.FromBase64String(cipher);
         await cryptoStream.WriteAsync(cipherBytes, 0, cipherBytes . Length);
 
         cryptoStream.FlushFinalBlock();
         byte[] plainBytes = memoryStream.ToArray();
 
-        text = Encoding.ASCII.GetString(plainBytes, 0, plainBytes.Length);
-      } finally {
-        memoryStream.Close();
-        cryptoStream.Close();
+        return Encoding.ASCII.GetString(plainBytes, 0, plainBytes.Length);
       }
-
-      return text;
     }
   }
 }

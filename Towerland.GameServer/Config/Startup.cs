@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using Towerland.GameServer.BusinessLogic.BackgroundServices;
 using Towerland.GameServer.BusinessLogic.Infrastructure;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
@@ -35,15 +34,14 @@ namespace Towerland.GameServer.Config
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
       services.AddSingleton(AutoMapperConfiguration.Configure());
-      services.AddHostedService<AiService>();
 
       services.AddSingleton<IDbConnectionFactory>(new OrmLiteConnectionFactory(Configuration.GetConnectionString("Towerland"), MySqlDialect.Provider));
       services.AddSingleton<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
 //
-//      services.AddScoped<IBattleRepository, BattleRepository>();
-//      services.AddScoped<IUserRepository, UserRepository>();
-      services.AddScoped<IBattleRepository, FakeBattleRepository>();
-      services.AddScoped<IUserRepository, FakeUserRepository>();
+//      services.AddTransient<IBattleRepository, BattleRepository>();
+//      services.AddTransient<IUserRepository, UserRepository>();
+      services.AddTransient<IBattleRepository, FakeBattleRepository>();
+      services.AddTransient<IUserRepository, FakeUserRepository>();
 
       services.AddScoped<IUserService, UserService>();
 
@@ -54,14 +52,14 @@ namespace Towerland.GameServer.Config
       services.AddSingleton<ILiveBattleService>(x => x.GetRequiredService<LiveBattleService>());
 
       services.AddSingleton<IStatsLibrary, StatsLibrary>();
-      services.AddScoped<ICheatCommandManager, CheatCommandManager>();
-      services.AddScoped<IStatsProvider, StatsFactory>();
-      services.AddScoped<ICheatCommandManager, CheatCommandManager>();
-      services.AddScoped<IFieldFactory, FieldFactoryStub>();
-      services.AddScoped<IPathChooser, PathChooser>();
-      services.AddScoped<IStateChangeRecalculator, StateChangeRecalculator>();
-      services.AddScoped<IGameObjectFactory<Unit>, UnitFactory>();
-      services.AddScoped<IGameObjectFactory<Tower>, TowerFactory>();
+      services.AddTransient<ICheatCommandManager, CheatCommandManager>();
+      services.AddTransient<IStatsProvider, StatsFactory>();
+      services.AddTransient<ICheatCommandManager, CheatCommandManager>();
+      services.AddTransient<IFieldFactory, FieldFactoryStub>();
+      services.AddTransient<IPathChooser, PathChooser>();
+      services.AddTransient<IStateChangeRecalculator, StateChangeRecalculator>();
+      services.AddTransient<IGameObjectFactory<Unit>, UnitFactory>();
+      services.AddTransient<IGameObjectFactory<Tower>, TowerFactory>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +71,7 @@ namespace Towerland.GameServer.Config
       }
       else
       {
-        app.UseHsts();
+        //app.UseHsts();
       }
 
       app.UseMiddleware<ErrorHandlingMiddleware>();

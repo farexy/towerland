@@ -3,7 +3,7 @@ using Towerland.GameServer.Models.GameField;
 
 namespace Towerland.GameServer.Logic
 {
-  internal static class GameMath
+  public static class GameMath
   {
     public static readonly Random Rand = new Random();
     
