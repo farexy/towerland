@@ -3,6 +3,7 @@ using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Logic.SpecialAI;
 using Towerland.GameServer.Models.GameActions;
+using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
 
 namespace Towerland.GameServer.Logic.Behaviour.Towers
@@ -19,7 +20,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       var gameCalculator = new GameCalculator(StatsLibrary);
 
       var targetPoint = targetFinder.FindBurstTarget(Field, Tower);
-      if (targetPoint.HasValue)
+      if (targetPoint.HasValue && targetPoint.Value != Field.StaticData.Finish)
       {
         Tower.WaitTicks = Stats.AttackSpeed;
 
@@ -31,7 +32,11 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
           Damage = Stats.Damage,
           WaitTicks = Stats.AttackSpeed
         });
-        var units = Field.FindUnitsAt(targetPoint.Value).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
+
+        var path = Field.StaticData.Path[Field.GetPossiblePathIds(targetPoint.Value).FirstOrDefault()];
+        var prev = Field.StaticData.Start == targetPoint ? Point.NotExisting : path.GetPrevious(targetPoint.Value);
+        var next = path.GetNext(targetPoint.Value);
+        var units = Field.FindTargetsAt(prev, targetPoint.Value, next).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
 //                foreach (var point in _field.GetNeighbourPoints(targetPoint, 1, FieldObject.Road))
 //                {
 //                  units = units.Union(_field.FindUnitsAt(point));

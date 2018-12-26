@@ -104,20 +104,36 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       var battle = _provider.Find(battleId);
       var mbInfo = battle.MultiBattleInfo;
       PlayerSide side;
-      if (mbInfo.TowerPlayers.Count > mbInfo.MonsterPlayers.Count)
-      {
-        mbInfo.MonsterPlayers.Add(player);
-        side = PlayerSide.Monsters;
-      }
-      else
+//      if (mbInfo.TowerPlayers.Count > mbInfo.MonsterPlayers.Count)
+//      {
+//        mbInfo.MonsterPlayers.Add(player);
+//        side = PlayerSide.Monsters;
+//      }
+//      else
+//      {
+//        mbInfo.TowerPlayers.Add(player);
+//        side = PlayerSide.Towers;
+//      }
+      if (!player.IsComputerPlayer())
       {
         mbInfo.TowerPlayers.Add(player);
         side = PlayerSide.Towers;
       }
-      _battleRepository.UpdateMultiBattle(battleId, mbInfo);
+      else
+      {
+        mbInfo.MonsterPlayers.Add(player);
+        side = PlayerSide.Monsters;
+      }
+      _battleRepository.UpdateMultiBattle(battleId, mbInfo).ContinueWith(t => t.Status);
 
       isAcceptNewPlayers = mbInfo.TowerPlayers.Count == MultiBattleInfo.MaxUserOnSide;
       return side;
+    }
+
+    public bool CheckMultiBattleAcceptNewPlayers(Guid battleId)
+    {
+      var battle = _provider.Find(battleId);
+      return battle != null && battle.State.StaticData.EndTimeUtc - DateTime.UtcNow > TimeSpan.FromMinutes(3);
     }
 
     public async Task RecalculateAsync(StateChangeCommand command, int curTick)

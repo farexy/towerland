@@ -95,7 +95,15 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       {
         return;
       }
+      if (sessionId.IsComputerPlayer() && _sessionQueueMultiBattle.Count == 0)
+      {
+        return;
+      }
 
+      if (_availableMultiBattle.HasValue && !_battleInitService.CheckMultiBattleAcceptNewPlayers(_availableMultiBattle.Value))
+      {
+        _availableMultiBattle = null;
+      }
       if (_availableMultiBattle.HasValue)
       {
         var side = _battleInitService.AddToMultiBattle(_availableMultiBattle.Value, sessionId, out var isAcceptNewPlayers);

@@ -13,6 +13,8 @@ namespace Towerland.GameServer.Models.GameField
       Y = y;
     }
 
+    public static Point NotExisting => new Point(-1, -1);
+    
     public static bool operator ==(Point p1, Point p2)
     {
       return p1.Equals(p2);

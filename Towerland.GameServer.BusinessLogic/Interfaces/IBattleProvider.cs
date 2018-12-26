@@ -10,5 +10,6 @@ namespace Towerland.GameServer.BusinessLogic.Interfaces
     Task<Guid> InitNewMultiBattleAsync(Guid monstersPlayer, Guid towersPlayer);
 
     PlayerSide AddToMultiBattle(Guid battleId, Guid player, out bool isAcceptNewPlayers);
+    bool CheckMultiBattleAcceptNewPlayers(Guid battleId);
   }
 }

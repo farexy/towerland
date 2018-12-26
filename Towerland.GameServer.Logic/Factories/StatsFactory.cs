@@ -59,7 +59,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 600,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
-        Cost = 500,
+        Cost = 450,
         Skill = SkillId.AirUnit,
         Defence = UnitStats.DefenceType.Undefended
       },
@@ -70,7 +70,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 700,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
-        Cost = 750,
+        Cost = 700,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats

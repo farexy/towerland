@@ -20,8 +20,12 @@ namespace Towerland.GameServer.Logic.Calculators
       return field.State.Towers.FirstOrDefault(t => t.Position == position);
     }
 
-    public static IEnumerable<Unit> FindUnitsAt(this Field field, params Point[] positions)
+    public static IEnumerable<Unit> FindTargetsAt(this Field field, params Point[] positions)
     {
+      if (positions.Contains(field.StaticData.Finish))
+      {
+        return Enumerable.Empty<Unit>();
+      }
       return field.State.Units.Where(u => positions.Contains(u.Position));
     }
 

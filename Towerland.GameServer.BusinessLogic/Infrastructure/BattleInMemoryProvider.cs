@@ -20,7 +20,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
     {
       if (!_battles.ContainsKey(id))
       {
-        throw new LogicException("Not found");
+        return null;
       }
       return _battles[id];
     }
