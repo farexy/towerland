@@ -58,7 +58,7 @@ namespace Towerland.GameServer.Models.GameObjects
         Position = Position,
         Type = Type,
         WaitTicks = WaitTicks,
-        Effect = new SpecialEffect{Id = Effect.Id, Duration = Effect.Duration}
+        Effect = (SpecialEffect)Effect.Clone(),
       };
     }
 
