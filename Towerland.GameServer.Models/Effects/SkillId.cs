@@ -17,5 +17,6 @@ namespace Towerland.GameServer.Models.Effects
     DestroysTowerOnDeath = 550,
     BlocksTowerSkills = 601,
     BlocksTowerSkillsInRange = 602,
+    AirUnit = 701,
   }
 }

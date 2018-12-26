@@ -96,6 +96,10 @@ namespace Towerland.GameServer.Logic.Calculators
       {
         foreach (var tower in Field.State.Towers)
         {
+          if (_battleContext.TowersToRemove.Contains(tower.GameId))
+          {
+            continue; // tower may be destroyed before action
+          }
           var behaviour = _behaviourFactory.CreateTowerBehaviour(tower);
           if (!behaviour.CanDoAction())
           {

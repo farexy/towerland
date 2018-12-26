@@ -16,7 +16,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Skeleton,
         Damage = 5,
         Health = 100,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Fastest,
         Speed = 2,
         Cost = 50,
@@ -27,7 +26,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Impling,
         Damage = 10,
         Health = 200,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 120,
@@ -38,7 +36,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Orc,
         Damage = 15,
         Health = 330,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
         Cost = 200,
@@ -49,7 +46,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Goblin,
         Damage = 15,
         Health = 350,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 250,
@@ -61,10 +57,10 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Dragon,
         Damage = 25,
         Health = 600,
-        IsAir = true,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 500,
+        Skill = SkillId.AirUnit,
         Defence = UnitStats.DefenceType.Undefended
       },
       new UnitStats
@@ -72,7 +68,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Golem,
         Damage = 30,
         Health = 700,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
         Cost = 750,
@@ -83,7 +78,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_Necromancer,
         Damage = 10,
         Health = 400,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 500,
@@ -95,7 +89,6 @@ namespace Towerland.GameServer.Logic.Factories
         Type = GameObjectType.Unit_BarbarianMage,
         Damage = 15,
         Health = 550,
-        IsAir = false,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 750,
@@ -295,6 +288,11 @@ namespace Towerland.GameServer.Logic.Factories
         Duration = 6,
         Range = 4
       },
+      new Skill
+      {
+        Id = SkillId.AirUnit,
+        GameObjectType = GameObjectType.Unit_Dragon
+      }, 
     };
 
     public UnitStats[] GetUnitStats() => _units;
