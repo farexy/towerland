@@ -31,9 +31,10 @@
     Unit_Orc= 1003,
     Unit_Goblin = 1004,
     Unit_Dragon = 1005,
-    Unit_Golem = 1006,
+    Unit_Demon = 1006,
     Unit_Necromancer = 1007,
     Unit_BarbarianMage = 1008,
+    Unit_Golem = 1009,
 
     // ReSharper restore InconsistentNaming
   }

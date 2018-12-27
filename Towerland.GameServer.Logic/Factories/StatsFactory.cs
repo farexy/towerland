@@ -56,7 +56,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Dragon,
         Damage = 25,
-        Health = 600,
+        Health = 640,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 450,
@@ -65,19 +65,20 @@ namespace Towerland.GameServer.Logic.Factories
       },
       new UnitStats
       {
-        Type = GameObjectType.Unit_Golem,
+        Type = GameObjectType.Unit_Demon,
         Damage = 30,
         Health = 700,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
         Cost = 700,
+        Skill = SkillId.BlocksTowerSkillsInRange,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats
       {
         Type = GameObjectType.Unit_Necromancer,
         Damage = 10,
-        Health = 400,
+        Health = 500,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 500,
@@ -142,6 +143,7 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 100,
         Range = 5,
         Cost = 400,
+        Skill = SkillId.BlocksUnitSkills,
         SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
@@ -276,14 +278,14 @@ namespace Towerland.GameServer.Logic.Factories
       new Skill
       {
         Id = SkillId.BlocksUnitSkills,
-        GameObjectType = GameObjectType.Tower_Magic, // TODO
+        GameObjectType = GameObjectType.Tower_FortressWatchtower,
         EffectId = EffectId.SkillsDisabled,
         Duration = 6,
       },
       new Skill
       {
         Id = SkillId.BlocksTowerSkillsInRange,
-        GameObjectType = GameObjectType.Unit_Golem, // TODO
+        GameObjectType = GameObjectType.Unit_Demon,
         EffectId = EffectId.SkillsDisabled,
         Duration = 6,
         Range = 4

@@ -34,7 +34,7 @@ namespace Towerland.GameServer.Logic.Factories
           return new BarbarianBehaviour(unit, _battleContext, _statsLibrary);
         case SkillId.StealsTowerMoney:
           return new GoblinBehaviour(unit, _battleContext, _statsLibrary);
-        case SkillId.BlocksUnitSkills:
+        case SkillId.BlocksTowerSkillsInRange:
           return new TowerSkillBlockingBehaviour(unit, _battleContext, _statsLibrary);
         default:
           return new BaseUnitBehaviour(unit, _battleContext, _statsLibrary);

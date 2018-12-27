@@ -100,9 +100,8 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
 
     protected virtual int CalculateSpeed()
     {
-      const int freezedSpeedDebuff = 2;  // TODO deal smth with EffectValue
       return Unit.Effect.Id == EffectId.UnitFreezed
-        ? Stats.Speed * freezedSpeedDebuff // (int)(Stats.Speed * Unit.Effect.EffectValue)
+        ? (int)(Stats.Speed * Unit.Effect.EffectValue)
         : Stats.Speed;
     }
 

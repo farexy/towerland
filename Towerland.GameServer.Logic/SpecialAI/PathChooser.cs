@@ -48,20 +48,37 @@ namespace Towerland.GameServer.Logic.SpecialAI
     public int GetOptimalPath(Field field, Unit unit)
     {
       var paths = field.StaticData.Path;
-      var tableToAnalize = new double[paths.Length, _additiveConvolutionCalculator.NumberOfCriterias];
-
+      double minDamage = double.MaxValue;
+      int minDamagePathId = 0;
       for (int i = 0; i < paths.Length; i++)
       {
         var towersOnPath = FindTowersThatCanAttackPath(field, i);
-        var towers = towersOnPath.Select(t => field[t]).ToArray();
-        var towersTypes = towers.Select(t => t.Type).ToArray();
+        var towers = towersOnPath.Select(t => field[t].Type).ToArray();
+        var pathDamage = GetTotalAttackDamage(towers, unit);
 
-        tableToAnalize[i, 0] = 1 - (double)towersOnPath.Count / field.State.Towers.Count;
-        tableToAnalize[i, 1] = GetTotalAttackDamage(towersTypes, unit);
-        tableToAnalize[i, 2] = GetAvgTowersRemoteness(paths[i], towers);
-        tableToAnalize[i, 3] = GetTowersWithSpecialEffectRate(towersTypes);
+        if (pathDamage < minDamage)
+        {
+          minDamagePathId = i;
+          minDamage = pathDamage;
+        }
       }
-      return _additiveConvolutionCalculator.FindOptimalVariantIndex(tableToAnalize);
+
+      return minDamagePathId;
+// TODO optimize
+//      var tableToAnalize = new double[paths.Length, _additiveConvolutionCalculator.NumberOfCriterias];
+//
+//      for (int i = 0; i < paths.Length; i++)
+//      {
+//        var towersOnPath = FindTowersThatCanAttackPath(field, i);
+//        var towers = towersOnPath.Select(t => field[t]).ToArray();
+//        var towersTypes = towers.Select(t => t.Type).ToArray();
+//
+//        tableToAnalize[i, 0] = 1 - (double)towersOnPath.Count / field.State.Towers.Count;
+//        tableToAnalize[i, 1] = GetTotalAttackDamage(towersTypes, unit);
+//        tableToAnalize[i, 2] = GetAvgTowersRemoteness(paths[i], towers);
+//        tableToAnalize[i, 3] = GetTowersWithSpecialEffectRate(towersTypes);
+//      }
+//      return _additiveConvolutionCalculator.FindOptimalVariantIndex(tableToAnalize);
     }
 
     private double GetTotalAttackDamage(IEnumerable<GameObjectType> towerTypes, Unit unit)

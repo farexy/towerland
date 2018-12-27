@@ -130,13 +130,9 @@ namespace Towerland.Logic.Test
       stateRecalc.AddNewUnit(f, GameObjectType.Unit_Goblin);
       stateRecalc.AddNewUnit(f, GameObjectType.Unit_Goblin);
       stateRecalc.AddNewUnit(f, GameObjectType.Unit_Goblin);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Golem);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Skeleton);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
-      stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
+      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Demon);
+      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Demon);
+      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Demon);
       stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
       stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
       stateRecalc.AddNewUnit(f, GameObjectType.Unit_BarbarianMage);
@@ -170,7 +166,7 @@ namespace Towerland.Logic.Test
         {
           resolver.Resolve(action);
           Show(f2);
-          Thread.Sleep(100);
+          //Thread.Sleep(100);
         }
         if (tick.Actions.Any() && tick.Actions.First().Position == new Point(2, 7))
         {

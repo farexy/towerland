@@ -24,6 +24,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         BattleContext.CurrentTick.Add(new GameAction
         {
           ActionId = ActionId.TowerGetsEffect,
+          TowerId = tower.GameId,
           EffectId = skill.EffectId,
           WaitTicks = skill.Duration
         });
