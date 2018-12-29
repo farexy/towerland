@@ -41,9 +41,9 @@ namespace Towerland.GameServer.Models.GameField
 
       for (int i = 1; i < _way.Length; i++)
       {
-        if (_way[i + 1] == current)
+        if (_way[i] == current)
         {
-          return _way[i];
+          return _way[i - 1];
         }
       }
       throw new ArgumentException("Point is not on the path");

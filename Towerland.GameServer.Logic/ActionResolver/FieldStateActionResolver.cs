@@ -44,7 +44,7 @@ namespace Towerland.GameServer.Logic.ActionResolver
           break;
 
         case ActionId.UnitDisappears:
-            _field.RemoveGameObject(action.UnitId);
+          _field.RemoveGameObject(action.UnitId);
           break;
 
         case ActionId.UnitAppears:

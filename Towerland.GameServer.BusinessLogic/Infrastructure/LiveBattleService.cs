@@ -2,8 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
+using ServiceStack.Logging;
 using Towerland.GameServer.BusinessLogic.Helpers;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Lockers;
@@ -22,6 +24,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
 {
   public class LiveBattleService : ILiveBattleService, IBattleInitializationService
   {
+    private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
     private readonly ConcurrentDictionary<Guid, int> _battles;
 
     private readonly IBattleRepository _battleRepository;
@@ -315,7 +318,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         await _userRepository.IncrementExperienceAsync(userId, xp);
       }
     }
-    
+
     private async Task DisposeBattleAsync(Guid battleId)
     {
       await Task.Delay(20000);
@@ -338,7 +341,14 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         }
         foreach (var action in tick.Actions)
         {
-          resolver.Resolve(action);
+          try
+          {
+            resolver.Resolve(action);
+          }
+          catch (Exception e)
+          {
+            Logger.Error(e);
+          }
         }
       }
     }

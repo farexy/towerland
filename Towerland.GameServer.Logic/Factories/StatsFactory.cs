@@ -38,7 +38,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 330,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
-        Cost = 200,
+        Cost = 180,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats
@@ -70,7 +70,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 700,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
-        Cost = 700,
+        Cost = 800,
         Skill = SkillId.BlocksTowerSkillsInRange,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
@@ -142,8 +142,8 @@ namespace Towerland.GameServer.Logic.Factories
         AttackSpeed = 8,
         Damage = 100,
         Range = 5,
-        Cost = 400,
-        Skill = SkillId.BlocksUnitSkills,
+        Cost = 500,
+        Skill = SkillId.ExtraDamageUnit,
         SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
@@ -155,7 +155,7 @@ namespace Towerland.GameServer.Logic.Factories
         Damage = 70,
         Range = 6,
         Cost = 600,
-        Skill = SkillId.ExtraDamageUnit,
+        Skill = SkillId.BlocksUnitSkills,
         SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
@@ -166,7 +166,7 @@ namespace Towerland.GameServer.Logic.Factories
         AttackSpeed = 5,
         Damage = 40,
         Range = 3,
-        Cost = 500,
+        Cost = 400,
         Skill = SkillId.PoisonsUnit,
         SpawnType = TowerStats.TowerSpawnType.Ground
       }
@@ -237,7 +237,7 @@ namespace Towerland.GameServer.Logic.Factories
         Id = SkillId.FreezesUnit,
         GameObjectType = GameObjectType.Tower_Frost,
         EffectId = EffectId.UnitFreezed,
-        Duration = 16,
+        Duration = 12,
         DebuffValue = 2
       },
       new Skill
@@ -245,15 +245,22 @@ namespace Towerland.GameServer.Logic.Factories
         Id = SkillId.PoisonsUnit,
         GameObjectType = GameObjectType.Tower_Poisoning,
         EffectId = EffectId.UnitPoisoned,
-        Duration = 20,
+        Duration = 15,
         DebuffValue = 0.05,
       },
       new Skill
       {
         Id = SkillId.ExtraDamageUnit,
-        GameObjectType = GameObjectType.Tower_Magic,
+        GameObjectType = GameObjectType.Tower_FortressWatchtower,
         ProbabilityPercent = 10,
-        BuffValue = 10
+        BuffValue = 5
+      },
+      new Skill
+      {
+        Id = SkillId.BlocksUnitSkills,
+        GameObjectType = GameObjectType.Tower_Magic,
+        EffectId = EffectId.SkillsDisabled,
+        Duration = 6,
       },
       new Skill
       {
@@ -274,13 +281,6 @@ namespace Towerland.GameServer.Logic.Factories
         BuffValue = 10,
         DebuffValue = 10,
         WaitTicks = 3,
-      },
-      new Skill
-      {
-        Id = SkillId.BlocksUnitSkills,
-        GameObjectType = GameObjectType.Tower_FortressWatchtower,
-        EffectId = EffectId.SkillsDisabled,
-        Duration = 6,
       },
       new Skill
       {
