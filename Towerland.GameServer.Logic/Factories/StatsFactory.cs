@@ -15,7 +15,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Skeleton,
         Damage = 5,
-        Health = 100,
+        Health = 150,
         MovementPriority = UnitStats.MovementPriorityType.Fastest,
         Speed = 2,
         Cost = 50,
@@ -35,7 +35,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Orc,
         Damage = 15,
-        Health = 330,
+        Health = 430,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
         Cost = 180,
@@ -45,7 +45,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Goblin,
         Damage = 15,
-        Health = 350,
+        Health = 400,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 250,
@@ -56,7 +56,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Dragon,
         Damage = 25,
-        Health = 640,
+        Health = 750,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
         Cost = 450,
@@ -67,7 +67,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Demon,
         Damage = 30,
-        Health = 700,
+        Health = 800,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
         Cost = 800,
@@ -78,7 +78,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_Necromancer,
         Damage = 10,
-        Health = 500,
+        Health = 660,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 500,
@@ -89,7 +89,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_BarbarianMage,
         Damage = 15,
-        Health = 550,
+        Health = 700,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 750,

@@ -202,7 +202,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
             }
             else if (mbInfo.MonsterPlayers.Count == 0)
             {
-              winSide = PlayerSide.Monsters;
+              winSide = PlayerSide.Towers;
             }
             else
             {
