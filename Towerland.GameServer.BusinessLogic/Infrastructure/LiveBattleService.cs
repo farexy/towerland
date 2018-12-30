@@ -335,6 +335,9 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       var resolver = new FieldStateActionResolver(f);
       foreach (var tick in ticks)
       {
+        f.State.Units.ForEach(DecrementWaitTicks);
+        f.State.Towers.ForEach(DecrementWaitTicks);
+        
         if (tick.HasNoActions)
         {
           continue;
@@ -343,9 +346,6 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         {
           try
           {
-            f.State.Units.ForEach(DecrementWaitTicks);
-            f.State.Towers.ForEach(DecrementWaitTicks);
-            
             resolver.Resolve(action);
           }
           catch (Exception e)
