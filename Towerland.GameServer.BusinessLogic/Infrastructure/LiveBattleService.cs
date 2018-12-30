@@ -147,7 +147,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         var fieldState = fieldSerialized.State;
         var ticks = fieldSerialized.Ticks.Take(curTick);
 
-        await Task.Run(() => ResolveActions(fieldState, ticks, _statsLibrary));
+        ResolveActions(fieldState, ticks, _statsLibrary);
 
         if (command.UnitCreationOptions != null)
         {
@@ -343,6 +343,9 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         {
           try
           {
+            f.State.Units.ForEach(DecrementWaitTicks);
+            f.State.Towers.ForEach(DecrementWaitTicks);
+            
             resolver.Resolve(action);
           }
           catch (Exception e)
@@ -350,6 +353,19 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
             Logger.Error(e);
           }
         }
+      }
+    }
+
+    private static void DecrementWaitTicks(GameObject gameObject)
+    {
+      if (gameObject.WaitTicks > 0)
+      {
+        gameObject.WaitTicks--;
+      }
+
+      if (gameObject.Effect.Duration > 0)
+      {
+        gameObject.Effect.Duration--;
       }
     }
   }

@@ -38,11 +38,8 @@ namespace Towerland.GameServer.Logic.Calculators
 
       public GameTick[] CalculateActionsByTicks()
       {
-        while (Field.State.Castle.Health > 0
-          && Field.State.Units.Any())
+        while (Field.State.Castle.Health > 0 && Field.State.Units.Any())
         {
-          _battleContext.CurrentTick.Clear();
-
           GetUnitActions();
           GetTowerActions();
           GetTickEndActions();
@@ -52,6 +49,7 @@ namespace Towerland.GameServer.Logic.Calculators
           RemoveGameObjects();
 
           Ticks.Add(_battleContext.CurrentTick.ToList());
+          _battleContext.CurrentTick.Clear();
         }
         GetActionsAfterCalculation();
 
