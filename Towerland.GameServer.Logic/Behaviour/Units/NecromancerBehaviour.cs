@@ -53,7 +53,8 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       {
         ActionId = ActionId.UnitAppliesSkill,
         UnitId = Unit.GameId,
-        WaitTicks = skill.WaitTicks
+        WaitTicks = skill.WaitTicks,
+        SkillId = skill.Id
       });
       Unit.WaitTicks += skill.WaitTicks;
 

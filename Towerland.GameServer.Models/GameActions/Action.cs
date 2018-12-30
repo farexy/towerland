@@ -14,6 +14,7 @@ namespace Towerland.GameServer.Models.GameActions
     [JsonProperty("d")] public int Damage;
     [JsonProperty("w")] public int WaitTicks;
     [JsonProperty("m")] public int Money;
+    [JsonProperty("s")] public SkillId SkillId;
     [JsonProperty("e")] public EffectId EffectId;
     [JsonProperty("ev")] public double EffectValue;
     [JsonProperty("gu")] public Unit GoUnit;

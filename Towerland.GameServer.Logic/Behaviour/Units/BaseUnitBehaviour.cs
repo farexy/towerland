@@ -100,14 +100,14 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
 
     protected virtual int CalculateSpeed()
     {
-      return Unit.Effect.Id == EffectId.UnitFreezed
+      return Unit.Effect.Type == SpecialEffect.EffectType.SpeedDebuff
         ? (int)(Stats.Speed * Unit.Effect.EffectValue)
         : Stats.Speed;
     }
 
     public virtual void ApplyPostActionEffect()
     {
-      if (Unit.Effect.Id == EffectId.UnitPoisoned)
+      if (Unit.Effect.Type == SpecialEffect.EffectType.ConstantDamageDebuff)
       {
         var damage = Unit.Health * Unit.Effect.EffectValue;
         if (Unit.Health - damage <= 0)

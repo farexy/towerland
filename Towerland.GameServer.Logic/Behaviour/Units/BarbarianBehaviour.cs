@@ -30,6 +30,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         {
           ActionId = ActionId.UnitAppliesSkill,
           UnitId = Unit.GameId,
+          SkillId = Stats.Skill
         });
       }
     }
