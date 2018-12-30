@@ -39,11 +39,11 @@ namespace Towerland.GameServer.Config
       MySqlDialect.Provider.StringSerializer = new JsonStringSerializer();
       services.AddSingleton<IDbConnectionFactory>(new OrmLiteConnectionFactory(Configuration.GetConnectionString("Towerland"), MySqlDialect.Provider));
       services.AddSingleton<IProvider<LiveBattleModel>, BattleInMemoryProvider>();
-//
-      services.AddTransient<IBattleRepository, BattleRepository>();
-      services.AddTransient<IUserRepository, UserRepository>();
-//      services.AddTransient<IBattleRepository, FakeBattleRepository>();
-//      services.AddTransient<IUserRepository, FakeUserRepository>();
+
+      //services.AddTransient<IBattleRepository, BattleRepository>();
+      //services.AddTransient<IUserRepository, UserRepository>();
+      services.AddTransient<IBattleRepository, FakeBattleRepository>();
+      services.AddTransient<IUserRepository, FakeUserRepository>();
 
       services.AddScoped<IUserService, UserService>();
 

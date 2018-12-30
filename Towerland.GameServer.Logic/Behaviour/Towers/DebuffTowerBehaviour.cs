@@ -14,9 +14,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
     protected override void ApplyEffectOnAttack(Unit unit)
     {
       var skill = StatsLibrary.GetSkill(Stats.Skill, Stats.Type);
-
-      unit.Effect = new SpecialEffect{Id = skill.EffectId, Duration = skill.Duration, EffectValue = skill.DebuffValue};
-      BattleContext.CurrentTick.Add(new GameAction
+      BattleContext.AddAction(new GameAction
       {
         ActionId = ActionId.UnitGetsEffect,
         UnitId = unit.GameId,

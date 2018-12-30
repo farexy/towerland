@@ -43,8 +43,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         Unit.Effect.Duration -= 1;
         if (Unit.Effect.Duration == 0)
         {
-          Unit.Effect = SpecialEffect.Empty;
-          BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.UnitEffectCanceled, UnitId = Unit.GameId});
+          BattleContext.AddAction(new GameAction {ActionId = ActionId.UnitEffectCanceled, UnitId = Unit.GameId});
         }
       }
 
@@ -68,9 +67,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
     {
       var nextPoint = path.GetNext(Unit.Position);
       var speed = CalculateSpeed();
-      Unit.Position = nextPoint;
-      Unit.WaitTicks = speed;
-      BattleContext.CurrentTick.Add(new GameAction
+      BattleContext.AddAction(new GameAction
       {
         ActionId = ActionId.UnitMoves,
         Position = nextPoint,
@@ -87,15 +84,13 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         UnitId = Unit.GameId,
         Damage = Stats.Damage
       };
-      BattleContext.CurrentTick.Add(attackAction);
-      Field.State.Castle.Health -= Stats.Damage;
+      BattleContext.AddAction(attackAction);
       BattleContext.UnitsToRemove.Add(Unit.GameId);
 
       var moneyCalc = new MoneyCalculator(StatsLibrary);
       var unitReward = moneyCalc.GetUnitReward(Field, attackAction);
-      Field.State.MonsterMoney += unitReward;
 
-      BattleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
+      BattleContext.AddAction(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
     }
 
     protected virtual int CalculateSpeed()
@@ -115,8 +110,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
           damage = Unit.Health - 1;
         }
 
-        Unit.Health -= (int)damage;
-        BattleContext.CurrentTick.Add(new GameAction
+        BattleContext.AddAction(new GameAction
         {
           ActionId = ActionId.UnitReceivesDamage, UnitId = Unit.GameId, Damage = (int)damage
         });

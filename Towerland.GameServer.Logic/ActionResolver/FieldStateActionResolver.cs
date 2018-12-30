@@ -49,11 +49,11 @@ namespace Towerland.GameServer.Logic.ActionResolver
 
         case ActionId.UnitAppears:
           _field.AddGameObject(action.GoUnit);
-          _field.State.RevivedUnits.NewIds.Add(action.UnitId);
           break;
 
         case ActionId.UnitRevives:
           _field.State.RevivedUnits.OldIds.Add(action.UnitId);
+          _field.State.RevivedUnits.NewIds.Add(action.UnitId2);
           break;
 
         case ActionId.UnitAppliesSkill:

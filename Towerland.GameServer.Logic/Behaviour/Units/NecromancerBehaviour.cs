@@ -33,30 +33,21 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
         new CreationOptions {GameId = newUnitId, Position = action.Position, PathId = pathId});
 
       BattleContext.UnitsToAdd.Add(skeleton);
-      Field.State.RevivedUnits.OldIds.Add(action.UnitId);
-      Field.State.RevivedUnits.NewIds.Add(newUnitId);
 
-      BattleContext.CurrentTick.Add(new GameAction
+      BattleContext.AddAction(new GameAction
       {
         ActionId = ActionId.UnitRevives,
         UnitId = action.UnitId,
+        UnitId2 = newUnitId,
         Position = action.Position
       });
-      BattleContext.CurrentTick.Add(new GameAction
-      {
-        ActionId = ActionId.UnitAppears,
-        UnitId = newUnitId,
-        Position = action.Position,
-        GoUnit = (Unit) skeleton.Clone()
-      });
-      BattleContext.CurrentTick.Add(new GameAction
+      BattleContext.AddAction(new GameAction
       {
         ActionId = ActionId.UnitAppliesSkill,
         UnitId = Unit.GameId,
         WaitTicks = skill.WaitTicks,
         SkillId = skill.Id
       });
-      Unit.WaitTicks += skill.WaitTicks;
 
       return false;
     }

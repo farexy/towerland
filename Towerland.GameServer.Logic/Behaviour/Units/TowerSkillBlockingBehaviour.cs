@@ -20,8 +20,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       var towersInRange = Field.State.Towers.Where(t => GameMath.Distance(Unit.Position, t.Position) < skill.Range);
       foreach (var tower in towersInRange)
       {
-        tower.Effect = new SpecialEffect {Id = skill.EffectId, Duration = skill.Duration};
-        BattleContext.CurrentTick.Add(new GameAction
+        BattleContext.AddAction(new GameAction
         {
           ActionId = ActionId.TowerGetsEffect,
           TowerId = tower.GameId,

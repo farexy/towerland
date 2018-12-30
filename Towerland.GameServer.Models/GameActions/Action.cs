@@ -9,6 +9,7 @@ namespace Towerland.GameServer.Models.GameActions
   {
     [JsonProperty("i")] public ActionId ActionId;
     [JsonProperty("u")] public int UnitId;
+    [JsonProperty("u2")] public int UnitId2;
     [JsonProperty("t")] public int TowerId;
     [JsonProperty("p")] public Point Position;
     [JsonProperty("d")] public int Damage;

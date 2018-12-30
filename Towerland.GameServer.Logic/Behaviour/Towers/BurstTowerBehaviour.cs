@@ -22,9 +22,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       var targetPoint = targetFinder.FindBurstTarget(Field, Tower);
       if (targetPoint.HasValue && targetPoint.Value != Field.StaticData.Finish)
       {
-        Tower.WaitTicks = Stats.AttackSpeed;
-
-        BattleContext.CurrentTick.Add(new GameAction
+        BattleContext.AddAction(new GameAction
         {
           ActionId = ActionId.TowerAttacksPosition,
           TowerId = Tower.GameId,
@@ -50,28 +48,24 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
 
           ApplyEffectOnAttack(unit);
 
-          BattleContext.CurrentTick.Add(new GameAction
+          BattleContext.AddAction(new GameAction
           {
             ActionId = ActionId.UnitReceivesDamage,
             UnitId = unit.GameId,
             Damage = damage
           });
-          unit.Health -= damage;
-          if (unit.Health <= 0)
+          if (unit.Health - damage <= 0)
           {
             var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = Tower.GameId, UnitId = unit.GameId, Position = unit.Position};
 
-            BattleContext.CurrentTick.Add(killAction);
+            BattleContext.AddAction(killAction);
 
             var moneyCalc = new MoneyCalculator(StatsLibrary);
             var towerReward = moneyCalc.GetTowerReward(Field, killAction);
             var unitReward = moneyCalc.GetUnitReward(Field, killAction);
 
-            Field.State.MonsterMoney += unitReward;
-            Field.State.TowerMoney += towerReward;
-
-            BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.TowerPlayerReceivesMoney, Money = towerReward});
-            BattleContext.CurrentTick.Add(new GameAction {ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
+            BattleContext.AddAction(new GameAction {ActionId = ActionId.TowerPlayerReceivesMoney, Money = towerReward});
+            BattleContext.AddAction(new GameAction {ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
 
             BattleContext.UnitsToRemove.Add(unit.GameId);
           }

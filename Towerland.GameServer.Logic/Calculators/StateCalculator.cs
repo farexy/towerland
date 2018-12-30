@@ -42,18 +42,13 @@ namespace Towerland.GameServer.Logic.Calculators
           && Field.State.Units.Any())
         {
           _battleContext.CurrentTick.Clear();
-          _battleContext.UnitsToRemove.Clear();
-          _battleContext.UnitsToAdd.Clear();
-          _battleContext.TowersToRemove.Clear();
-          _battleContext.TowersToAdd.Clear();
 
           GetUnitActions();
           GetTowerActions();
           GetTickEndActions();
           AddMoneyByTimer();
 
-          Field.AddMany(_battleContext.UnitsToAdd);
-          Field.AddMany(_battleContext.TowersToAdd);
+          AddGameObjects();
           RemoveGameObjects();
 
           Ticks.Add(_battleContext.CurrentTick.ToList());
@@ -127,6 +122,26 @@ namespace Towerland.GameServer.Logic.Calculators
           _behaviourFactory.CreateTowerBehaviour(tower).TickEndAction();
         }
       }
+      
+      private void AddGameObjects()
+      {
+        _battleContext.CurrentTick.AddRange(_battleContext.UnitsToAdd.Select(unit =>
+          new GameAction
+          {
+            ActionId = ActionId.UnitAppears, UnitId = unit.GameId, GoUnit = unit
+          }));
+        _battleContext.CurrentTick.AddRange(_battleContext.TowersToAdd.Select(tower =>
+          new GameAction
+          {
+            ActionId = ActionId.TowerAppears, TowerId = tower.GameId, GoTower = tower
+          }));
+
+        Field.AddMany(_battleContext.UnitsToAdd);
+        Field.AddMany(_battleContext.TowersToAdd);  
+        
+        _battleContext.UnitsToAdd.Clear();
+        _battleContext.TowersToAdd.Clear();
+      }
 
       private void RemoveGameObjects()
       {
@@ -143,6 +158,9 @@ namespace Towerland.GameServer.Logic.Calculators
 
         Field.RemoveMany(_battleContext.UnitsToRemove);
         Field.RemoveMany(_battleContext.TowersToRemove);
+        
+        _battleContext.UnitsToRemove.Clear();
+        _battleContext.TowersToRemove.Clear();
       }
 
       private void AddMoneyByTimer()
