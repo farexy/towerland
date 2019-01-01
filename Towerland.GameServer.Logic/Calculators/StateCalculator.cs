@@ -54,13 +54,15 @@ namespace Towerland.GameServer.Logic.Calculators
         GetActionsAfterCalculation();
 
         var result = new GameTick[Ticks.Count];
+        var time = DateTime.UtcNow + TimeSpan.FromSeconds(FieldStaticData.TickSecond);
         for (int i = 0; i < Ticks.Count; i++)
         {
           result[i] = new GameTick
           {
-            RelativeTime = i,
+            RelativeTime = time,
             Actions = Ticks[i]
           };
+          time += TimeSpan.FromSeconds(FieldStaticData.TickSecond);
         }
         return result;
       }

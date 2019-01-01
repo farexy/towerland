@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 namespace Towerland.GameServer.Models.GameField
 {
   public class FieldStaticData
-  {    
+  {
+    public const float TickSecond = 0.5f;
+    
     public FieldStaticData(FieldCell[,] cells, Point start, Point finish)
     {
       Start = start;

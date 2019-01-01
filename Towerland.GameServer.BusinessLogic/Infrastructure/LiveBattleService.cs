@@ -145,9 +145,8 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       {
         var fieldSerialized = _provider.Find(command.BattleId);
         var fieldState = fieldSerialized.State;
-        var ticks = fieldSerialized.Ticks.Take(curTick);
 
-        ResolveActions(fieldState, ticks, _statsLibrary);
+        ResolveActions(fieldState, fieldSerialized.Ticks);
 
         if (command.UnitCreationOptions != null)
         {
@@ -221,7 +220,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
           {
             return;
           }
-          ResolveActions(battle.State, battle.Ticks, _statsLibrary);
+          ResolveActions(battle.State, battle.Ticks);
           winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
         }
 
@@ -326,7 +325,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _battles.TryRemove(battleId, out _);
     }
 
-    private static void ResolveActions(Field f, IEnumerable<GameTick> ticks, IStatsLibrary statsLibrary)
+    private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
     {
       if (ticks == null)
       {
@@ -352,6 +351,11 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
           {
             Logger.Error(e);
           }
+        }
+
+        if (tick.RelativeTime >= DateTime.UtcNow)
+        {
+          break;
         }
       }
     }
