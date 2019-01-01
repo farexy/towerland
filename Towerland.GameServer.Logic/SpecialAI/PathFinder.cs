@@ -1,12 +1,129 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Towerland.GameServer.Logic.Extensions;
 using Towerland.GameServer.Models.GameField;
 
 namespace Towerland.GameServer.Logic.SpecialAI
 {
   public class PathFinder
   {
+    private readonly FieldStaticData _fieldStaticData;
+    
+    #region New
+
+    public PathFinder(FieldStaticData fieldStaticData)
+    {
+      _fieldStaticData = fieldStaticData;
+    }
+
+    public void AddPath(IList<Point> keyPoints)
+    {
+      var path = new List<Point>();
+      for(int i = 0; i < keyPoints.Count; i++)
+      {
+        if (i == keyPoints.Count - 1)
+        {
+          path.Add(keyPoints[i]); // last point
+        }
+        else
+        {
+          path.AddRange(PathFromPointToPoint(keyPoints[i], keyPoints[i + 1]));
+        }
+      }
+      _fieldStaticData.Path = new List<Path>(_fieldStaticData.Path ?? Enumerable.Empty<Path>())
+        .AddValue(new Path(path))
+        .ToArray();
+    }
+
+    //this method is used to find the random way from zombie to some random point
+    private List<Point> PathFromPointToPoint(Point start, Point finish)
+    {
+      var width = _fieldStaticData.Width;
+      var height = _fieldStaticData.Height;
+      int[,] map = new int[_fieldStaticData.Width, _fieldStaticData.Height];
+      int wallIndicator = int.MaxValue; //represents the wall
+      int notVisited = -1; // -1 represents the cell, where we were not 
+      int i, j, step = 0;
+
+      //fill the cells with the values denending on whether it's wall or floor
+      for (j = 0; j < width; j++)
+      for (i = 0; i < height; i++)
+      {
+        if (_fieldStaticData.Cells[j, i].Object.In(FieldObject.Entrance, FieldObject.Road, FieldObject.Castle))
+          map[j, i] = notVisited;
+        else
+          map[j, i] = wallIndicator;
+      }
+
+      map[finish.X, finish.Y] = 0; // begin the wave from end point
+
+      bool pointFound = false;
+
+      //we watch the cells of maze while target point not found
+      while (!pointFound)
+      {
+        for (i = 0; i < width; i++)
+        for (j = 0; j < height; j++)
+        {
+          if (map[i, j] == step)
+          {
+            if (i != 0 && map[i - 1, j] != wallIndicator && map[i - 1, j] == notVisited)
+              map[i - 1, j] = step + 1;
+            if (j != 0 && map[i, j - 1] != wallIndicator && map[i, j - 1] == notVisited)
+              map[i, j - 1] = step + 1;
+            if (i != width - 1 && map[i + 1, j] != wallIndicator && map[i + 1, j] == notVisited)
+              map[i + 1, j] = step + 1;
+            if (j != height - 1 && map[i, j + 1] != wallIndicator && map[i, j + 1] == notVisited)
+              map[i, j + 1] = step + 1;
+          }
+        }
+
+        step++;
+
+        if (map[start.X, start.Y] != -1) //if we found target point - we may stop the algorithm
+          pointFound = true;
+      }
+
+      var points = new List<Point>();
+      var curX = start.X;
+      var curY = start.Y;
+      var curValue = map[curX, curY];
+      while (curValue > 0)
+      {
+        points.Add(new Point(curX, curY));
+        if (curX > 0 && map[curX - 1, curY] == curValue - 1)
+        {
+          curX--;
+          curValue--;
+          continue;
+        }
+        if (curY > 0 && map[curX, curY - 1] == curValue - 1)
+        {
+          curY--;
+          curValue--;
+          continue;
+        }
+        if (curX < width - 1 && map[curX + 1, curY] == curValue - 1)
+        {
+          curX++;
+          curValue--;
+          continue;
+        }
+        if (curY < height - 1 && map[curX, curY + 1] == curValue - 1)
+        {
+          curY++;
+          curValue--;
+        }
+      }
+
+      return points;
+    }
+    
+    #endregion
+    
+    #region Old
+    
     private const int GroundIndicator = -10;
     private static readonly Point NullPoint = new Point(-1, -1);
     private static int _forkPool = 0;
@@ -501,5 +618,7 @@ namespace Towerland.GameServer.Logic.SpecialAI
       public bool IsRoad { get { return _cell.Object == FieldObject.Road; }}
       public bool NotVisited { get { return Direction == Direction.None; } }
     } 
+    
+    #endregion
   }
 }

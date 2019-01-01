@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
 using Towerland.GameServer.Logic.Factories;
+using Towerland.GameServer.Logic.SpecialAI;
 using Towerland.GameServer.Models.GameField;
 using Xunit;
 
@@ -8,9 +10,34 @@ namespace Towerland.GameServer.Logic.UnitTests
     public class FieldTest
     {
         [Fact]
-        public void TestFieldFactory()
+        public void TestClassicField()
         {
             var field = new FieldFactoryStub().ClassicField;
+            
+            Assert.NotEmpty(field.StaticData.Path);
+            Assert.NotEmpty(field.StaticData.Cells);
+
+            foreach (var path in field.StaticData.Path)
+            {
+                CheckPath(path, field);
+            }
+        }
+        
+        [Fact]
+        public void TestFieldFactoryFactory()
+        {
+            var field = new FieldFactoryStub()
+            .Create(new[,]
+            {
+                {1,2,1,1,1},
+                {1,0,0,0,1},
+                {1,0,1,0,1},
+                {1,0,1,0,1},
+                {1,3,0,0,1},
+            });
+            var pathFinder = new PathFinder(field.StaticData);
+            pathFinder.AddPath(new List<Point>{field.StaticData.Start, field.StaticData.Finish});
+            pathFinder.AddPath(new List<Point>{field.StaticData.Start, new Point(3, 3), field.StaticData.Finish});
             
             Assert.NotEmpty(field.StaticData.Path);
             Assert.NotEmpty(field.StaticData.Cells);

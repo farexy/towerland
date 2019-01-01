@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Towerland.GameServer.Logic.Interfaces;
+using Towerland.GameServer.Logic.SpecialAI;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
 
@@ -13,8 +14,7 @@ namespace Towerland.GameServer.Logic.Factories
 
         private static Field _classicField;
 
-
-        private static readonly int[,] Cells2 =
+        private static readonly int[,] Cells1 =
         {
       {1,1,1,1,1,1,1,1,6,1,1,1,1,1,1,1,1,1},
       {3,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1},
@@ -96,46 +96,46 @@ namespace Towerland.GameServer.Logic.Factories
                     return _classicField;
                 }
 
-                var cells = new FieldCell[Cells2.GetLength(0), Cells2.GetLength(1)];
-
-                for (int i = 0; i < Cells2.GetLength(0); i++)
-                {
-                    for (int j = 0; j < Cells2.GetLength(1); j++)
-                    {
-                        cells[i, j] = new FieldCell
-                        {
-                            Position = new Point(i, j),
-                            Object = (FieldObject) Cells2[i, j]
-                        };
-                    }
-                }
-
-                _classicField = new Field(cells)
-                {
-                    State =
-                    {
-                        Castle = new Castle
-                        {
-                            Health = 100,
-                            Position = new Point(7, 9)
-                        },
-                        MonsterMoney = 120,
-                        TowerMoney = 120,
-                    },
-                    StaticData =
-                    {
-                        EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes),
-                        Path = new[]
-                        {
-                            new Path(Path1.Reverse().ToArray()), new Path(Path2.Reverse().ToArray()),
-                            new Path(Path3.Reverse().ToArray()), new Path(Path4.Reverse().ToArray()),
-                            new Path(Path5.Reverse().ToArray()),
-                        }
-                    }
-                };
-
+                _classicField = Create(Cells1);
+                var pathFinder = new PathFinder(_classicField.StaticData);
+                
+                pathFinder.AddPath(Path1.Reverse().ToArray());
+                pathFinder.AddPath(Path2.Reverse().ToArray());
+                pathFinder.AddPath(Path3.Reverse().ToArray());
+                pathFinder.AddPath(Path4.Reverse().ToArray());
+                pathFinder.AddPath(Path5.Reverse().ToArray());
+                
                 return _classicField;
             }
+        }
+
+        public Field Create(int[,] map)
+        {
+            var cells = new FieldCell[map.GetLength(0), map.GetLength(1)];
+
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    cells[i, j] = new FieldCell
+                    {
+                        Position = new Point(i, j),
+                        Object = (FieldObject) map[i, j]
+                    };
+                }
+            }
+
+            var field = new Field(cells);
+            field.State.Castle = new Castle
+                {
+                    Health = 100,
+                    Position = field.StaticData.Finish
+                };
+            field.State.TowerMoney = 120;
+            field.State.MonsterMoney = 120;
+            field.StaticData.EndTimeUtc = DateTime.UtcNow.AddMinutes(BattleDurationMinutes);
+
+            return field;
         }
 
         public Field GenerateNewField(int width, int height, Point startPoint, Point endPoint)

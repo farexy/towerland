@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
@@ -61,8 +62,27 @@ namespace Towerland.Logic.Test
       Console.WriteLine("tower : " + f.State.TowerMoney);
     }
 
+    private static void TestFieldFactory()
+    {
+      var field = new FieldFactoryStub()
+        .Create(new[,]
+        {
+          {1,2,1,1,1},
+          {1,0,0,0,1},
+          {1,0,1,0,1},
+          {1,0,1,0,1},
+          {1,3,0,0,1},
+        });
+      var pathFinder = new PathFinder(field.StaticData);
+      pathFinder.AddPath(new List<Point>{field.StaticData.Start, field.StaticData.Finish});
+      pathFinder.AddPath(new List<Point>{field.StaticData.Start, new Point(3, 3), field.StaticData.Finish});
+      
+    }
+
     static void Main(string[] args)
     {
+      TestFieldFactory();
+      
       var f = new FieldFactoryStub().ClassicField;
 
       var statsStub = new StatsLibrary(new StatsFactory());
