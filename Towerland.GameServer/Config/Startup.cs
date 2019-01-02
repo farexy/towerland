@@ -57,7 +57,7 @@ namespace Towerland.GameServer.Config
       services.AddTransient<ICheatCommandManager, CheatCommandManager>();
       services.AddTransient<IStatsProvider, StatsFactory>();
       services.AddTransient<ICheatCommandManager, CheatCommandManager>();
-      services.AddTransient<IFieldFactory, FieldFactoryStub>();
+      services.AddTransient<IFieldStorage, FieldStorageStub>();
       services.AddTransient<IPathChooser, PathChooser>();
       services.AddTransient<IStateChangeRecalculator, StateChangeRecalculator>();
       services.AddTransient<IGameObjectFactory<Unit>, UnitFactory>();

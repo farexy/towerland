@@ -6,6 +6,7 @@ namespace Towerland.GameServer.Models.GameField
   public class FieldStaticData
   {
     public const float TickSecond = 0.5f;
+    public const int BattleDurationMinutes = 6;
     
     public FieldStaticData(FieldCell[,] cells, Point start, Point finish)
     {
@@ -16,6 +17,7 @@ namespace Towerland.GameServer.Models.GameField
     
     [JsonProperty("p")] public Path[] Path { set; get; }
     [JsonProperty("m")] public FieldCell[,] Cells { private set; get; }
+    [JsonProperty("i")] public FieldTheme InterfaceTheme { set; get; }
     
     public Point Start { get; private set; }
     public Point Finish { get; private set; }

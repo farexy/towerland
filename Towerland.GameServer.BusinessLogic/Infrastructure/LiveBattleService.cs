@@ -31,7 +31,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
     private readonly IUserRepository _userRepository;
     private readonly IProvider<LiveBattleModel> _provider;
     private readonly IStateChangeRecalculator _recalculator;
-    private readonly IFieldFactory _fieldFactory;
+    private readonly IFieldStorage _fieldStorage;
     private readonly IStatsLibrary _statsLibrary;
     private readonly ICheatCommandManager _cheatCommandManager;
     private readonly IMapper _mapper;
@@ -41,7 +41,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       IUserRepository userRepo,
       IProvider<LiveBattleModel> provider,
       IStateChangeRecalculator recalc,
-      IFieldFactory fieldFactory,
+      IFieldStorage fieldStorage,
       IStatsLibrary statsLibrary,
       ICheatCommandManager cheatCommandManager,
       IMapper mapper)
@@ -51,7 +51,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _userRepository = userRepo;
       _provider = provider;
       _recalculator = recalc;
-      _fieldFactory = fieldFactory;
+      _fieldStorage = fieldStorage;
       _statsLibrary = statsLibrary;
       _cheatCommandManager = cheatCommandManager;
       _mapper = mapper;
@@ -255,7 +255,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       var newBattle = new LiveBattleModel
       {
         Id = battleId,
-        State = (Field) _fieldFactory.ClassicField.Clone(),
+        State = (Field) _fieldStorage.Get(0).Clone(),
         Ticks = Enumerable.Empty<GameTick>()
       };
       _provider.Create(newBattle);
@@ -278,7 +278,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       var newBattle = new LiveBattleModel
       {
         Id = battleId,
-        State = (Field) _fieldFactory.ClassicField.Clone(),
+        State = (Field) _fieldStorage.Get(0).Clone(),
         Ticks = Enumerable.Empty<GameTick>(),
         MultiBattleInfo = mbInfo
       };

@@ -64,7 +64,7 @@ namespace Towerland.Logic.Test
 
     private static void TestFieldFactory()
     {
-      var field = new FieldFactoryStub()
+      var field = new FieldFactory()
         .Create(new[,]
         {
           {1,2,1,1,1},
@@ -72,7 +72,7 @@ namespace Towerland.Logic.Test
           {1,0,1,0,1},
           {1,0,1,0,1},
           {1,3,0,0,1},
-        });
+        }, FieldTheme.SunnyGlade);
       var pathFinder = new PathFinder(field.StaticData);
       pathFinder.AddPath(new List<Point>{field.StaticData.Start, field.StaticData.Finish});
       pathFinder.AddPath(new List<Point>{field.StaticData.Start, new Point(3, 3), field.StaticData.Finish});
@@ -83,7 +83,7 @@ namespace Towerland.Logic.Test
     {
       TestFieldFactory();
       
-      var f = new FieldFactoryStub().ClassicField;
+      var f = new FieldStorageStub().Get(0);
 
       var statsStub = new StatsLibrary(new StatsFactory());
       var uFactory = new UnitFactory(statsStub);

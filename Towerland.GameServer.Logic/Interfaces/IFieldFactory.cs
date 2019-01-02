@@ -2,10 +2,9 @@
 
 namespace Towerland.GameServer.Logic.Interfaces
 {
-  public interface IFieldFactory
+  public interface IFieldStorage
   {
-    Field ClassicField { get; }
-    Field Create(int[,] map);
-    Field GenerateNewField(int width, int height, Point startPoint, Point endPoint);
+    Field Get(int index);
+    Field GetRandom();
   }
 }

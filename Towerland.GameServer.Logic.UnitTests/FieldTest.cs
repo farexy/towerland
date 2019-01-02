@@ -12,7 +12,7 @@ namespace Towerland.GameServer.Logic.UnitTests
         [Fact]
         public void TestClassicField()
         {
-            var field = new FieldFactoryStub().ClassicField;
+            var field = new FieldStorageStub().Get(0);
             
             Assert.NotEmpty(field.StaticData.Path);
             Assert.NotEmpty(field.StaticData.Cells);
@@ -26,7 +26,7 @@ namespace Towerland.GameServer.Logic.UnitTests
         [Fact]
         public void TestFieldFactoryFactory()
         {
-            var field = new FieldFactoryStub()
+            var field = new FieldFactory()
             .Create(new[,]
             {
                 {1,2,1,1,1},
@@ -34,7 +34,7 @@ namespace Towerland.GameServer.Logic.UnitTests
                 {1,0,1,0,1},
                 {1,0,1,0,1},
                 {1,3,0,0,1},
-            });
+            }, FieldTheme.SunnyGlade);
             var pathFinder = new PathFinder(field.StaticData);
             pathFinder.AddPath(new List<Point>{field.StaticData.Start, field.StaticData.Finish});
             pathFinder.AddPath(new List<Point>{field.StaticData.Start, new Point(3, 3), field.StaticData.Finish});
