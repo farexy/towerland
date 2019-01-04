@@ -137,8 +137,8 @@ namespace Towerland.GameServer.Logic.Calculators
           }));
 
         Field.AddMany(_battleContext.UnitsToAdd);
-        Field.AddMany(_battleContext.TowersToAdd);  
-        
+        Field.AddMany(_battleContext.TowersToAdd);
+
         _battleContext.UnitsToAdd.Clear();
         _battleContext.TowersToAdd.Clear();
       }
@@ -158,7 +158,7 @@ namespace Towerland.GameServer.Logic.Calculators
 
         Field.RemoveMany(_battleContext.UnitsToRemove);
         Field.RemoveMany(_battleContext.TowersToRemove);
-        
+
         _battleContext.UnitsToRemove.Clear();
         _battleContext.TowersToRemove.Clear();
       }
@@ -168,8 +168,8 @@ namespace Towerland.GameServer.Logic.Calculators
         if (Ticks.Count % 5 == 0)
         {
           var moneyAmount = _moneyCalculator.GetGuaranteedMoneyByTimer(Field);
-          _battleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = (int)(moneyAmount * 1.4)});
-          _battleContext.CurrentTick.Add(new GameAction{ActionId = ActionId.PlayersReceivesMoney, Money = moneyAmount});
+          _battleContext.AddAction(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = (int)(moneyAmount * 2)});
+          _battleContext.AddAction(new GameAction{ActionId = ActionId.TowerPlayerReceivesMoney, Money = moneyAmount});
         }
       }
 

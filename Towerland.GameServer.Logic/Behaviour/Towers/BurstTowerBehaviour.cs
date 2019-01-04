@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Extensions;
@@ -32,14 +33,16 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
           WaitTicks = Stats.AttackSpeed
         });
 
-        var path = Field.StaticData.Path[Field.GetPossiblePathIds(targetPoint.Value).FirstOrDefault()];
-        var prev = Field.StaticData.Start == targetPoint ? Point.NotExisting : path.GetPrevious(targetPoint.Value);
-        var next = path.GetNext(targetPoint.Value);
-        var units = Field.FindTargetsAt(prev, targetPoint.Value, next).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
-//                foreach (var point in _field.GetNeighbourPoints(targetPoint, 1, FieldObject.Road))
-//                {
-//                  units = units.Union(_field.FindUnitsAt(point));
-//                }
+        var points = new HashSet<Point>();
+        foreach (var pathId in Field.GetPossiblePathIds(targetPoint.Value))
+        {
+          var path = Field.StaticData.Path[pathId];
+          points.Add(Field.StaticData.Start == targetPoint ? Point.NotExisting : path.GetPrevious(targetPoint.Value));
+          points.Add(targetPoint.Value);
+          points.Add(path.GetNext(targetPoint.Value));
+        }
+        var units = Field.FindTargetsAt(points.ToArray()).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
+
         foreach (var unit in units)
         {
           var damage = gameCalculator.CalculateDamage(unit.Type, Stats);

@@ -96,7 +96,7 @@ namespace Towerland.GameServer.Logic.SpecialAI
       return possibleTargets[_additiveConvolutionCalculator.FindOptimalVariantIndex(tableToAnalize)];
     }
 
-    private static Point? FindPointWithManyTargets(Field field, Point center, int radius)
+    private Point? FindPointWithManyTargets(Field field, Point center, int radius)
     {
       var x = center.X;
       var y = center.Y;
@@ -125,11 +125,13 @@ namespace Towerland.GameServer.Logic.SpecialAI
       return maxPoint;
     }
 
-    private static void UpdMaxUnitsPoint(Field field, Point p, ref Point? maxPoint, ref int maxCount)
+    private void UpdMaxUnitsPoint(Field field, Point p, ref Point? maxPoint, ref int maxCount)
     {
       if (p != field.StaticData.Finish)
       {
-        var countUnits = field.FindTargetsAt(p).Count();
+        var countUnits = field
+          .FindTargetsAt(p)
+          .Count(u => !_statsLibrary.GetUnitStats(u.Type).IsAir);
         if (countUnits > maxCount)
         {
           maxCount = countUnits;

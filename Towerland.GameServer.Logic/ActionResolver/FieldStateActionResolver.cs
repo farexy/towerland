@@ -22,10 +22,7 @@ namespace Towerland.GameServer.Logic.ActionResolver
       switch (action.ActionId)
       {
         case ActionId.UnitMoves:
-          if (_field[action.UnitId] != null)
-          {
-            _field.MoveUnit(action.UnitId, action.Position, action.WaitTicks);
-          }
+          _field.MoveUnit(action.UnitId, action.Position, action.WaitTicks);
           break;
 
         case ActionId.UnitAttacksCastle:
