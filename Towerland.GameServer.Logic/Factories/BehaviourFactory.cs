@@ -64,6 +64,8 @@ namespace Towerland.GameServer.Logic.Factories
           return new DebuffTowerBehaviour(tower, _battleContext, _statsLibrary);
         case SkillId.ExtraDamageUnit:
           return new ExtraDamageTowerBehaviour(tower, _battleContext, _statsLibrary);
+        case SkillId.ShurikenAttack:
+          return new ShurikenAttackBehaviour(tower, _battleContext, _statsLibrary);
         default:
           return new BaseTowerBehaviour(tower, _battleContext, _statsLibrary);
       }

@@ -18,6 +18,8 @@
     TowerCollapses = 31,
     
     TowerAppears = 41,
+    
+    ShurikenAttacks = 81,
 
     Unit = 100,
     UnitMoves = 101,

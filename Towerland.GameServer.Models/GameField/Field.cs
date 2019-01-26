@@ -145,6 +145,11 @@ namespace Towerland.GameServer.Models.GameField
             return _objects.ContainsKey(id);
         }
 
+        public Path GetPath(int pathId)
+        {
+            return StaticData.Path[pathId];
+        }
+
         public object Clone()
         {
             var clonedObjects = _objects.ToDictionary(item => item.Key, item => (GameObject) item.Value.Clone());

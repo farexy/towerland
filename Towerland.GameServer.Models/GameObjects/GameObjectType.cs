@@ -24,6 +24,7 @@
     Tower_FortressWatchtower = 104,
     Tower_Magic = 105,
     Tower_Poisoning = 106,
+    Tower_Orcs = 107,
 
     Unit = 1000,
     Unit_Skeleton = 1001,

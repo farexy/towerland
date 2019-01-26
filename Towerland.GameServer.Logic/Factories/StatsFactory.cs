@@ -169,7 +169,19 @@ namespace Towerland.GameServer.Logic.Factories
         Cost = 400,
         Skill = SkillId.PoisonsUnit,
         SpawnType = TowerStats.TowerSpawnType.Ground
-      }
+      },
+      new TowerStats
+      {
+        Type = GameObjectType.Tower_Orcs,
+        TargetPriority = TowerStats.AttackPriority.Random,
+        Attack = TowerStats.AttackType.Usual,
+        AttackSpeed = 5,
+        Damage = 40,
+        Range = 4,
+        Cost = 450,
+        Skill = SkillId.ShurikenAttack,
+        SpawnType = TowerStats.TowerSpawnType.Ground
+      },
     };
 
     private DefenceCoeff[] _defenceCoeffs =
@@ -294,6 +306,11 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Id = SkillId.AirUnit,
         GameObjectType = GameObjectType.Unit_Dragon
+      },
+      new Skill
+      {
+        Id = SkillId.ShurikenAttack,
+        GameObjectType = GameObjectType.Tower_Orcs
       }, 
     };
 

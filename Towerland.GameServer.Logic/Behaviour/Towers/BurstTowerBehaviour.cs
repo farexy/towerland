@@ -19,7 +19,6 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
     public override void DoAction()
     {
       var targetFinder = new TargetFinder(StatsLibrary);
-      var gameCalculator = new GameCalculator(StatsLibrary);
 
       var targetPoint = targetFinder.FindBurstTarget(Field, Tower);
       if (targetPoint.HasValue && targetPoint.Value != Field.StaticData.Finish)
@@ -45,34 +44,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
 
         foreach (var unit in units)
         {
-          var damage = gameCalculator.CalculateDamage(unit.Type, Stats);
-
-          if (damage == 0)
-            continue;
-
-          ApplyEffectOnAttack(unit);
-
-          BattleContext.AddAction(new GameAction
-          {
-            ActionId = ActionId.UnitReceivesDamage,
-            UnitId = unit.GameId,
-            Damage = damage
-          });
-          if (unit.Health - damage <= 0)
-          {
-            var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = Tower.GameId, UnitId = unit.GameId, Position = unit.Position};
-
-            BattleContext.AddAction(killAction);
-
-            var moneyCalc = new MoneyCalculator(StatsLibrary);
-            var towerReward = moneyCalc.GetTowerReward(Field, killAction);
-            var unitReward = moneyCalc.GetUnitReward(Field, killAction);
-
-            BattleContext.AddAction(new GameAction {ActionId = ActionId.TowerPlayerReceivesMoney, Money = towerReward});
-            BattleContext.AddAction(new GameAction {ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
-
-            BattleContext.UnitsToRemove.Add(unit.GameId);
-          }
+          DamageUnit(unit);
         }
       }
     }

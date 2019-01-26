@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
 using Towerland.GameServer.Models.Exceptions;
@@ -46,7 +45,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       {
         throw new LogicException("Not found");
       }
-      _battles.TryRemove(id, out var _);
+      _battles.TryRemove(id, out _);
     }
 
     public void Clear()

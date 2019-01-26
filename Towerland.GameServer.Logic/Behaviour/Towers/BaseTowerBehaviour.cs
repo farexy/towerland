@@ -59,7 +59,6 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       if (targetId.HasValue)
       {
         var unit = (Unit) Field[targetId.Value];
-        var damage = CalculateDamage(unit);
 
         BattleContext.AddAction(new GameAction
         {
@@ -69,29 +68,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
           WaitTicks = Stats.AttackSpeed
         });
 
-        ApplyEffectOnAttack(unit);
-
-        BattleContext.AddAction(new GameAction
-        {
-          ActionId = ActionId.UnitReceivesDamage,
-          UnitId = targetId.Value,
-          Damage = damage
-        });
-
-        if (unit.Health - damage <= 0)
-        {
-          var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = Tower.GameId, UnitId = targetId.Value, Position = unit.Position};
-          BattleContext.AddAction(killAction);
-
-          var moneyCalc = new MoneyCalculator(StatsLibrary);
-          var towerReward = moneyCalc.GetTowerReward(Field, killAction);
-          var unitReward = moneyCalc.GetUnitReward(Field, killAction);
-
-          BattleContext.AddAction(new GameAction{ActionId = ActionId.TowerPlayerReceivesMoney, Money = towerReward});
-          BattleContext.AddAction(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
-
-          BattleContext.UnitsToRemove.Add(targetId.Value);
-        }
+        DamageUnit(unit);
       }
     }
 
@@ -101,6 +78,38 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       return gameCalculator.CalculateDamage(unit.Type, Stats);
     }
 
+    protected virtual void DamageUnit(Unit unit)
+    {
+      var damage = CalculateDamage(unit);
+
+      ApplyEffectOnAttack(unit);
+      
+      if (damage == 0)
+        return;
+
+      BattleContext.AddAction(new GameAction
+      {
+        ActionId = ActionId.UnitReceivesDamage,
+        UnitId = unit.GameId,
+        Damage = damage
+      });
+
+      if (unit.Health - damage <= 0)
+      {
+        var killAction = new GameAction {ActionId = ActionId.TowerKills, TowerId = Tower.GameId, UnitId = unit.GameId, Position = unit.Position};
+        BattleContext.AddAction(killAction);
+
+        var moneyCalc = new MoneyCalculator(StatsLibrary);
+        var towerReward = moneyCalc.GetTowerReward(Field, killAction);
+        var unitReward = moneyCalc.GetUnitReward(Field, killAction);
+
+        BattleContext.AddAction(new GameAction{ActionId = ActionId.TowerPlayerReceivesMoney, Money = towerReward});
+        BattleContext.AddAction(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = unitReward});
+
+        BattleContext.UnitsToRemove.Add(unit.GameId);
+      }
+    }
+    
     protected virtual void ApplyEffectOnAttack(Unit unit)
     {
     }
