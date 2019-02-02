@@ -29,9 +29,10 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
                     {
                         BattleContext.AddAction(new GameAction
                         {
-                            ActionId = ActionId.ShurikenAttacks,
+                            ActionId = ActionId.TowerAttacks,
                             TowerId = Tower.GameId,
                             UnitId = unitsEnumerator.Current.GameId,
+                            WaitTicks = Stats.AttackSpeed
                         });
                     }
                     else

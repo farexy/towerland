@@ -54,14 +54,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Towerland.GameServer.Common.Logic\Towerland.GameServer.Common.Logic.csproj">
-      <Project>{593962FA-635E-4834-B239-24F77C33A46A}</Project>
-      <Name>Towerland.GameServer.Common.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Towerland.GameServer.Common.Models\Towerland.GameServer.Common.Models.csproj">
-      <Project>{5150D21C-932F-4CCC-84E6-10C3398FAF8B}</Project>
-      <Name>Towerland.GameServer.Common.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Towerland.GameServer.Logic\Towerland.GameServer.Logic.csproj">
       <Project>{23721929-bed9-4542-9b15-6e4a3eaeec6c}</Project>
       <Name>Towerland.GameServer.Logic</Name>

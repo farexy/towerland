@@ -172,7 +172,7 @@ namespace Towerland.GameServer.Logic.Factories
       },
       new TowerStats
       {
-        Type = GameObjectType.Tower_Orcs,
+        Type = GameObjectType.Tower_Orc,
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Usual,
         AttackSpeed = 5,
@@ -310,7 +310,7 @@ namespace Towerland.GameServer.Logic.Factories
       new Skill
       {
         Id = SkillId.ShurikenAttack,
-        GameObjectType = GameObjectType.Tower_Orcs
+        GameObjectType = GameObjectType.Tower_Orc
       }, 
     };
 
