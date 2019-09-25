@@ -16,7 +16,7 @@ namespace Towerland.GameServer.Logic.Factories
                     cells[i, j] = new FieldCell
                     {
                         Position = new Point(i, j),
-                        Object = (FieldObject) map[i, j]
+                        Object = GetObject(map[i, j])
                     };
                 }
             }
@@ -32,6 +32,21 @@ namespace Towerland.GameServer.Logic.Factories
             field.State.MonsterMoney = 120;
 
             return field;
+        }
+
+        public static FieldObject GetObject(int objNum)
+        {
+            var obj = (FieldObject) objNum;
+            switch (obj)
+            {
+                case FieldObject.Entrance:
+                    return FieldObject.Road | obj;
+                case FieldObject.Stone:
+                case FieldObject.Tree:
+                    return FieldObject.Ground | obj;
+                default:
+                    return obj;
+            }
         }
     }
 }

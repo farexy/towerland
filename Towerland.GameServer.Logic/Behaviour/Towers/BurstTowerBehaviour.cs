@@ -39,7 +39,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
           points.Add(targetPoint.Value);
           points.Add(path.GetNext(targetPoint.Value));
         }
-        var units = Field.FindTargetsAt(points.ToArray()).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
+        var units = Field.FindTargetsAt(points).Where(u => !BattleContext.UnitsToRemove.Contains(u.GameId));
 
         foreach (var unit in units)
         {

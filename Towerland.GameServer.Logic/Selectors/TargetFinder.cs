@@ -40,28 +40,28 @@ namespace Towerland.GameServer.Logic.Selectors
       for (int range = 1; range <= stats.Range; range++)
       {
         var p = new Point(x, y + range);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x, y - range);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x + range, y - range);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x + range, y);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x + range, y + range);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x - range, y + range);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x - range, y);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         p = new Point(x - range, y - range);
-        units.AddRange(p != field.StaticData.Finish ? field.FindTargetsAt(p) : Enumerable.Empty<Unit>());
+        units.AddRange(field.FindTargetsAt(p));
 
         var foundUnits = units.Where(u => !battleContext.UnitsToRemove.Contains(u.GameId));
         if (foundUnits.Any())

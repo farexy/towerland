@@ -85,7 +85,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       var damage = CalculateDamage(unit);
 
       ApplyEffectOnAttack(unit);
-      
+
       if (damage == 0)
         return;
 

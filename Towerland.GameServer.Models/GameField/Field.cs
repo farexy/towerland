@@ -45,7 +45,7 @@ namespace Towerland.GameServer.Models.GameField
 
         public int AddGameObject(GameObject gameObj)
         {
-            var id = gameObj.GameId == default(int)
+            var id = gameObj.GameId == default
                 ? GenerateGameObjectId()
                 : SetCustomId(gameObj.GameId);
             AddGameObject(id, gameObj);

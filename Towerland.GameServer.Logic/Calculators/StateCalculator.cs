@@ -122,7 +122,7 @@ namespace Towerland.GameServer.Logic.Calculators
           _behaviourFactory.CreateTowerBehaviour(tower).TickEndAction();
         }
       }
-      
+
       private void AddGameObjects()
       {
         _battleContext.CurrentTick.AddRange(_battleContext.UnitsToAdd.Select(unit =>

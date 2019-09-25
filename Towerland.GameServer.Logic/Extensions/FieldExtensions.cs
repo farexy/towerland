@@ -21,7 +21,16 @@ namespace Towerland.GameServer.Logic.Extensions
       return field.State.Towers.FirstOrDefault(t => t.Position == position);
     }
 
-    public static IEnumerable<Unit> FindTargetsAt(this Field field, params Point[] positions)
+    public static IEnumerable<Unit> FindTargetsAt(this Field field, Point position)
+    {
+      if (field.StaticData.Cells[position.X, position.Y].Object.HasFlag(FieldObject.Road))
+      {
+        return Enumerable.Empty<Unit>();
+      }
+      return field.State.Units.Where(u => u.Position == position);
+    }
+
+    public static IEnumerable<Unit> FindTargetsAt(this Field field, IEnumerable<Point> positions)
     {
       if (positions.Contains(field.StaticData.Finish))
       {
@@ -61,14 +70,14 @@ namespace Towerland.GameServer.Logic.Extensions
       }
     }
 
-    public static IEnumerable<Point> GetNeighbourPoints(this Field f, Point p, int range, FieldObject cellTypeToMatch)
+    public static IEnumerable<Point> GetNeighbourPoints(this Field f, Point p, int range, FieldObject fieldObjectToMatch)
     {
       for (int x = -range; x < range; x++)
       {
         for (int y = -range; y < range; y++)
         {
           if (p.X + x >= 0 && p.X + x < f.StaticData.Width && p.Y + y >= 0 && p.Y + y < f.StaticData.Height
-              && f.StaticData.Cells[p.X + x, p.Y + y].Object == cellTypeToMatch)
+            && f.StaticData.Cells[p.X + x, p.Y + y].Object.HasFlag(fieldObjectToMatch))
           {
             yield return new Point(p.X + x, p.Y + y);
           }
