@@ -1,9 +1,11 @@
-﻿using Towerland.GameServer.Models.GameField;
+﻿using System.Collections.Generic;
+using Towerland.GameServer.Models.GameActions;
+using Towerland.GameServer.Models.GameField;
 
 namespace Towerland.GameServer.Logic.Interfaces
 {
   public interface ICheatCommandManager
   {
-    void ResolveCommand(string command, Field field);
+    List<GameAction> ResolveCommand(string command, Field field);
   }
 }

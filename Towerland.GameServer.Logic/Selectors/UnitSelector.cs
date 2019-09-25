@@ -3,6 +3,7 @@ using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
+using Towerland.GameServer.Models.State;
 
 namespace Towerland.GameServer.Logic.Selectors
 {
@@ -21,17 +22,16 @@ namespace Towerland.GameServer.Logic.Selectors
 
     public (GameObjectType type, int pathId)? GetNewUnit(Field field)
     {
-      var fieldClone = (Field) field.Clone();
       var selector = new IntelligentGameObjectSelector<int>(
-        _statsProvider.GetUnitStats().Where(u => u.Cost <= fieldClone.State.MonsterMoney).Select(u => u.Type),
-        fieldClone.StaticData.Path.Select((p, idx) => idx)
+        _statsProvider.GetUnitStats().Where(u => u.Cost <= field.State.MonsterMoney).Select(u => u.Type),
+        field.StaticData.Path.Select((p, idx) => idx)
       );
       return selector.GetOptimalVariant((type, pathId) =>
       {
-        _stateChangeRecalculator.AddNewUnit(fieldClone, type, new CreationOptions{PathId = pathId});
-        var stateCalc = new StateCalculator(_statsLibrary, fieldClone);
+        var stateChangeActions = _stateChangeRecalculator.AddNewUnit(field, type, new UnitCreationOption{PathId = pathId});
+        var stateCalc = new StateCalculator(_statsLibrary, field, stateChangeActions);
         stateCalc.CalculateActionsByTicks();
-        return (double) (fieldClone.State.Castle.Health - stateCalc.Field.State.Castle.Health) / _statsLibrary.GetStats(type).Cost;
+        return (double) (field.State.Castle.Health - stateCalc.Field.State.Castle.Health) / _statsLibrary.GetStats(type).Cost;
       });
     }
   }

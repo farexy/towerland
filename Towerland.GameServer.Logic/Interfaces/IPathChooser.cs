@@ -5,7 +5,7 @@ namespace Towerland.GameServer.Logic.Interfaces
 {
   public interface IPathChooser
   {
-    int GetFastestPath(Path[] paths, Unit unit);
-    int GetOptimalPath(Field field, Unit unit);
+    int GetFastestPath(Path[] paths, Point position);
+    int GetOptimalPath(Field field, GameObjectType unitType);
   }
 }

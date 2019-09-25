@@ -103,7 +103,6 @@ D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towe
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.GameServer.Logic.pdb
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Towerland.GameServer.Models.pdb
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\bin\Debug\Newtonsoft.Json.xml
-D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.csproj.CoreCompileInputs.cache
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.exe
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.pdb
 D:\Workfiles\GameServer\Towerland.GameServer\Towerland.Logic.Test\obj\Debug\Towerland.Logic.Test.csprojAssemblyReference.cache

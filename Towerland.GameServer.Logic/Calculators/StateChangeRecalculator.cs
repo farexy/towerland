@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using Towerland.GameServer.Logic.ActionResolver;
 using Towerland.GameServer.Logic.Extensions;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.Exceptions;
+using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
 using Towerland.GameServer.Models.State;
@@ -16,7 +19,8 @@ namespace Towerland.GameServer.Logic.Calculators
     private readonly IGameObjectFactory<Unit> _unitsFactory;
     private readonly IGameObjectFactory<Tower> _towersFactory;
 
-    public StateChangeRecalculator(IPathChooser pathChooser, IStatsLibrary stats, IGameObjectFactory<Unit> unitFactory, IGameObjectFactory<Tower> towerFactory)
+    public StateChangeRecalculator(IPathChooser pathChooser, IStatsLibrary stats,
+      IGameObjectFactory<Unit> unitFactory, IGameObjectFactory<Tower> towerFactory)
     {
       _pathChooser = pathChooser;
       _statsLib = stats;
@@ -24,42 +28,53 @@ namespace Towerland.GameServer.Logic.Calculators
       _towersFactory = towerFactory;
     }
 
-    public void AddMoney(Field field, int money, PlayerSide side)
+    public List<GameAction> AddMoney(Field field, int money, PlayerSide side)
     {
+      var actions = new List<GameAction>();
       switch (side)
       {
         case PlayerSide.Monsters:
-          field.State.MonsterMoney += money;
+          actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = money});
           break;
         case PlayerSide.Towers:
-          field.State.TowerMoney += money;
+          actions.Add(new GameAction{ActionId = ActionId.TowerPlayerReceivesMoney, Money = money});
           break;
         default:
-          field.State.MonsterMoney += money;
-          field.State.TowerMoney += money;
+          actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerReceivesMoney, Money = money});
+          actions.Add(new GameAction{ActionId = ActionId.TowerPlayerReceivesMoney, Money = money});
           break;
       }
+
+      return actions;
     }
 
-    public void AddNewUnit(Field field, GameObjectType type, CreationOptions? opt = null)
+    public List<GameAction> AddNewUnit(Field field, GameObjectType type, UnitCreationOption opt = null)
     {
+      var actions = new List<GameAction>();
       var cost = _statsLib.GetUnitStats(type).Cost;
       if (field.State.MonsterMoney < cost)
       {
         throw new LogicException("Not enough money");
       }
 
-      var unit = _unitsFactory.Create(type, opt);
-      unit.Position = field.StaticData.Start;
+      var options = new CreationOptions
+      {
+        GameId = field.GenerateGameObjectId(),
+        PathId = opt?.PathId ?? CalculateUnitPath(field, type),
+        Position = field.StaticData.Start
+      };
+      var unit = _unitsFactory.Create(type, options);
 
-      field.AddGameObject(unit);
-      CalculateUnitPath(field, unit, opt);
+      actions.Add(new GameAction{ActionId = ActionId.UnitAppears, GoUnit = unit});
+      actions.Add(new GameAction{ActionId = ActionId.MonsterPlayerLosesMoney, Money = cost});
 
-      field.State.MonsterMoney -= cost;
+      return actions;
     }
 
-    public void AddNewTower(Field field, GameObjectType type, CreationOptions? opt = null)
+    public List<GameAction> AddNewTower(Field field, GameObjectType type, TowerCreationOption opt)
     {
+      var actions = new List<GameAction>();
+
       var cost = _statsLib.GetTowerStats(type).Cost;
       if (field.State.TowerMoney < cost)
       {
@@ -69,13 +84,11 @@ namespace Towerland.GameServer.Logic.Calculators
       {
         throw new LogicException("Creation options for tower must have position");
       }
-      PlaceTowerOnField(field, type, opt.Value);
-
-      field.State.TowerMoney -= cost;
-    }
-
-    private void PlaceTowerOnField(Field field, GameObjectType type, CreationOptions opt)
-    {
+      var options = new CreationOptions
+      {
+        GameId = field.GenerateGameObjectId(),
+        Position = opt.Position
+      };
       var cellObject = field.StaticData.Cells[opt.Position.X, opt.Position.Y].Object;
       switch (_statsLib.GetTowerStats(type).SpawnType)
       {
@@ -88,22 +101,22 @@ namespace Towerland.GameServer.Logic.Calculators
       {
         throw new LogicException("Cell is already busy by tower");
       }
-      var tower = _towersFactory.Create(type, opt);
-      field.AddGameObject(tower);
+      var tower = _towersFactory.Create(type, options);
+
+      actions.Add(new GameAction{ActionId = ActionId.TowerAppears, GoTower = tower});
+      actions.Add(new GameAction{ActionId = ActionId.TowerPlayerLosesMoney, Money = cost});
+
+      return actions;
     }
 
-    private void CalculateUnitPath(Field field, Unit unit, CreationOptions? opt)
+    private int? CalculateUnitPath(Field field, GameObjectType type)
     {
-      var stats = _statsLib.GetUnitStats(unit.Type);
-      if (!unit.PathId.HasValue)
-      {
-        unit.PathId = opt?.PathId ??
-                      (stats.MovementPriority == UnitStats.MovementPriorityType.Optimal
-                        ? _pathChooser.GetOptimalPath(field, unit)
-                        : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest
-                          ? _pathChooser.GetFastestPath(field.StaticData.Path, unit)
-                          : GameMath.Rand.Next(field.StaticData.Path.Length));
-      }
+      var stats = _statsLib.GetUnitStats(type);
+      return stats.MovementPriority == UnitStats.MovementPriorityType.Optimal
+        ? _pathChooser.GetOptimalPath(field, type)
+        : stats.MovementPriority == UnitStats.MovementPriorityType.Fastest
+          ? _pathChooser.GetFastestPath(field.StaticData.Path, field.StaticData.Start)
+          : GameMath.Rand.Next(field.StaticData.Path.Length);
     }
   }
 }

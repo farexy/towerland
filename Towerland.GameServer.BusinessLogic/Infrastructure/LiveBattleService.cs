@@ -34,7 +34,6 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
     private readonly IFieldStorage _fieldStorage;
     private readonly IStatsLibrary _statsLibrary;
     private readonly ICheatCommandManager _cheatCommandManager;
-    private readonly IMapper _mapper;
 
     public LiveBattleService(
       IBattleRepository repo,
@@ -43,8 +42,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       IStateChangeRecalculator recalc,
       IFieldStorage fieldStorage,
       IStatsLibrary statsLibrary,
-      ICheatCommandManager cheatCommandManager,
-      IMapper mapper)
+      ICheatCommandManager cheatCommandManager)
     {
       _battles = new ConcurrentDictionary<Guid, int>();
       _battleRepository = repo;
@@ -54,7 +52,6 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _fieldStorage = fieldStorage;
       _statsLibrary = statsLibrary;
       _cheatCommandManager = cheatCommandManager;
-      _mapper = mapper;
     }
 
     public Field GetField(Guid battleId)
@@ -143,16 +140,17 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
     {
       using (new BattleLocker(command.BattleId))
       {
-        var fieldSerialized = _provider.Find(command.BattleId);
-        var fieldState = fieldSerialized.State;
+        var liveBattleModel = _provider.Find(command.BattleId);
+        var fieldState = liveBattleModel.State;
 
-        ResolveActions(fieldState, fieldSerialized.Ticks);
+        ResolveActions(liveBattleModel);
 
+        var stateChangeActions = new List<GameAction>();
         if (command.UnitCreationOptions != null)
         {
           foreach (var opt in command.UnitCreationOptions)
           {
-            _recalculator.AddNewUnit(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
+            stateChangeActions.AddRange(_recalculator.AddNewUnit(fieldState, opt.Type, opt));
           }
         }
 
@@ -160,19 +158,19 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         {
           foreach (var opt in command.TowerCreationOptions)
           {
-            _recalculator.AddNewTower(fieldState, opt.Type, _mapper.Map<CreationOptions>(opt));
+            stateChangeActions.AddRange(_recalculator.AddNewTower(fieldState, opt.Type, opt));
           }
         }
 
         if (!string.IsNullOrWhiteSpace(command.CheatCommand))
         {
-          _cheatCommandManager.ResolveCommand(command.CheatCommand, fieldState);
+          stateChangeActions.AddRange(_cheatCommandManager.ResolveCommand(command.CheatCommand, fieldState));
         }
 
-        var calc = new StateCalculator(_statsLibrary, fieldState);
-        fieldSerialized.Ticks = await Task.Run(() => calc.CalculateActionsByTicks());
+        var calc = new StateCalculator(_statsLibrary, fieldState, stateChangeActions);
+        liveBattleModel.Ticks = await Task.Run(() => calc.CalculateActionsByTicks());
 
-        _provider.Update(fieldSerialized);
+        _provider.Update(liveBattleModel);
 
         IncrementBattleVersion(command.BattleId);
       }
@@ -220,7 +218,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
           {
             return;
           }
-          ResolveActions(battle.State, battle.Ticks);
+          ResolveActions(battle);
           winSide = battle.State.State.Castle.Health > 0 ? PlayerSide.Towers : PlayerSide.Monsters;
         }
 
@@ -325,18 +323,23 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _battles.TryRemove(battleId, out _);
     }
 
-    private static void ResolveActions(Field f, IEnumerable<GameTick> ticks)
+    private static void ResolveActions(LiveBattleModel battle)
     {
-      if (ticks == null)
+      if (battle.Ticks == null)
       {
         return;
       }
-      var resolver = new FieldStateActionResolver(f);
-      foreach (var tick in ticks)
+
+      var field = battle.State;
+      var resolver = new FieldStateActionResolver(field);
+      battle.TicksHistory = battle.TicksHistory ?? new List<GameTick>();
+
+      foreach (var tick in battle.Ticks)
       {
-        f.State.Units.ForEach(DecrementWaitTicks);
-        f.State.Towers.ForEach(DecrementWaitTicks);
-        
+        battle.TicksHistory.Add(tick);
+        field.State.Units.ForEach(DecrementWaitTicks);
+        field.State.Towers.ForEach(DecrementWaitTicks);
+
         if (tick.HasNoActions)
         {
           continue;

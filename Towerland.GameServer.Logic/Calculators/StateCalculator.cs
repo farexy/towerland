@@ -17,11 +17,12 @@ namespace Towerland.GameServer.Logic.Calculators
       private List<List<GameAction>> Ticks => _battleContext.Ticks;
       public Field Field => _battleContext.Field;
 
-      public StateCalculator(IStatsLibrary statsLibrary, Field fieldState)
+      public StateCalculator(IStatsLibrary statsLibrary, Field fieldState, List<GameAction> stageChangingActions)
       {
         _battleContext = new BattleContext((Field)fieldState.Clone());
         _behaviourFactory = new BehaviourFactory(_battleContext, statsLibrary);
         _moneyCalculator = new MoneyCalculator(statsLibrary);
+        stageChangingActions.ForEach(_battleContext.AddAction);
       }
 
       public GameTick[] GetIdleTicks()

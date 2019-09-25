@@ -1,10 +1,12 @@
 using System.Linq;
+using Towerland.GameServer.Logic.ActionResolver;
 using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Extensions;
 using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
+using Towerland.GameServer.Models.State;
 
 namespace Towerland.GameServer.Logic.Selectors
 {
@@ -23,17 +25,17 @@ namespace Towerland.GameServer.Logic.Selectors
 
     public (GameObjectType type, Point position)? GetNewTower(Field field)
     {
-      var fieldClone = (Field) field.Clone();
       var selector = new IntelligentGameObjectSelector<Point>(
-        _statsProvider.GetTowerStats().Where(t => t.Cost <= fieldClone.State.MonsterMoney).Select(t => t.Type),
-        fieldClone.StaticData.Cells.Cast<FieldCell>()
-          .Where(c => c.Object is FieldObject.Ground && fieldClone.FindTowerAt(c.Position) is null).Select(c => c.Position)
+        _statsProvider.GetTowerStats().Where(t => t.Cost <= field.State.MonsterMoney).Select(t => t.Type),
+        field.StaticData.Cells.Cast<FieldCell>()
+          .Where(c => c.Object is FieldObject.Ground && field.FindTowerAt(c.Position) is null).Select(c => c.Position)
       );
       return selector.GetOptimalVariant((type, pos) =>
       {
-        _stateChangeRecalculator.AddNewTower(fieldClone, type, new CreationOptions{Position = pos});
+        var fieldClone = (Field) field.Clone();
+        var stateChangeActions = _stateChangeRecalculator.AddNewTower(fieldClone, type, new TowerCreationOption{Type = type, Position = pos});
         var stats = _statsLibrary.GetTowerStats(type);
-        var stateCalc = new StateCalculator(_statsLibrary, fieldClone);
+        var stateCalc = new StateCalculator(_statsLibrary, fieldClone, stateChangeActions);
         var actions = stateCalc.CalculateActionsByTicks().SelectMany(tick => tick.Actions).ToArray();
         var totalDamage = actions.Where(a => a.ActionId is ActionId.UnitReceivesDamage).Sum(a => a.Damage);
         var totalKills = actions.Count(a => a.ActionId is ActionId.TowerKills);

@@ -48,12 +48,12 @@ namespace Towerland.GameServer.Logic.Selectors
       {
         return GameMath.Rand.Next(10) == 0
           ? variants[GameMath.Rand.Next(variants.Count)]
-          : default;
+          : default((GameObjectType type, TDest destination)?);
       }
 
       return GameMath.Rand.Next(3) == 0
         ? variants[GameMath.Rand.Next(variants.Count)]
-        : default;
+        : default((GameObjectType type, TDest destination)?);
     }
   }
 }

@@ -10,6 +10,7 @@ namespace Towerland.GameServer.BusinessLogic.Models
   {
     public Guid Id { set; get; }
     public Field State { set; get; }
+    public List<GameTick> TicksHistory { set; get; }
     public IEnumerable<GameTick> Ticks { set; get; }
     public MultiBattleInfo MultiBattleInfo { set; get; }
   }

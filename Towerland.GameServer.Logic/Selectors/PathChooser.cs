@@ -7,6 +7,7 @@ using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.Effects;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
+using Towerland.GameServer.Models.Stats;
 
 namespace Towerland.GameServer.Logic.Selectors
 {
@@ -31,22 +32,21 @@ namespace Towerland.GameServer.Logic.Selectors
       _statsLib = statsLibrary;
     }
 
-    public int GetFastestPath(Path[] path, Unit unit)
+    public int GetFastestPath(Path[] path, Point position)
     {
-      var pos = unit.Position;
-      var possible = GetPossiblePath(path, pos).ToArray();
+      var possible = GetPossiblePath(path, position).ToArray();
 
       int[] coefs = new int[possible.Length];
 
       for (int i = 0; i < possible.Length; i++)
       {
-        coefs[i] = possible[i].Length - possible[i].PointOnThePathPosition(pos);
+        coefs[i] = possible[i].Length - possible[i].PointOnThePathPosition(position);
       }
 
       return Array.IndexOf(coefs, coefs.Min());
     }
 
-    public int GetOptimalPath(Field field, Unit unit)
+    public int GetOptimalPath(Field field, GameObjectType unitType)
     {
       var paths = field.StaticData.Path;
       double minDamage = double.MaxValue;
@@ -55,7 +55,7 @@ namespace Towerland.GameServer.Logic.Selectors
       {
         var towersOnPath = FindTowersThatCanAttackPath(field, i);
         var towers = towersOnPath.Select(t => field[t].Type).ToArray();
-        var pathDamage = GetTotalAttackDamage(towers, unit);
+        var pathDamage = GetTotalAttackDamage(towers, unitType);
 
         if (pathDamage < minDamage)
         {
@@ -82,9 +82,9 @@ namespace Towerland.GameServer.Logic.Selectors
 //      return _additiveConvolutionCalculator.FindOptimalVariantIndex(tableToAnalize);
     }
 
-    private double GetTotalAttackDamage(IEnumerable<GameObjectType> towerTypes, Unit unit)
+    private double GetTotalAttackDamage(IEnumerable<GameObjectType> towerTypes, GameObjectType unitType)
     {
-      return 1 - (double)towerTypes.Sum(t => _gameCalculator.CalculateDamage(unit.Type, t)) / unit.Health;
+      return 1 - (double) towerTypes.Sum(t => _gameCalculator.CalculateDamage(unitType, t)) / _statsLib.GetUnitStats(unitType).Health;
     }
 
     private double GetTowersWithSpecialEffectRate(ICollection<GameObjectType> towerTypes)

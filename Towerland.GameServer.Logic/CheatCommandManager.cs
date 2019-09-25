@@ -1,5 +1,7 @@
-﻿using Towerland.GameServer.Logic.Interfaces;
+﻿using System.Collections.Generic;
+using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.Exceptions;
+using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.State;
 
@@ -20,24 +22,23 @@ namespace Towerland.GameServer.Logic
     //addm <money> - gives specified number of <money> to both players
     //addm <money> <side> - gives specified number of <money> specified side players
     
-    public void ResolveCommand(string command, Field field)
+    public List<GameAction> ResolveCommand(string command, Field field)
     {
       var args = command.Split(' ');
       switch (args[0])
       {
           case "addm":
-            ResolveAddMoneyCommand(args, field);
-            break;
+            return ResolveAddMoneyCommand(args, field);
           default:
             throw new LogicException("Unsupported command");
       }
     }
 
-    private void ResolveAddMoneyCommand(string[] args, Field field)
+    private List<GameAction> ResolveAddMoneyCommand(string[] args, Field field)
     {
       if (args.Length == 1)
       {
-        _stateRecalculator.AddMoney(field, 100, PlayerSide.Undefined);
+        return _stateRecalculator.AddMoney(field, 100, PlayerSide.Undefined);
       }
 
       if (args.Length == 2)
@@ -46,7 +47,7 @@ namespace Towerland.GameServer.Logic
         {
           throw new LogicException("Incorrect command signature");
         }
-        _stateRecalculator.AddMoney(field, moneyVal, PlayerSide.Undefined);
+        return _stateRecalculator.AddMoney(field, moneyVal, PlayerSide.Undefined);
       }
 
       if (args.Length == 3)
@@ -55,13 +56,10 @@ namespace Towerland.GameServer.Logic
         {
           throw new LogicException("Incorrect command signature");
         }
-        _stateRecalculator.AddMoney(field, moneyVal, (PlayerSide)side);
+        return _stateRecalculator.AddMoney(field, moneyVal, (PlayerSide)side);
       }
 
-      if (args.Length > 3)
-      {
-        throw new LogicException("Incorrect command signature");
-      }
+      throw new LogicException("Incorrect command signature");
     }
   }
 }
