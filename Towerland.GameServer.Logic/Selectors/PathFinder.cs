@@ -4,7 +4,7 @@ using System.Linq;
 using Towerland.GameServer.Logic.Extensions;
 using Towerland.GameServer.Models.GameField;
 
-namespace Towerland.GameServer.Logic.SpecialAI
+namespace Towerland.GameServer.Logic.Selectors
 {
   public class PathFinder
   {

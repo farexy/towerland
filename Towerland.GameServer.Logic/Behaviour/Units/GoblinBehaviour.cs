@@ -15,7 +15,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       base.ApplyPreActionEffect();
 
       var skill = StatsLibrary.GetSkill(Stats.Skill, Stats.Type);
-      if (GameMath.CalcProbableEvent(skill.ProbabilityPercent))
+      if (Random.CalcProbableEvent(skill.ProbabilityPercent))
       {
         BattleContext.AddAction(new GameAction
         {

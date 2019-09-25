@@ -1,6 +1,6 @@
 using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Interfaces;
-using Towerland.GameServer.Logic.SpecialAI;
+using Towerland.GameServer.Logic.Selectors;
 using Towerland.GameServer.Models.Effects;
 using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameField;
@@ -15,6 +15,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
     protected readonly IStatsLibrary StatsLibrary;
     protected readonly BattleContext BattleContext;
     protected readonly TowerStats Stats;
+    protected readonly PredictableRandom Random;
 
     protected Field Field => BattleContext.Field;
 
@@ -24,6 +25,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       BattleContext = battleContext;
       StatsLibrary = statsLibrary;
       Stats = statsLibrary.GetTowerStats(tower.Type);
+      Random = new PredictableRandom(Field, tower);
     }
 
     public bool CanDoAction()

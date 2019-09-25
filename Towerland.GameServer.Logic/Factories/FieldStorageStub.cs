@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Towerland.GameServer.Logic.Interfaces;
-using Towerland.GameServer.Logic.SpecialAI;
+using Towerland.GameServer.Logic.Selectors;
 using Towerland.GameServer.Models.GameField;
 
 namespace Towerland.GameServer.Logic.Factories

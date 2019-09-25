@@ -1,7 +1,5 @@
-﻿using System;
-using Towerland.GameServer.Logic.Interfaces;
+﻿using Towerland.GameServer.Logic.Interfaces;
 using Towerland.GameServer.Models.Effects;
-using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameObjects;
 using Towerland.GameServer.Models.Stats;
 

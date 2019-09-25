@@ -16,7 +16,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
 
       if (skill.ProbabilityPercent > 0)
       {
-        isApplicable = GameMath.CalcProbableEvent(skill.ProbabilityPercent);
+        isApplicable = Random.CalcProbableEvent(skill.ProbabilityPercent);
       }
 
       var damage = base.CalculateDamage(unit);

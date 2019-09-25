@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Towerland.GameServer.Logic.Factories;
-using Towerland.GameServer.Logic.SpecialAI;
+using Towerland.GameServer.Logic.Selectors;
 using Towerland.GameServer.Models.GameField;
 using Xunit;
 

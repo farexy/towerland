@@ -3,7 +3,7 @@ using System.Linq;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.State;
 
-namespace Towerland.GameServer.Logic.SpecialAI
+namespace Towerland.GameServer.Logic.Selectors
 {
   public class ComputerEnemyAI
   {

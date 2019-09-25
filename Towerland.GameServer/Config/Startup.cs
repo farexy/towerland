@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +14,7 @@ using Towerland.GameServer.Logic;
 using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Factories;
 using Towerland.GameServer.Logic.Interfaces;
-using Towerland.GameServer.Logic.SpecialAI;
+using Towerland.GameServer.Logic.Selectors;
 using Towerland.GameServer.Models.GameObjects;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 

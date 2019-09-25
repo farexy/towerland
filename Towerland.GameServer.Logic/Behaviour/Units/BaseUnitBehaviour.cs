@@ -14,6 +14,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
     protected readonly IStatsLibrary StatsLibrary;
     protected readonly BattleContext BattleContext;
     protected readonly UnitStats Stats;
+    protected readonly PredictableRandom Random;
 
     protected Field Field => BattleContext.Field;
 
@@ -23,6 +24,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       BattleContext = battleContext;
       StatsLibrary = statsLibrary;
       Stats = statsLibrary.GetUnitStats(unit.Type);
+      Random = new PredictableRandom(Field, unit);
     }
 
     public bool CanDoAction()

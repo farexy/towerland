@@ -51,9 +51,9 @@ namespace Towerland.GameServer.Controllers
     }
 
     [HttpPost("command")]
-    public async Task PostCommand([FromBody] StateChangeCommandRequestModel requestModel)
+    public Task PostCommand([FromBody] StateChangeCommandRequestModel requestModel)
     {
-      await _liveBattleService.RecalculateAsync(_mapper.Map<StateChangeCommand>(requestModel), requestModel.CurrentTick);
+      return _liveBattleService.RecalculateAsync(_mapper.Map<StateChangeCommand>(requestModel), requestModel.CurrentTick);
     }
   }
 }

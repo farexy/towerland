@@ -1,5 +1,4 @@
 using System.Linq;
-using Towerland.GameServer.Logic.Calculators;
 using Towerland.GameServer.Logic.Extensions;
 using Towerland.GameServer.Logic.Factories;
 using Towerland.GameServer.Logic.Interfaces;
@@ -28,7 +27,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       var skill = StatsLibrary.GetSkill(Stats.Skill, Stats.Type);
 
       var possiblePath = Field.GetPossiblePathIds(action.Position).ToArray();
-      var pathId = possiblePath[GameMath.Rand.Next(possiblePath.Length)];
+      var pathId = possiblePath[Random.Next(possiblePath.Length)];
       var newUnitId = Field.GenerateGameObjectId();
       var skeleton = uFactory.Create(GameObjectType.Unit_Skeleton,
         new CreationOptions {GameId = newUnitId, Position = action.Position, PathId = pathId});

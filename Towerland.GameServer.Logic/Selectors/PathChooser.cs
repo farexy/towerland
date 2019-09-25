@@ -8,7 +8,7 @@ using Towerland.GameServer.Models.Effects;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.GameObjects;
 
-namespace Towerland.GameServer.Logic.SpecialAI
+namespace Towerland.GameServer.Logic.Selectors
 {
   public class PathChooser : IPathChooser
   {
