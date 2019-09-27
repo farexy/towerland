@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Towerland.GameServer.BusinessLogic.Helpers;
 using Towerland.GameServer.BusinessLogic.Interfaces;
+using Towerland.GameServer.Data.Entities;
 using Towerland.GameServer.Models.State;
 
 namespace Towerland.GameServer.BusinessLogic.Infrastructure
@@ -28,6 +29,25 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _sessionBattles = new ConcurrentDictionary<Guid, (Guid, PlayerSide)>();
 
       _sessionQueueMultiBattle = new ConcurrentQueue<BattleSearchSession>();
+    }
+
+    public async Task BeginSinglePlayAsync(Guid sessionId)
+    {
+      if (_sessionQueue.Any(s => s.SessionId == sessionId))
+      {
+        return;
+      }
+
+      if (Rnd.Next() % 2 == 0)
+      {
+        var battleId = await _battleInitService.InitNewBattleAsync(sessionId, ComputerPlayer.Id, GameMode.PvC);
+        _sessionBattles.TryAdd(sessionId, (battleId, PlayerSide.Monsters));
+      }
+      else
+      {
+        var battleId = await _battleInitService.InitNewBattleAsync(ComputerPlayer.Id, sessionId, GameMode.PvC);
+        _sessionBattles.TryAdd(sessionId, (battleId, PlayerSide.Towers));
+      }
     }
 
     public async Task AddToQueueAsync(Guid sessionId)
@@ -58,7 +78,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
             towersUser = sessionId;
           }
 
-          var battleId = await _battleInitService.InitNewBattleAsync(monstersUser, towersUser);
+          var battleId = await _battleInitService.InitNewBattleAsync(monstersUser, towersUser, GameMode.PvP);
           _sessionBattles.TryAdd(monstersUser, (battleId, PlayerSide.Monsters));
           _sessionBattles.TryAdd(towersUser, (battleId, PlayerSide.Towers));
 

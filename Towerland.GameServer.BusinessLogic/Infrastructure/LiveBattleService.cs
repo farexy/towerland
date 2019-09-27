@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using AutoMapper;
 using ServiceStack.Logging;
 using Towerland.GameServer.BusinessLogic.Helpers;
 using Towerland.GameServer.BusinessLogic.Interfaces;
@@ -83,11 +82,11 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       return _provider.Find(battleId);
     }
 
-    public async Task<Guid> InitNewBattleAsync(Guid monstersPlayer, Guid towersPlayer)
+    public async Task<Guid> InitNewBattleAsync(Guid monstersPlayer, Guid towersPlayer, GameMode mode)
     {
       var id = Guid.NewGuid();
       while (!_battles.TryAdd(id, 0)) ;
-      await CreateBattleAsync(id, monstersPlayer, towersPlayer);
+      await CreateBattleAsync(id, monstersPlayer, towersPlayer, mode);
       return id;
     }
 
@@ -124,7 +123,13 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         mbInfo.MonsterPlayers.Add(player);
         side = PlayerSide.Monsters;
       }
-      _battleRepository.UpdateMultiBattle(battleId, mbInfo).ContinueWith(t => t.Status);
+      _battleRepository.UpdateMultiBattleAsync(battleId, mbInfo).ContinueWith(t =>
+      {
+        if (t.Status is TaskStatus.Faulted)
+        {
+          Logger.Error("Error while updating multi battle", t.Exception);
+        }
+      });
 
       isAcceptNewPlayers = mbInfo.TowerPlayers.Count == MultiBattleInfo.MaxUserOnSide;
       return side;
@@ -136,7 +141,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       return battle != null && battle.State.StaticData.EndTimeUtc - DateTime.UtcNow > TimeSpan.FromMinutes(3);
     }
 
-    public async Task RecalculateAsync(StateChangeCommand command, int curTick)
+    public async Task RecalculateAsync(StateChangeCommand command)
     {
       using (new BattleLocker(command.BattleId))
       {
@@ -248,13 +253,21 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       return _battles.TryUpdate(battleId, curValue + 1, curValue);
     }
 
-    private async Task CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer)
+    private async Task CreateBattleAsync(Guid battleId, Guid monstersPlayer, Guid towersPlayer, GameMode mode)
     {
+      var compPlayerSide = monstersPlayer.IsComputerPlayer() && towersPlayer.IsComputerPlayer()
+        ? PlayerSide.Both
+        : monstersPlayer.IsComputerPlayer()
+          ? PlayerSide.Monsters
+          : towersPlayer.IsComputerPlayer()
+            ? PlayerSide.Towers
+            : PlayerSide.Undefined;
       var newBattle = new LiveBattleModel
       {
         Id = battleId,
         State = (Field) _fieldStorage.Get(0).Clone(),
-        Ticks = Enumerable.Empty<GameTick>()
+        Ticks = Enumerable.Empty<GameTick>(),
+        Mode = mode,
       };
       _provider.Create(newBattle);
       await _battleRepository.CreateAsync(new Battle
@@ -262,7 +275,8 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         Id = battleId,
         StartTime = DateTime.UtcNow,
         Monsters_UserId = monstersPlayer,
-        Towers_UserId = towersPlayer
+        Towers_UserId = towersPlayer,
+        Mode = mode
       });
     }
 
@@ -278,7 +292,8 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         Id = battleId,
         State = (Field) _fieldStorage.Get(0).Clone(),
         Ticks = Enumerable.Empty<GameTick>(),
-        MultiBattleInfo = mbInfo
+        MultiBattleInfo = mbInfo,
+        Mode = GameMode.MultiBattle
       };
       _provider.Create(newBattle);
       await _battleRepository.CreateAsync(new Battle
@@ -287,7 +302,8 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         StartTime = DateTime.UtcNow,
         Monsters_UserId = monstersPlayer,
         Towers_UserId = towersPlayer,
-        MultiBattleInfo = mbInfo
+        MultiBattleInfo = mbInfo,
+        Mode = GameMode.MultiBattle
       });
     }
 
@@ -323,7 +339,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _battles.TryRemove(battleId, out _);
     }
 
-    private static void ResolveActions(LiveBattleModel battle)
+    public void ResolveActions(LiveBattleModel battle)
     {
       if (battle.Ticks == null)
       {

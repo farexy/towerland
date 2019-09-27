@@ -23,6 +23,12 @@ namespace Towerland.GameServer.Controllers
       await _battleSearchService.AddToQueueAsync(await UserSessionIdAsync);
     }
 
+    [HttpPost("singleplay")]
+    public async Task SinglePlay()
+    {
+      await _battleSearchService.BeginSinglePlayAsync(await UserSessionIdAsync);
+    }
+
     [HttpPost("multibattle")]
     public async Task SearchMultiBattle()
     {

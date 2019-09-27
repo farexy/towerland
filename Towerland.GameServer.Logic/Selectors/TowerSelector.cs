@@ -26,7 +26,7 @@ namespace Towerland.GameServer.Logic.Selectors
     public (GameObjectType type, Point position)? GetNewTower(Field field)
     {
       var selector = new IntelligentGameObjectSelector<Point>(
-        _statsProvider.GetTowerStats().Where(t => t.Cost <= field.State.MonsterMoney).Select(t => t.Type),
+        _statsProvider.GetTowerStats().Where(t => t.Cost <= field.State.TowerMoney).Select(t => t.Type),
         field.StaticData.Cells.Cast<FieldCell>()
           .Where(c => c.Object is FieldObject.Ground && field.FindTowerAt(c.Position) is null).Select(c => c.Position)
       );
@@ -40,7 +40,7 @@ namespace Towerland.GameServer.Logic.Selectors
         var totalDamage = actions.Where(a => a.ActionId is ActionId.UnitReceivesDamage).Sum(a => a.Damage);
         var totalKills = actions.Count(a => a.ActionId is ActionId.TowerKills);
         var potentialDamage = stats.Damage * field.GetNeighbourPoints(pos, stats.Range, FieldObject.Road).Count();
-        return (double) totalDamage * (totalKills + 1) * potentialDamage / stats.Cost;
+        return (double) (totalDamage + 1) * (totalKills + 1) * potentialDamage / stats.Cost;
       });
     }
   }

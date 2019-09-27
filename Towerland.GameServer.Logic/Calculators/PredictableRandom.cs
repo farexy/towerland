@@ -15,7 +15,7 @@ namespace Towerland.GameServer.Logic.Calculators
     public PredictableRandom(Field field, GameObject obj)
     {
       var state = field.State;
-      var seed = state.Castle.Health * state.MonsterMoney / state.TowerMoney
+      var seed = state.Castle.Health * state.MonsterMoney * state.TowerMoney / 11
                  + state.Towers.Count * state.Units.Count
                  - obj.Position.X * obj.Position.Y
                  + obj.GameId;

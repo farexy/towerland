@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Text;
+using Towerland.GameServer.AI;
 using Towerland.GameServer.BusinessLogic.Infrastructure;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
@@ -53,6 +54,8 @@ namespace Towerland.GameServer.Config
       services.AddSingleton<IBattleInitializationService>(x => x.GetRequiredService<LiveBattleService>());
       services.AddSingleton<ILiveBattleService>(x => x.GetRequiredService<LiveBattleService>());
 
+      services.AddHostedService<BattleAiService>();
+
       services.AddSingleton<IStatsLibrary, StatsLibrary>();
       services.AddTransient<ICheatCommandManager, CheatCommandManager>();
       services.AddTransient<IStatsProvider, StatsFactory>();
@@ -62,6 +65,8 @@ namespace Towerland.GameServer.Config
       services.AddTransient<IStateChangeRecalculator, StateChangeRecalculator>();
       services.AddTransient<IGameObjectFactory<Unit>, UnitFactory>();
       services.AddTransient<IGameObjectFactory<Tower>, TowerFactory>();
+      services.AddTransient<IUnitSelector, UnitSelector>();
+      services.AddTransient<ITowerSelector, TowerSelector>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

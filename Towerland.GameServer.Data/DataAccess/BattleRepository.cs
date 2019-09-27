@@ -49,7 +49,7 @@ namespace Towerland.GameServer.Data.DataAccess
       }
     }
 
-    public async Task UpdateMultiBattle(Guid battleId, MultiBattleInfo multiBattleInfo)
+    public async Task UpdateMultiBattleAsync(Guid battleId, MultiBattleInfo multiBattleInfo)
     {
       using (var cx = _db.OpenDbConnection())
       {

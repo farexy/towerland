@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
 using Towerland.GameServer.Models.Exceptions;
@@ -13,6 +14,11 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
     public BattleInMemoryProvider()
     {
       _battles = new ConcurrentDictionary<Guid, LiveBattleModel>();
+    }
+
+    public IEnumerable<LiveBattleModel> GetAll()
+    {
+      return _battles.Values;
     }
 
     public LiveBattleModel Find(Guid id)

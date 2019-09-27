@@ -10,7 +10,7 @@ namespace Towerland.GameServer.Data.DataAccess
     Task<Battle[]> GetByUserAsync(Guid userId);
     Task<Guid> CreateAsync(Battle obj);
     Task UpdateAsync(Battle obj);
-    Task UpdateMultiBattle(Guid battleId, MultiBattleInfo multiBattleInfo);
+    Task UpdateMultiBattleAsync(Guid battleId, MultiBattleInfo multiBattleInfo);
   }
 
   public class FakeBattleRepository : IBattleRepository
@@ -35,7 +35,7 @@ namespace Towerland.GameServer.Data.DataAccess
       return Task.Run(() => { });
     }
 
-    public Task UpdateMultiBattle(Guid battleId, MultiBattleInfo multiBattleInfo)
+    public Task UpdateMultiBattleAsync(Guid battleId, MultiBattleInfo multiBattleInfo)
     {
       return Task.CompletedTask;
     }
