@@ -76,6 +76,10 @@ namespace Towerland.GameServer.Logic.ActionResolver
           _field[action.TowerId].Effect = SpecialEffect.Empty;
           break;
 
+        case ActionId.TowerAppears:
+          _field.AddGameObject(action.GoTower);
+          break;
+
         case ActionId.TowerCollapses:
           _field.RemoveGameObject(action.TowerId);
           break;
