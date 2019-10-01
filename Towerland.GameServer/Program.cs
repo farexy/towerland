@@ -14,7 +14,7 @@ namespace Towerland.GameServer
     public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
       WebHost.CreateDefaultBuilder(args)
         .UseStartup<Startup>()
-        .UseUrls("http://localhost:64283")
+        .UseUrls("http://0.0.0.0:64283")
         .ConfigureLogging((hostingContext, logging) => logging.AddLog4Net())
         .CaptureStartupErrors(true);
   }

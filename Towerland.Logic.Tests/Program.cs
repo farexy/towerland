@@ -12,89 +12,89 @@ using Towerland.GameServer.Models.GameActions;
 using Towerland.GameServer.Models.GameField;
 using Towerland.GameServer.Models.State;
 
-namespace Towerland.Logic.Test
+namespace Towerland.Logic.Tests
 {
-  class TestViewResolver : IActionResolver
-  {
-    public void Resolve(GameAction action)
+    class TestViewResolver : IActionResolver
     {
-      if(action.ActionId == ActionId.TowerAttacks)
-        Console.WriteLine();
-    }
-  }
-
-  class Program
-  {
-    private static Point FindPosForTower(Field f)
-    {
-      var rnd = new Random();
-      var pos = f.StaticData.Cells
-        .OfType<FieldCell>()
-        .Where(c => c.Object == FieldObject.Ground)
-        .Where(c => f.State.Towers.All(t => t.Position != c.Position))
-        .Select(c => c.Position)
-        .ToArray();
-
-      return pos[rnd.Next(pos.Length)];
-    }
-
-    private static void Show(Field f)
-    {
-      Console.Clear();
-      for (int i = 0; i < f.StaticData.Width; i++)
-      {
-        for (int j = 0; j < f.StaticData.Height; j++)
+        public void Resolve(GameAction action)
         {
-          var unit = f.State.Units.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
-          var tower = f.State.Towers.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
-          if(unit != null)
-            Console.Write("*");
-          else if (tower != null)
-            Console.Write("T");
-          else
-            Console.Write((int)f.StaticData.Cells[i,j].Object);
+            if (action.ActionId == ActionId.TowerAttacks)
+                Console.WriteLine();
         }
-        Console.WriteLine();
-      }
-
-      Console.WriteLine("monst : " + f.State.MonsterMoney);
-      Console.WriteLine("tower : " + f.State.TowerMoney);
     }
 
-    private static void TestFieldFactory()
+    class Program
     {
-      var field = new FieldFactory()
-        .Create(new[,]
+        private static Point FindPosForTower(Field f)
         {
-          {1,2,1,1,1},
-          {1,0,0,0,1},
-          {1,0,1,0,1},
-          {1,0,1,0,1},
-          {1,3,0,0,1},
-        }, FieldTheme.SunnyGlade);
-      var pathFinder = new PathFinder(field.StaticData);
-      pathFinder.AddPath(new List<Point>{field.StaticData.Start, field.StaticData.Finish});
-      pathFinder.AddPath(new List<Point>{field.StaticData.Start, new Point(3, 3), field.StaticData.Finish});
-      
-    }
+            var rnd = new Random();
+            var pos = f.StaticData.Cells
+                .OfType<FieldCell>()
+                .Where(c => c.Object == FieldObject.Ground)
+                .Where(c => f.State.Towers.All(t => t.Position != c.Position))
+                .Select(c => c.Position)
+                .ToArray();
 
-    static void Main(string[] args)
-    {
-      TestFieldFactory();
-      
-      var f = new FieldStorageStub().Get(0);
+            return pos[rnd.Next(pos.Length)];
+        }
 
-      var statsStub = new StatsLibrary(new StatsFactory());
-      var uFactory = new UnitFactory(statsStub);
-      var tFactory = new TowerFactory(statsStub);
-      var pathOpt = new PathChooser(statsStub);
-      var stateRecalc = new StateChangeRecalculator(pathOpt, statsStub, uFactory, tFactory);
-      var unitSelector = new UnitSelector(new StatsFactory(), statsStub, stateRecalc);
-      var towerSelector = new TowerSelector(new StatsFactory(), statsStub, stateRecalc);
+        private static void Show(Field f)
+        {
+            Console.Clear();
+            for (int i = 0; i < f.StaticData.Width; i++)
+            {
+                for (int j = 0; j < f.StaticData.Height; j++)
+                {
+                    var unit = f.State.Units.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
+                    var tower = f.State.Towers.FirstOrDefault(u => u.Position.X == i && u.Position.Y == j);
+                    if (unit != null)
+                        Console.Write("*");
+                    else if (tower != null)
+                        Console.Write("T");
+                    else
+                        Console.Write((int) f.StaticData.Cells[i, j].Object);
+                }
 
-      f.State.MonsterMoney = 100000;
-      f.State.TowerMoney = 100000;
-      
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("monst : " + f.State.MonsterMoney);
+            Console.WriteLine("tower : " + f.State.TowerMoney);
+        }
+
+        private static void TestFieldFactory()
+        {
+            var field = new FieldFactory()
+                .Create(new[,]
+                {
+                    {1, 2, 1, 1, 1},
+                    {1, 0, 0, 0, 1},
+                    {1, 0, 1, 0, 1},
+                    {1, 0, 1, 0, 1},
+                    {1, 3, 0, 0, 1},
+                }, FieldTheme.SunnyGlade);
+            var pathFinder = new PathFinder(field.StaticData);
+            pathFinder.AddPath(new List<Point> {field.StaticData.Start, field.StaticData.Finish});
+            pathFinder.AddPath(new List<Point> {field.StaticData.Start, new Point(3, 3), field.StaticData.Finish});
+        }
+
+        static void Main(string[] args)
+        {
+            TestFieldFactory();
+
+            var f = new FieldStorageStub().Get(0);
+
+            var statsStub = new StatsLibrary(new StatsFactory());
+            var uFactory = new UnitFactory(statsStub);
+            var tFactory = new TowerFactory(statsStub);
+            var pathOpt = new PathChooser(statsStub);
+            var stateRecalc = new StateChangeRecalculator(pathOpt, statsStub, uFactory, tFactory);
+            var unitSelector = new UnitSelector(new StatsFactory(), statsStub, stateRecalc);
+            var towerSelector = new TowerSelector(new StatsFactory(), statsStub, stateRecalc);
+
+            f.State.MonsterMoney = 100000;
+            f.State.TowerMoney = 100000;
+
 //
 //      stateRecalc.AddNewTower(f, GameObjectType.Tower_Usual, new CreationOptions{Position = new Point(4, 4)});
 //      stateRecalc.AddNewTower(f, GameObjectType.Tower_Cannon, new CreationOptions{Position = new Point(5, 4)});
@@ -175,45 +175,49 @@ namespace Towerland.Logic.Test
 //      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Necromancer);
 //      stateRecalc.AddNewUnit(f, GameObjectType.Unit_Necromancer);
 
-      //var f2 = (Field)f.Clone();
+            //var f2 = (Field)f.Clone();
 
-      while (f.State.Castle.Health > 0)
-      {
-        var act = new List<GameAction>();
-        var unit1 = unitSelector.GetNewUnit(f);
-        if (unit1.HasValue)
-        {
-          act.AddRange(stateRecalc.AddNewUnit(f, unit1.Value.type, new UnitCreationOption {PathId = unit1.Value.pathId}));
+            while (f.State.Castle.Health > 0)
+            {
+                var act = new List<GameAction>();
+                var unit1 = unitSelector.GetNewUnit(f);
+                if (unit1.HasValue)
+                {
+                    act.AddRange(stateRecalc.AddNewUnit(f, unit1.Value.type,
+                        new UnitCreationOption {PathId = unit1.Value.pathId}));
+                }
+
+                var tower1 = towerSelector.GetNewTower(f);
+                if (tower1.HasValue)
+                {
+                    act.AddRange(stateRecalc.AddNewTower(f, tower1.Value.type,
+                        new TowerCreationOption {Position = tower1.Value.position}));
+                }
+
+                var f2 = f;
+                var calc = new StateCalculator(statsStub, f, act);
+
+                var ticks = calc.CalculateActionsByTicks();
+                var resolver = new FieldStateActionResolver(f2);
+
+                foreach (var tick in ticks)
+                {
+                    foreach (var action in tick.Actions)
+                    {
+                        resolver.Resolve(action);
+                        Show(f2);
+                        Thread.Sleep(100);
+                    }
+
+                    if (tick.Actions.Any() && tick.Actions.First().Position == new Point(2, 7))
+                    {
+                        // break;
+                    }
+                }
+            }
+
+
+            Console.WriteLine("end");
         }
-        var tower1 = towerSelector.GetNewTower(f);
-        if (tower1.HasValue)
-        {
-          act.AddRange(stateRecalc.AddNewTower(f, tower1.Value.type, new TowerCreationOption {Position = tower1.Value.position}));
-        }
-        var f2 = f;
-        var calc = new StateCalculator(statsStub, f, act);
-
-        var ticks = calc.CalculateActionsByTicks();
-        var resolver = new FieldStateActionResolver(f2);
-      
-        foreach (var tick in ticks)
-        {
-          foreach (var action in tick.Actions)
-          {
-            resolver.Resolve(action);
-            Show(f2);
-            Thread.Sleep(100);
-          }
-          if (tick.Actions.Any() && tick.Actions.First().Position == new Point(2, 7))
-          {
-            // break;
-          }
-        }
-      }
-
-
-      Console.WriteLine("end");
     }
-
-  }
 }

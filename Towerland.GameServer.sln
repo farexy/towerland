@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.Logic.Test", "Towerland.Logic.Test\Towerland.Logic.Test.csproj", "{5C899389-16F5-43DC-8B8B-FF5B36A041BF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Models", "Towerland.GameServer.Models\Towerland.GameServer.Models.csproj", "{AAF57422-BEFE-4DD8-9673-84639994ED45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Logic", "Towerland.GameServer.Logic\Towerland.GameServer.Logic.csproj", "{23721929-BED9-4542-9B15-6E4A3EAEEC6C}"
@@ -17,16 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer", "Tow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.GameServer.Logic.UnitTests", "Towerland.GameServer.Logic.UnitTests\Towerland.GameServer.Logic.UnitTests.csproj", "{CCFB8105-96B7-40D3-94D6-E4FBE5A001BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Towerland.Logic.Tests", "Towerland.Logic.Tests\Towerland.Logic.Tests.csproj", "{99797312-07DE-408B-BB70-F4236DE22497}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C899389-16F5-43DC-8B8B-FF5B36A041BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAF57422-BEFE-4DD8-9673-84639994ED45}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{CCFB8105-96B7-40D3-94D6-E4FBE5A001BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCFB8105-96B7-40D3-94D6-E4FBE5A001BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCFB8105-96B7-40D3-94D6-E4FBE5A001BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99797312-07DE-408B-BB70-F4236DE22497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99797312-07DE-408B-BB70-F4236DE22497}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99797312-07DE-408B-BB70-F4236DE22497}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99797312-07DE-408B-BB70-F4236DE22497}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
