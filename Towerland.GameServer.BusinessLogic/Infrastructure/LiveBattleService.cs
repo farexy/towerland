@@ -143,6 +143,10 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
 
     public async Task RecalculateAsync(StateChangeCommand command)
     {
+      if (command.IsEmpty)
+      {
+        return;
+      }
       using (new BattleLocker(command.BattleId))
       {
         var liveBattleModel = _provider.Find(command.BattleId);

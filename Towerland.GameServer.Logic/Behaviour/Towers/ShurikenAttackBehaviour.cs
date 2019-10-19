@@ -58,36 +58,17 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
                 yield break;
             }
 
-            var unit = Field[targetId.Value];
-            var possiblePaths = Field.GetPossiblePathIds(unit.Position);
-            Unit nextUnit = null;
-            Path chainPath = null;
-            bool moveBack = false;
-            foreach (var pathId in possiblePaths)
-            {
-                var nextPoint = Field.GetPath(pathId).GetPrevious(unit.Position);
-                nextUnit = Field.FindTargetsAt(nextPoint).FirstOrDefault();
-                if (nextUnit != null)
-                {
-                    chainPath = Field.GetPath(pathId);
-                    moveBack = true;
-                    break;
-                }
-                nextPoint = Field.GetPath(pathId).GetNext(unit.Position);
-                nextUnit = Field.FindTargetsAt(nextPoint).FirstOrDefault();
-                if (nextUnit != null)
-                {
-                    chainPath = Field.GetPath(pathId);
-                    break;
-                }
-            }
+            var chainIds = new HashSet<int>();
+            var nextUnit = (Unit) Field[targetId.Value];
 
             while (nextUnit != null)
             {
                 yield return nextUnit;
-                nextUnit = moveBack
-                    ? Field.FindTargetsAt(chainPath.GetPrevious(nextUnit.Position)).FirstOrDefault()
-                    : Field.FindTargetsAt(chainPath.GetNext(nextUnit.Position)).FirstOrDefault();
+//                chainIds.Add(nextUnit.GameId);
+//                
+//                nextUnit = moveBack
+//                    ? Field.FindTargetsAt(chainPath.GetPrevious(nextUnit.Position)).FirstOrDefault()
+//                    : Field.FindTargetsAt(chainPath.GetNext(nextUnit.Position)).FirstOrDefault();
             }
         }
     }

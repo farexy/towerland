@@ -39,6 +39,7 @@ namespace Towerland.GameServer.Logic.Calculators
 
       public GameTick[] CalculateActionsByTicks()
       {
+        NextTick();
         while (Field.State.Castle.Health > 0 && Field.State.Units.Any())
         {
           GetUnitActions();
@@ -49,8 +50,7 @@ namespace Towerland.GameServer.Logic.Calculators
           AddGameObjects();
           RemoveGameObjects();
 
-          Ticks.Add(_battleContext.CurrentTick.ToList());
-          _battleContext.CurrentTick.Clear();
+          NextTick();
         }
         GetActionsAfterCalculation();
 
@@ -66,6 +66,12 @@ namespace Towerland.GameServer.Logic.Calculators
           time += TimeSpan.FromSeconds(FieldStaticData.TickSecond);
         }
         return result;
+      }
+
+      private void NextTick()
+      {
+        Ticks.Add(_battleContext.CurrentTick.ToList());
+        _battleContext.CurrentTick.Clear();
       }
 
       private void GetUnitActions()

@@ -23,7 +23,8 @@ namespace Towerland.GameServer.Logic.Extensions
 
     public static IEnumerable<Unit> FindTargetsAt(this Field field, Point position)
     {
-      if (position.Y < 0 || position.X < 0 || field.StaticData.Cells[position.X, position.Y].Object.HasFlag(FieldObject.Road))
+      if (position.Y < 0 || position.X < 0 || position.Y > field.StaticData.Height - 1 || position.X > field.StaticData.Width - 1
+          || !field.StaticData.Cells[position.X, position.Y].Object.HasFlag(FieldObject.Road))
       {
         return Enumerable.Empty<Unit>();
       }

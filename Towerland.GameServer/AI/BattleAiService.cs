@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using log4net;
 using Microsoft.Extensions.Hosting;
 using Towerland.GameServer.BusinessLogic.Interfaces;
 using Towerland.GameServer.BusinessLogic.Models;
@@ -12,7 +14,9 @@ namespace Towerland.GameServer.AI
 {
   public class BattleAiService : BackgroundService
   {
-    private static readonly TimeSpan Interval = TimeSpan.FromSeconds(2);
+    private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+    private static readonly TimeSpan Interval = TimeSpan.FromSeconds(3);
     private DateTime _lastRun;
 
     private readonly IProvider<LiveBattleModel> _liveBattleProvider;
@@ -33,30 +37,37 @@ namespace Towerland.GameServer.AI
     {
       while (!stoppingToken.IsCancellationRequested)
       {
-        if (DateTime.Now - Interval > _lastRun)
+        try
         {
-          await Task.WhenAll(_liveBattleProvider.GetAll().Select(async battle =>
+          if (DateTime.Now - Interval > _lastRun)
           {
-            var battleCopy = battle.CreateCopy();
-            _liveBattleService.ResolveActions(battleCopy);
-            var towerToAdd = await Task.Run(() => _towerSelector.GetNewTower(battleCopy.State), stoppingToken);
-            var unitToAdd = await Task.Run(() => _unitSelector.GetNewUnit(battleCopy.State), stoppingToken);
-            var cmd = new StateChangeCommand
+            await Task.WhenAll(_liveBattleProvider.GetAll().Select(async battle =>
             {
-              BattleId = battle.Id,
-              TowerCreationOptions = towerToAdd.HasValue
-                ? new[] {new TowerCreationOption {Position = towerToAdd.Value.position, Type = towerToAdd.Value.type}}
-                : null,
-              UnitCreationOptions = unitToAdd.HasValue
-                ? new[] {new UnitCreationOption {PathId = unitToAdd.Value.pathId, Type = unitToAdd.Value.type}}
-                : null,
-            };
-            await _liveBattleService.RecalculateAsync(cmd);
-          }).ToArray());
-          _lastRun = DateTime.Now;
-        }
+              var battleCopy = battle.CreateCopy();
+              _liveBattleService.ResolveActions(battleCopy);
+              var towerToAdd = await Task.Run(() => _towerSelector.GetNewTower(battleCopy.State), stoppingToken);
+              var unitToAdd = await Task.Run(() => _unitSelector.GetNewUnit(battleCopy.State), stoppingToken);
+              var cmd = new StateChangeCommand
+              {
+                BattleId = battle.Id,
+                TowerCreationOptions = towerToAdd.HasValue
+                  ? new[] {new TowerCreationOption {Position = towerToAdd.Value.position, Type = towerToAdd.Value.type}}
+                  : null,
+                UnitCreationOptions = unitToAdd.HasValue
+                  ? new[] {new UnitCreationOption {PathId = unitToAdd.Value.pathId, Type = unitToAdd.Value.type}}
+                  : null,
+              };
+              await _liveBattleService.RecalculateAsync(cmd);
+            }).ToArray());
+            _lastRun = DateTime.Now;
+          }
 
-        await Task.Delay(DateTime.Now - _lastRun > Interval ? Interval : DateTime.Now - _lastRun, stoppingToken);
+          await Task.Delay(DateTime.Now - _lastRun > Interval ? Interval : DateTime.Now - _lastRun, stoppingToken);
+        }
+        catch (Exception e)
+        {
+          Logger.Fatal("Error in background AI worker", e);
+        }
       }
     }
   }

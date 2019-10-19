@@ -31,7 +31,7 @@ namespace Towerland.GameServer.Logic.Selectors
         var stateChangeActions = _stateChangeRecalculator.AddNewUnit(field, type, new UnitCreationOption{PathId = pathId});
         var stateCalc = new StateCalculator(_statsLibrary, field, stateChangeActions);
         stateCalc.CalculateActionsByTicks();
-        return (double) (field.State.Castle.Health - stateCalc.Field.State.Castle.Health) / _statsLibrary.GetStats(type).Cost;
+        return (double) (field.State.Castle.Health - stateCalc.Field.State.Castle.Health) /*/ _statsLibrary.GetStats(type).Cost*/;
       });
     }
   }

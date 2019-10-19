@@ -40,7 +40,7 @@ namespace Towerland.GameServer.Logic.Selectors
         var totalDamage = actions.Where(a => a.ActionId is ActionId.UnitReceivesDamage).Sum(a => a.Damage);
         var totalKills = actions.Count(a => a.ActionId is ActionId.TowerKills);
         var potentialDamage = stats.Damage * field.GetNeighbourPoints(pos, stats.Range, FieldObject.Road).Count();
-        return (double) (totalDamage + 1) * (totalKills + 1) * potentialDamage / stats.Cost;
+        return (double) (totalDamage + 1) * (totalKills + 1) * potentialDamage /*/ stats.Cost*/;
       });
     }
   }
