@@ -32,10 +32,16 @@ namespace Towerland.GameServer.Logic.Selectors
     public int? FindTarget(BattleContext battleContext, GameObject tower)
     {
       var field = battleContext.Field;
-      var x = tower.Position.X;
-      var y = tower.Position.Y;
+
       var stats = _statsLibrary.GetTowerStats(tower.Type);
 
+      return FindTargetAtRange(battleContext, stats, tower.Position, field, out var target) ? target : default;
+    }
+
+    public bool FindTargetAtRange(BattleContext battleContext, TowerStats stats, Point pos, Field field, out int? target)
+    {
+      var x = pos.X;
+      var y = pos.Y;
       var units = new List<Unit>();
       for (int range = 1; range <= stats.Range; range++)
       {
@@ -66,12 +72,17 @@ namespace Towerland.GameServer.Logic.Selectors
         var foundUnits = units.Where(u => !battleContext.UnitsToRemove.Contains(u.GameId));
         if (foundUnits.Any())
         {
-          return foundUnits.ElementAt(GameMath.Rand.Next(foundUnits.Count())).GameId;
+          {
+            target = foundUnits.ElementAt(GameMath.Rand.Next(foundUnits.Count())).GameId;
+            return true;
+          }
         }
+
         units.Clear();
       }
 
-      return default;
+      target = null;
+      return false;
     }
 
     public Point? FindBurstTarget(Field field, GameObject tower)

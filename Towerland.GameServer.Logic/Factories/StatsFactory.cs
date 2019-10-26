@@ -16,7 +16,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 150,
         MovementPriority = UnitStats.MovementPriorityType.Fastest,
         Speed = 2,
-        Cost = 50,
+        Cost = 20,
         Defence = UnitStats.DefenceType.LightArmor
       },
       new UnitStats
@@ -26,7 +26,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 200,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
-        Cost = 120,
+        Cost = 50,
         Defence = UnitStats.DefenceType.LightArmor
       },
       new UnitStats
@@ -36,7 +36,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 430,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 6,
-        Cost = 180,
+        Cost = 75,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats
@@ -46,7 +46,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 400,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
-        Cost = 250,
+        Cost = 120,
         Defence = UnitStats.DefenceType.LightArmor,
         Skill = SkillId.StealsTowerMoney
       },
@@ -57,7 +57,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 750,
         MovementPriority = UnitStats.MovementPriorityType.Optimal,
         Speed = 3,
-        Cost = 450,
+        Cost = 200,
         Skill = SkillId.AirUnit,
         Defence = UnitStats.DefenceType.Undefended
       },
@@ -68,7 +68,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 800,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
-        Cost = 800,
+        Cost = 500,
         Skill = SkillId.BlocksTowerSkillsInRange,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
@@ -79,7 +79,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 660,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
-        Cost = 500,
+        Cost = 275,
         Defence = UnitStats.DefenceType.Undefended,
         Skill = SkillId.RevivesDeadUnit
       },
@@ -90,7 +90,7 @@ namespace Towerland.GameServer.Logic.Factories
         Health = 700,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
-        Cost = 750,
+        Cost = 400,
         Defence = UnitStats.DefenceType.LightArmor,
         Skill= SkillId.DestroysTowerOnDeath
       }

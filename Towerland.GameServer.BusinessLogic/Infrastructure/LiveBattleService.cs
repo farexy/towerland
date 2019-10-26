@@ -33,6 +33,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
     private readonly IFieldStorage _fieldStorage;
     private readonly IStatsLibrary _statsLibrary;
     private readonly ICheatCommandManager _cheatCommandManager;
+    private readonly IAnalyticsService _analyticsService;
 
     public LiveBattleService(
       IBattleRepository repo,
@@ -41,7 +42,8 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       IStateChangeRecalculator recalc,
       IFieldStorage fieldStorage,
       IStatsLibrary statsLibrary,
-      ICheatCommandManager cheatCommandManager)
+      ICheatCommandManager cheatCommandManager,
+      IAnalyticsService analyticsService)
     {
       _battles = new ConcurrentDictionary<Guid, int>();
       _battleRepository = repo;
@@ -51,6 +53,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       _fieldStorage = fieldStorage;
       _statsLibrary = statsLibrary;
       _cheatCommandManager = cheatCommandManager;
+      _analyticsService = analyticsService;
     }
 
     public Field GetField(Guid battleId)
@@ -234,7 +237,9 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         entity.WinnerId = winSide == PlayerSide.Monsters ? entity.Monsters_UserId : entity.Towers_UserId;
         entity.EndTime = DateTime.UtcNow;
 
-        await Task.WhenAll(_battleRepository.UpdateAsync(entity),
+        await Task.WhenAll(
+          _analyticsService.LogEndAsync(winSide, battle.State),
+          _battleRepository.UpdateAsync(entity),
           IncrementUserXp(entity.Monsters_UserId, expCalc.CalcUserExp(entity, entity.Monsters_UserId, left)),
           IncrementUserXp(entity.Towers_UserId, expCalc.CalcUserExp(entity, entity.Towers_UserId, left)));
 

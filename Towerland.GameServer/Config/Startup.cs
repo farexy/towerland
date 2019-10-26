@@ -54,6 +54,8 @@ namespace Towerland.GameServer.Config
       services.AddSingleton<IBattleInitializationService>(x => x.GetRequiredService<LiveBattleService>());
       services.AddSingleton<ILiveBattleService>(x => x.GetRequiredService<LiveBattleService>());
 
+      services.AddSingleton<IAnalyticsService, AnalyticsServiceStub>();
+
       services.AddHostedService<BattleAiService>();
 
       services.AddSingleton<IStatsLibrary, StatsLibrary>();

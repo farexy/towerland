@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Towerland.GameServer.Models.GameObjects;
 
 namespace Towerland.GameServer.Logic.Selectors
 {
   public class IntelligentGameObjectSelector<TDest> where TDest : struct
   {
+    private static readonly ILog LoggerAI = LogManager.GetLogger(Assembly.GetEntryAssembly(), "AI");
+
     private readonly IEnumerable<GameObjectType> _availableGameObjects;
     private readonly IEnumerable<TDest> _availableDestinations;
 
@@ -27,7 +31,8 @@ namespace Towerland.GameServer.Logic.Selectors
       var variants = new List<(GameObjectType type, TDest dest)>();
       foreach (var gameObject in _availableGameObjects)
       {
-        foreach (var dest in _availableDestinations)
+        LoggerAI.Info($"Processing {gameObject}");
+        _availableDestinations.AsParallel().ForAll(dest =>
         {
           var weight = func(gameObject, dest);
           if (Math.Abs(weight - maxWeight) < double.Epsilon)
@@ -41,17 +46,17 @@ namespace Towerland.GameServer.Logic.Selectors
             variants.Add((gameObject, dest));
             maxWeight = weight;
           }
-        }
+        });
       }
 
-      if (Math.Abs(maxWeight) < double.Epsilon)
-      {
-        return GameMath.Rand.Next(10) == 0
-          ? variants[GameMath.Rand.Next(variants.Count)]
-          : default((GameObjectType type, TDest destination)?);
-      }
+//      if (Math.Abs(maxWeight) < double.Epsilon)
+//      {
+//        return GameMath.Rand.Next(5) == 0
+//          ? variants[GameMath.Rand.Next(variants.Count)]
+//          : default((GameObjectType type, TDest destination)?);
+//      }
 
-      return GameMath.Rand.Next(3) == 0
+      return GameMath.Rand.Next(2) == 0
         ? variants[GameMath.Rand.Next(variants.Count)]
         : default((GameObjectType type, TDest destination)?);
     }
