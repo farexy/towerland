@@ -45,7 +45,7 @@ namespace Towerland.GameServer.Logic.ActionResolver
           break;
 
         case ActionId.UnitAppears:
-          _field.AddGameObject(action.GoUnit);
+          _field.AddGameObject(action.GoUnit.Clone() as Unit);
           break;
 
         case ActionId.UnitRevives:
