@@ -150,11 +150,17 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       {
         return;
       }
+      var liveBattleModel = _provider.Find(command.BattleId);
+      var fieldState = liveBattleModel.State;
+
+      if (fieldState.StaticData.EndTimeUtc < DateTime.UtcNow)
+      {
+        await TryEndBattleAsync(command.BattleId, ComputerPlayer.Id);
+        return;
+      }
+
       using (new BattleLocker(command.BattleId))
       {
-        var liveBattleModel = _provider.Find(command.BattleId);
-        var fieldState = liveBattleModel.State;
-
         ResolveActions(liveBattleModel);
 
         var stateChangeActions = new List<GameAction>();
@@ -277,6 +283,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         State = (Field) _fieldStorage.Get(0).Clone(),
         Ticks = Enumerable.Empty<GameTick>(),
         Mode = mode,
+        CompPlayerSide = compPlayerSide
       };
       _provider.Create(newBattle);
       await _battleRepository.CreateAsync(new Battle
@@ -285,7 +292,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         StartTime = DateTime.UtcNow,
         Monsters_UserId = monstersPlayer,
         Towers_UserId = towersPlayer,
-        Mode = mode
+        Mode = mode,
       });
     }
 

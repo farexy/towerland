@@ -13,30 +13,30 @@ using Towerland.GameServer.Models.State;
 
 namespace Towerland.GameServer.AI
 {
-  public class BattleAiService : BackgroundService, IBattleAiService
+  public abstract class BattleAiService : BackgroundService, IBattleAiService
   {
-    private static readonly ILog LoggerAI = LogManager.GetLogger(Assembly.GetEntryAssembly(), "AI");
-    private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+    protected static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
     private DateTime _lastRun;
 
     private readonly IProvider<LiveBattleModel> _liveBattleProvider;
     private readonly ILiveBattleService _liveBattleService;
-    private readonly IUnitSelector _unitSelector;
-    private readonly ITowerSelector _towerSelector;
     private readonly IAnalyticsService _analyticsService;
-    private readonly Stopwatch _stopwatch;
+    private readonly PlayerSide _playerSide;
+    protected readonly Stopwatch Stopwatch;
 
-    public BattleAiService(IProvider<LiveBattleModel> liveBattleProvider, ILiveBattleService liveBattleService,
-      IUnitSelector unitSelector, ITowerSelector towerSelector, IAnalyticsService analyticsService)
+    protected BattleAiService(
+      IProvider<LiveBattleModel> liveBattleProvider,
+      ILiveBattleService liveBattleService,
+      IAnalyticsService analyticsService,
+      PlayerSide playerSide)
     {
       _liveBattleProvider = liveBattleProvider;
       _liveBattleService = liveBattleService;
-      _unitSelector = unitSelector;
-      _towerSelector = towerSelector;
       _analyticsService = analyticsService;
-      _stopwatch = new Stopwatch();
+      _playerSide = playerSide;
+      Stopwatch = new Stopwatch();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -62,35 +62,19 @@ namespace Towerland.GameServer.AI
 
     public async Task RunSessionAsync(CancellationToken stoppingToken)
     {
-      await Task.WhenAll(_liveBattleProvider.GetAll().Select(async battle =>
-      {
-        var battleCopy = battle.CreateCopy();
-        _liveBattleService.ResolveActions(battleCopy);
+      await Task.WhenAll(
+        _liveBattleProvider.GetAll()
+          .Where(b => b.CompPlayerSide == _playerSide || b.CompPlayerSide is PlayerSide.Both)
+          .Select(async battle =>
+          {
+            var battleCopy = battle.CreateCopy();
+            _liveBattleService.ResolveActions(battleCopy);
 
-        LoggerAI.Info("Process for adding unit started");
-        _stopwatch.Restart();
-        var unitToAdd = await Task.Run(() => _unitSelector.GetNewUnit(battleCopy.State), stoppingToken);
-        _stopwatch.Stop();
-        LoggerAI.Info($"Process for adding unit finished in {_stopwatch.ElapsedMilliseconds} ms");
-
-        LoggerAI.Info("Process for adding tower started");
-        _stopwatch.Restart();
-        var towerToAdd = await Task.Run(() => _towerSelector.GetNewTower(battleCopy.State), stoppingToken);
-        _stopwatch.Stop();
-        LoggerAI.Info($"Process for adding tower finished in {_stopwatch.ElapsedMilliseconds} ms");
-
-        var cmd = new StateChangeCommand
-        {
-          BattleId = battle.Id,
-          TowerCreationOptions = towerToAdd.HasValue
-            ? new[] {new TowerCreationOption {Position = towerToAdd.Value.position, Type = towerToAdd.Value.type}}
-            : null,
-          UnitCreationOptions = unitToAdd.HasValue
-            ? new[] {new UnitCreationOption {PathId = unitToAdd.Value.pathId, Type = unitToAdd.Value.type}}
-            : null,
-        };
-        await Task.WhenAll(_analyticsService.LogAsync(cmd), _liveBattleService.RecalculateAsync(cmd));
-      }).ToArray());
+            var cmd = await GetCmdAsync(battle, battleCopy, stoppingToken);
+            await Task.WhenAll(_analyticsService.LogAsync(cmd), _liveBattleService.RecalculateAsync(cmd));
+          }).ToArray());
     }
+
+    protected abstract Task<StateChangeCommand> GetCmdAsync(LiveBattleModel battle, LiveBattleModel battleCopy, CancellationToken stoppingToken);
   }
 }

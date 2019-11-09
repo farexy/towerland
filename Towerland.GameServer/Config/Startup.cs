@@ -56,7 +56,8 @@ namespace Towerland.GameServer.Config
 
       services.AddSingleton<IAnalyticsService, AnalyticsServiceStub>();
 
-      services.AddHostedService<BattleAiService>();
+      services.AddHostedService<MonstersAiService>();
+      services.AddHostedService<TowersAiService>();
 
       services.AddSingleton<IStatsLibrary, StatsLibrary>();
       services.AddTransient<ICheatCommandManager, CheatCommandManager>();
