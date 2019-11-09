@@ -11,7 +11,7 @@ namespace Towerland.GameServer.AI
 {
     public class TowersAiService : BattleAiService
     {
-        protected static readonly ILog LoggerAI = LogManager.GetLogger(Assembly.GetEntryAssembly(), "AI.Towers");
+        protected static readonly ILog LoggerAI = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Towers.AI");
 
         private readonly ITowerSelector _towerSelector;
 
@@ -31,7 +31,7 @@ namespace Towerland.GameServer.AI
             Stopwatch.Restart();
             var towerToAdd = await Task.Run(() => _towerSelector.GetNewTower(battleCopy.State), stoppingToken);
             Stopwatch.Stop();
-            LoggerAI.Info($"Process for adding tower finished in {Stopwatch.ElapsedMilliseconds} ms");
+            LoggerAI.Info($"Process for adding tower finished in {Stopwatch.ElapsedMilliseconds} ms. Memory usage: {CurrentMemoryUsageKb} Kb");
 
             var cmd = new StateChangeCommand
             {

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿﻿using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
@@ -11,7 +11,7 @@ namespace Towerland.GameServer.AI
 {
     public class MonstersAiService : BattleAiService
     {
-        protected static readonly ILog LoggerAI = LogManager.GetLogger(Assembly.GetEntryAssembly(), "AI.Monsters");
+        protected static readonly ILog LoggerAI = LogManager.GetLogger(Assembly.GetEntryAssembly(), "Monsters.AI");
 
         private readonly IUnitSelector _unitSelector;
 
@@ -31,7 +31,7 @@ namespace Towerland.GameServer.AI
             Stopwatch.Restart();
             var unitToAdd = await Task.Run(() => _unitSelector.GetNewUnit(battleCopy.State), stoppingToken);
             Stopwatch.Stop();
-            LoggerAI.Info($"Process for adding unit finished in {Stopwatch.ElapsedMilliseconds} ms");
+            LoggerAI.Info($"Process for adding unit finished in {Stopwatch.ElapsedMilliseconds} ms. Memory usage: {CurrentMemoryUsageKb} Kb");
 
             var cmd = new StateChangeCommand
             {

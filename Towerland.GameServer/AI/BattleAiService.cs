@@ -13,7 +13,7 @@ using Towerland.GameServer.Models.State;
 
 namespace Towerland.GameServer.AI
 {
-  public abstract class BattleAiService : BackgroundService, IBattleAiService
+  public abstract class BattleAiService : BackgroundService
   {
     protected static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -24,6 +24,7 @@ namespace Towerland.GameServer.AI
     private readonly ILiveBattleService _liveBattleService;
     private readonly IAnalyticsService _analyticsService;
     private readonly PlayerSide _playerSide;
+    private readonly Process _process;
     protected readonly Stopwatch Stopwatch;
 
     protected BattleAiService(
@@ -36,8 +37,11 @@ namespace Towerland.GameServer.AI
       _liveBattleService = liveBattleService;
       _analyticsService = analyticsService;
       _playerSide = playerSide;
+      _process = Process.GetCurrentProcess();
       Stopwatch = new Stopwatch();
     }
+
+    protected long CurrentMemoryUsageKb => _process.PrivateMemorySize64 / 1024;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -60,7 +64,7 @@ namespace Towerland.GameServer.AI
       }
     }
 
-    public async Task RunSessionAsync(CancellationToken stoppingToken)
+    private async Task RunSessionAsync(CancellationToken stoppingToken)
     {
       await Task.WhenAll(
         _liveBattleProvider.GetAll()
