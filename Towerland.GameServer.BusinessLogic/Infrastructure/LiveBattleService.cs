@@ -283,7 +283,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
         State = (Field) _fieldStorage.Get(0).Clone(),
         Ticks = Enumerable.Empty<GameTick>(),
         Mode = mode,
-        CompPlayerSide = PlayerSide.Both // todo
+        CompPlayerSide = compPlayerSide
       };
       _provider.Create(newBattle);
       await _battleRepository.CreateAsync(new Battle

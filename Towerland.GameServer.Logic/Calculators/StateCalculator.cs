@@ -79,6 +79,9 @@ namespace Towerland.GameServer.Logic.Calculators
         foreach (var unit in Field.State.Units)
         {
           var behaviour = _behaviourFactory.CreateUnitBehaviour(unit);
+
+          behaviour.ApplyAura();
+
           if (!behaviour.CanDoAction())
           {
             continue;
@@ -103,6 +106,9 @@ namespace Towerland.GameServer.Logic.Calculators
             continue; // tower may be destroyed before action
           }
           var behaviour = _behaviourFactory.CreateTowerBehaviour(tower);
+
+          behaviour.ApplyAura();
+
           if (!behaviour.CanDoAction())
           {
             continue;

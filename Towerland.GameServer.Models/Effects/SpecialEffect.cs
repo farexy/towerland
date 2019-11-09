@@ -11,8 +11,9 @@ namespace Towerland.GameServer.Models.Effects
 
     public static SpecialEffect Empty { get; } = new SpecialEffect{Id = EffectId.None, Duration = 0};
 
-
     [JsonIgnore] public EffectType Type => GetType(Id);
+
+    public bool IsEmpty() => Id is EffectId.None;
 
     public static EffectType GetType(EffectId effectId)
     {

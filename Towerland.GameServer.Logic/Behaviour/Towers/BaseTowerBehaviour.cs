@@ -44,7 +44,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
       if (Tower.Effect.Id != EffectId.None)
       {
         Tower.Effect.Duration -= 1;
-        if (Tower.Effect.Duration == 0)
+        if (Tower.Effect.Duration < 0)
         {
           BattleContext.AddAction(new GameAction {ActionId = ActionId.TowerEffectCanceled, TowerId = Tower.GameId});
         }
@@ -121,6 +121,10 @@ namespace Towerland.GameServer.Logic.Behaviour.Towers
     }
 
     public virtual void TickEndAction()
+    {
+    }
+
+    public virtual void ApplyAura()
     {
     }
   }

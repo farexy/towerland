@@ -43,7 +43,7 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       if (Unit.Effect.Id != EffectId.None)
       {
         Unit.Effect.Duration -= 1;
-        if (Unit.Effect.Duration == 0)
+        if (Unit.Effect.Duration < 0)
         {
           BattleContext.AddAction(new GameAction {ActionId = ActionId.UnitEffectCanceled, UnitId = Unit.GameId});
         }
@@ -125,6 +125,10 @@ namespace Towerland.GameServer.Logic.Behaviour.Units
       {
         BattleContext.UnitsToRemove.Add(Unit.GameId);
       }
+    }
+
+    public virtual void ApplyAura()
+    {
     }
   }
 }

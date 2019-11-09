@@ -69,7 +69,7 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 5,
         Cost = 500,
-        Skill = SkillId.BlocksTowerSkillsInRange,
+        Skill = SkillId.BlocksTowerSkillsInRange_Aura,
         Defence = UnitStats.DefenceType.HeavyArmor
       },
       new UnitStats
@@ -247,7 +247,7 @@ namespace Towerland.GameServer.Logic.Factories
         Id = SkillId.FreezesUnit,
         GameObjectType = GameObjectType.Tower_Frost,
         EffectId = EffectId.UnitFreezed,
-        Duration = 12,
+        Duration = 8,
         DebuffValue = 2
       },
       new Skill
@@ -294,7 +294,7 @@ namespace Towerland.GameServer.Logic.Factories
       },
       new Skill
       {
-        Id = SkillId.BlocksTowerSkillsInRange,
+        Id = SkillId.BlocksTowerSkillsInRange_Aura,
         GameObjectType = GameObjectType.Unit_Demon,
         EffectId = EffectId.SkillsDisabled,
         Duration = 6,
