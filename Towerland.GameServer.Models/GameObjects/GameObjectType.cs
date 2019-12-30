@@ -15,7 +15,8 @@
     Whizzbang_Poison = 24,
     Whizzbang_Bomb = 25,
     Whizzbang_Shuriken = 26,
-    
+    Whizzbang_Spike = 27,
+
     Explosion = 30,
 
     Tower = 100,
