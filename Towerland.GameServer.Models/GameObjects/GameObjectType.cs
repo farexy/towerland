@@ -7,13 +7,14 @@
     Reserved = 1,
 
     Castle = 10,
-    Castle_Usual = 11,
-
+    
     Whizzbang = 20,
     Whizzbang_Usual = 21,
     Whizzbang_Frost = 22,
     Whizzbang_Magic = 23,
     Whizzbang_Poison = 24,
+    Whizzbang_Bomb = 25,
+    Whizzbang_Shuriken = 26,
     
     Explosion = 30,
 
