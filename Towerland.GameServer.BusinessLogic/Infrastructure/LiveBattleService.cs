@@ -277,10 +277,13 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
           : towersPlayer.IsComputerPlayer()
             ? PlayerSide.Towers
             : PlayerSide.Undefined;
+      
+      var field = _fieldStorage.Create(0);
+      
       var newBattle = new LiveBattleModel
       {
         Id = battleId,
-        State = (Field) _fieldStorage.Get(0).Clone(),
+        State = field,
         Ticks = Enumerable.Empty<GameTick>(),
         Mode = mode,
         CompPlayerSide = compPlayerSide
@@ -306,7 +309,7 @@ namespace Towerland.GameServer.BusinessLogic.Infrastructure
       var newBattle = new LiveBattleModel
       {
         Id = battleId,
-        State = (Field) _fieldStorage.Get(0).Clone(),
+        State = _fieldStorage.Create(0),
         Ticks = Enumerable.Empty<GameTick>(),
         MultiBattleInfo = mbInfo,
         Mode = GameMode.MultiBattle

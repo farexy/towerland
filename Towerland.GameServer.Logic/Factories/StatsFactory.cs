@@ -175,7 +175,7 @@ namespace Towerland.GameServer.Logic.Factories
         Attack = TowerStats.AttackType.Usual,
         AttackSpeed = 5,
         Damage = 40,
-        Range = 4,
+        Range = 3,
         Cost = 450,
         Skill = SkillId.ShurikenAttack,
         SpawnType = TowerStats.TowerSpawnType.Ground

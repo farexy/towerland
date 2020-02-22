@@ -12,7 +12,7 @@ namespace Towerland.GameServer.Logic.UnitTests
         [Fact]
         public void TestClassicField()
         {
-            var field = new FieldStorageStub().Get(0);
+            var field = new FieldStorageStub().Create(0);
             
             Assert.NotEmpty(field.StaticData.Path);
             Assert.NotEmpty(field.StaticData.Cells);

@@ -91,9 +91,11 @@ namespace Towerland.GameServer.Logic.Factories
             return field;
         }
 
-        public Field Get(int index)
+        public Field Get(int index) => Fields[index].Value;
+
+        public Field Create(int index)
         {
-            var field = Fields[index].Value;
+            var field = (Field)Get(index).Clone();
             field.StaticData.EndTimeUtc = DateTime.UtcNow.AddMinutes(FieldStaticData.BattleDurationMinutes);
             return field;
         }
