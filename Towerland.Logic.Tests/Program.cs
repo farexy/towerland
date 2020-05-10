@@ -89,7 +89,7 @@ namespace Towerland.Logic.Tests
             var tFactory = new TowerFactory(statsStub);
             var pathOpt = new PathChooser(statsStub);
             var stateRecalc = new StateChangeRecalculator(pathOpt, statsStub, uFactory, tFactory);
-            var unitSelector = new UnitSelector(new StatsFactory(), statsStub, stateRecalc);
+            var unitSelector = new UnitSelector(new StatsFactory(), statsStub, stateRecalc, pathOpt);
             var towerSelector = new TowerSelector(new StatsFactory(), statsStub, stateRecalc);
 
             f.State.MonsterMoney = 100000;

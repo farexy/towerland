@@ -23,6 +23,10 @@ namespace Towerland.GameServer.Logic.Selectors
 
     public (GameObjectType type, TDest destination)? GetOptimalVariant(Func<GameObjectType, TDest, double> func)
     {
+      if (GameMath.Rand.Next(4) % 4 != 0)
+      {
+        return default;
+      }
       if (!_availableGameObjects.Any() || !_availableDestinations.Any())
       {
         return default;
@@ -56,9 +60,7 @@ namespace Towerland.GameServer.Logic.Selectors
 //          : default((GameObjectType type, TDest destination)?);
 //      }
 
-      return GameMath.Rand.Next(2) == 0
-        ? variants[GameMath.Rand.Next(variants.Count)]
-        : default((GameObjectType type, TDest destination)?);
+      return variants[GameMath.Rand.Next(variants.Count)];
     }
   }
 }

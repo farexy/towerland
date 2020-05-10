@@ -111,6 +111,8 @@ namespace Towerland.GameServer.Logic.Calculators
 
     private int? CalculateUnitPath(Field field, GameObjectType type)
     {
+      return _pathChooser.GetOptimalPath(field, type);
+
       var stats = _statsLib.GetUnitStats(type);
       return stats.MovementPriority == UnitStats.MovementPriorityType.Optimal
         ? _pathChooser.GetOptimalPath(field, type)

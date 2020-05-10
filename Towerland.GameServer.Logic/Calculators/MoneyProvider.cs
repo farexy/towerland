@@ -12,8 +12,8 @@ namespace Towerland.GameServer.Logic.Calculators
     private const int GuaranteedMoneyBase = 10;
     private const int TowerCoeff = 2;
     private const double HealthCoeff = 0.5;
-    private const double DamageCoeff = 0.2;
-    private const double SpeedCoeff = 0.3;
+    private const double DamageCoeff = 0.7;
+    private const double SpeedCoeff = 0.8;
 
     private readonly IStatsLibrary _statsLibrary;
 
@@ -67,7 +67,7 @@ namespace Towerland.GameServer.Logic.Calculators
 
     private static int GetTowerReward(TowerStats tower, UnitStats unit)
     {
-      return (int)Math.Round(unit.Health / HealthCoeff + unit.Speed / SpeedCoeff + unit.Damage / DamageCoeff) / 2;
+      return (int)Math.Round(unit.Health / HealthCoeff + unit.Speed / SpeedCoeff + unit.Damage / DamageCoeff) / 3;
     }
 
     private static int GetUnitReward(Path p, Point f, UnitStats u)

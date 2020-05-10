@@ -7,5 +7,6 @@ namespace Towerland.GameServer.Logic.Interfaces
   {
     int GetFastestPath(Path[] paths, Point position);
     int GetOptimalPath(Field field, GameObjectType unitType);
+    double GetPathDamage(Field field, GameObjectType unitType, int pathId);
   }
 }

@@ -53,9 +53,7 @@ namespace Towerland.GameServer.Logic.Selectors
       int minDamagePathId = 0;
       for (int i = 0; i < paths.Length; i++)
       {
-        var towersOnPath = FindTowersThatCanAttackPath(field, i);
-        var towers = towersOnPath.Select(t => field[t].Type).ToArray();
-        var pathDamage = GetTotalAttackDamage(towers, unitType);
+        var pathDamage = GetPathDamage(field, unitType, i);
 
         if (pathDamage < minDamage)
         {
@@ -80,6 +78,13 @@ namespace Towerland.GameServer.Logic.Selectors
 //        tableToAnalize[i, 3] = GetTowersWithSpecialEffectRate(towersTypes);
 //      }
 //      return _additiveConvolutionCalculator.FindOptimalVariantIndex(tableToAnalize);
+    }
+
+    public double GetPathDamage(Field field, GameObjectType unitType, int pathId)
+    {
+      var towersOnPath = FindTowersThatCanAttackPath(field, pathId);
+      var towers = towersOnPath.Select(t => field[t].Type).ToArray();
+      return (double) towers.Sum(t => _gameCalculator.CalculateDamage(unitType, t)) / _statsLib.GetUnitStats(unitType).Health;
     }
 
     private double GetTotalAttackDamage(IEnumerable<GameObjectType> towerTypes, GameObjectType unitType)

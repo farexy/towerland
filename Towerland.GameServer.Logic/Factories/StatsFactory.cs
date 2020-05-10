@@ -27,7 +27,8 @@ namespace Towerland.GameServer.Logic.Factories
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 50,
-        Defence = UnitStats.DefenceType.LightArmor
+        Defence = UnitStats.DefenceType.LightArmor,
+        Hidden = true
       },
       new UnitStats
       {
@@ -87,7 +88,7 @@ namespace Towerland.GameServer.Logic.Factories
       {
         Type = GameObjectType.Unit_BarbarianMage,
         Damage = 15,
-        Health = 700,
+        Health = 750,
         MovementPriority = UnitStats.MovementPriorityType.Random,
         Speed = 4,
         Cost = 400,
@@ -104,9 +105,9 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Usual,
         AttackSpeed = 6,
-        Damage = 60,
+        Damage = 45,
         Range = 3,
-        Cost = 50,
+        Cost = 45,
         SpawnType = TowerStats.TowerSpawnType.Ground
       },
       new TowerStats
@@ -115,7 +116,7 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Magic,
         AttackSpeed = 3,
-        Damage = 35,
+        Damage = 25,
         Range = 4,
         Cost = 120,
         Skill = SkillId.FreezesUnit,
@@ -127,7 +128,7 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.UnitsAtPosition,
         Attack = TowerStats.AttackType.Burst,
         AttackSpeed = 12,
-        Damage = 70,
+        Damage = 65,
         Range = 4,
         Cost = 200,
         SpawnType = TowerStats.TowerSpawnType.Ground
@@ -138,7 +139,7 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.Optimal,
         Attack = TowerStats.AttackType.Usual,
         AttackSpeed = 8,
-        Damage = 100,
+        Damage = 90,
         Range = 5,
         Cost = 500,
         Skill = SkillId.ExtraDamageUnit,
@@ -150,7 +151,7 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.Optimal,
         Attack = TowerStats.AttackType.Magic,
         AttackSpeed = 5,
-        Damage = 70,
+        Damage = 55,
         Range = 6,
         Cost = 600,
         Skill = SkillId.BlocksUnitSkills,
@@ -162,7 +163,7 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Magic,
         AttackSpeed = 5,
-        Damage = 40,
+        Damage = 30,
         Range = 3,
         Cost = 400,
         Skill = SkillId.PoisonsUnit,
@@ -174,7 +175,7 @@ namespace Towerland.GameServer.Logic.Factories
         TargetPriority = TowerStats.AttackPriority.Random,
         Attack = TowerStats.AttackType.Usual,
         AttackSpeed = 5,
-        Damage = 40,
+        Damage = 30,
         Range = 3,
         Cost = 450,
         Skill = SkillId.ShurikenAttack,

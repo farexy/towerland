@@ -14,6 +14,7 @@ namespace Towerland.GameServer.Models.Stats
     [JsonProperty("e")] public SkillId Skill { set; get; }
     [JsonProperty("c")] public int Cost { set; get; }
     [JsonProperty("f")] public DefenceType Defence { set; get; }
+    [JsonProperty("i")] public bool Hidden { get; set; }
 
     [JsonIgnore] public bool IsAir => Skill == SkillId.AirUnit;
 

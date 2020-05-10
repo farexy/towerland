@@ -15,6 +15,7 @@ namespace Towerland.GameServer.Models.Stats
     [JsonProperty("e")] public SkillId Skill { set; get; }
     [JsonProperty("c")] public int Cost { set; get; }
     [JsonProperty("p")] public TowerSpawnType SpawnType { set; get; }
+    [JsonProperty("i")] public bool Hidden { get; set; }
 
     public enum AttackType
     {

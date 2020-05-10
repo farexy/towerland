@@ -6,5 +6,6 @@ namespace Towerland.GameServer.Models.Stats
   {
     GameObjectType Type { get; set; }
     int Cost { get; set; }
+    bool Hidden { get; set; }
   }
 }

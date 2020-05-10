@@ -29,9 +29,10 @@ namespace Towerland.GameServer.Logic.Selectors
         .Where(c => c.Object is FieldObject.Ground && field.FindTowerAt(c.Position) is null)
         .Where(c => (c.Position.X + c.Position.Y) % GameMath.Rand.Next(1, 6) == 0) // take 1/5 of field cells to fasten computing
         .Select(c => c.Position);
-      var selector = new IntelligentGameObjectSelector<Point>(
-        _statsProvider.GetTowerStats().Where(t => t.Cost <= field.State.TowerMoney).Select(t => t.Type), cellToProcess
-      );
+      var towersToProcess = _statsProvider.GetTowerStats()
+        .Where(t => !t.Hidden && t.Cost <= field.State.TowerMoney)
+        .Select(t => t.Type);
+      var selector = new IntelligentGameObjectSelector<Point>(towersToProcess, cellToProcess);
       return selector.GetOptimalVariant((type, pos) =>
       {
         var fieldClone = (Field) field.Clone();
@@ -42,7 +43,7 @@ namespace Towerland.GameServer.Logic.Selectors
         var totalDamage = actions.Where(a => a.ActionId is ActionId.UnitReceivesDamage).Sum(a => a.Damage);
         var totalKills = actions.Count(a => a.ActionId is ActionId.TowerKills);
         var potentialDamage = stats.Damage * field.GetNeighbourPoints(pos, stats.Range, FieldObject.Road).Count();
-        return (double) (totalDamage + 1) * (totalKills + 1) * potentialDamage /*/ stats.Cost*/;
+        return (double) (totalDamage + 1) * (totalKills + 1) * potentialDamage * stats.Cost;
       });
     }
   }
